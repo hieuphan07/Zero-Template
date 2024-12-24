@@ -6,8 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "lint:check": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
+    "lint": "eslint \"{src,test}/**/*.{js,ts,json,tsx,jsx}\" --fix",
+    "lint:check": "eslint \"{src,test}/**/*.{js,ts,json,tsx,jsx}\" ",
+    "format": "prettier --write \"(src|test)/**/*.(js|ts|json|tsx|jsx|css|scss)\"",
+    "format:check": "prettier --check \"(src|test)/**/*.(js|ts|json|tsx|jsx|css|scss)\"",
+    "type:check": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
     "react": "^19.0.0",
