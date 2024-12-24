@@ -116,7 +116,7 @@ deploy_fe_to_production:
       docker run -d \
         --name "${FE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" \
         -p $FE_PORT:$FE_PORT \
-        --network nest-zero-service \
+        --network nest-zero-production \
         -v "nest-zero-fe-app:/usr/src/app" \
         -v "nest-zero-fe-app-data:/usr/src/app/node_modules" \
         "$CI_REGISTRY/$FE_IMAGE_NAME:$FE_VERSION-$CI_ENVIRONMENT_NAME"

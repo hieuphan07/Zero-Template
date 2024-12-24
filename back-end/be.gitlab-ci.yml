@@ -130,7 +130,7 @@ deploy_to_production:
       docker run -d \
         --name "${BE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" \
         -p $BE_PORT:$BE_PORT \
-        --network nest-zero-service \
+        --network nest-zero-production \
         -v "nest-zero-be-app:/usr/src/app" \
         -v "nest-zero-be-app-data:/usr/src/app/node_modules" \
         "$CI_REGISTRY/$BE_IMAGE_NAME:$BE_VERSION-$CI_ENVIRONMENT_NAME"
