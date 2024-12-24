@@ -1,0 +1,128 @@
+variables:
+  FE_VERSION: 0.0.0
+  FE_IMAGE_NAME: nest_zero_web
+  FE_CONTAINER_NAME: nest_zero_web
+  GIT_STRATEGY: clone
+
+stages:
+  - lint
+  - testing
+  - build
+  - deploy
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+  policy: pull-push
+
+lint:check:
+  stage: lint
+  before_script:
+    - echo "This is a before script that runs before job."
+    - cd $FE_WORKDIR
+    - npm install --legacy-peer-deps
+  script:
+    - echo "Running ESLint..."
+    - npm run lint:check
+    - echo "ESLint check completed successfully"
+    - echo "Running build process..."
+    - npm run build
+    - echo "Build completed successfully"
+  tags:
+    - zero-frontend-runner
+
+testing:
+  stage: testing
+  script:
+    - echo "Running unit test..."
+    - echo "Unit test completed successfully"
+  tags:
+    - zero-frontend-runner
+
+build_fe_development:
+  stage: build
+  environment:
+    name: development
+  before_script:
+    - cd $FE_WORKDIR
+  script:
+    - echo "Build docker image ${CI_ENVIRONMENT_NAME}"
+    - docker-compose -f docker-compose.yml build
+    - echo "Build completed successfully"
+  only:
+    - develop
+  tags:
+    - zero-frontend-runner    
+
+build_fe_production:
+  stage: build
+  environment:
+    name: production
+  before_script:
+    - cd $FE_WORKDIR
+  script:
+    - echo "Build docker image ${CI_ENVIRONMENT_NAME}"
+    - docker build --build-arg CACHE_BUST=$BE_VERSION -t "${FE_IMAGE_NAME}_${CI_ENVIRONMENT_NAME}" -f Dockerfile .
+    - echo "Assign tag for docker image"
+    - docker tag "${FE_IMAGE_NAME}_${CI_ENVIRONMENT_NAME}" $CI_REGISTRY/$FE_IMAGE_NAME:$FE_VERSION-$CI_ENVIRONMENT_NAME
+    - echo "Push image to local registry"
+    - docker push $CI_REGISTRY/$FE_IMAGE_NAME:$FE_VERSION-$CI_ENVIRONMENT_NAME
+    - echo "Remove unused image"
+    - docker image prune -af
+    - echo "Build completed successfully"
+  only:
+    - main
+  tags:
+    - zero-frontend-runner
+    
+deploy_fe_to_development:
+  before_script:
+    - echo "This is a before script that runs before job."
+    - cd $FE_WORKDIR
+  environment:
+    name: development
+  stage: deploy
+  script:
+    - echo "Stop and remove current container"
+    - docker container stop "${FE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
+    - docker container rm "${FE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
+    - echo "Run container"
+    - docker-compose -f docker-compose.yml up -d --remove-orphans
+    - echo "Remove unused image"
+    - docker image prune -af
+    - echo "Running deploy process..."
+    - echo "Deploy ${CI_ENVIRONMENT_NAME} environment completed!"
+  only:
+    - develop
+  tags:
+    - zero-frontend-runner
+
+deploy_fe_to_production:
+  environment:
+    name: production
+  stage: deploy
+  script:
+    - echo "Stop and remove current container"
+    - docker container stop "${FE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
+    - docker container rm "${FE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
+    - echo "Remove unused image"
+    - docker image prune -af
+    - echo "Running deploy process..."
+    - echo "Pull image from local registry"
+    - docker pull $CI_REGISTRY/$FE_IMAGE_NAME:$FE_VERSION-$CI_ENVIRONMENT_NAME
+    - echo "Run container"
+    - |
+      docker run -d \
+        --name "${FE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" \
+        -p $FE_PORT:$FE_PORT \
+        --network nest-zero-service \
+        -v "nest-zero-fe-app:/usr/src/app" \
+        -v "nest-zero-fe-app-data:/usr/src/app/node_modules" \
+        "$CI_REGISTRY/$FE_IMAGE_NAME:$FE_VERSION-$CI_ENVIRONMENT_NAME"
+    - echo "Deploy ${CI_ENVIRONMENT_NAME} environment completed!"
+  only:
+    - main
+  tags:
+    - zero-frontend-runner
+

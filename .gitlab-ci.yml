@@ -1,0 +1,20 @@
+stages:
+  - lint
+  - testing
+  - build
+  - deploy
+include:
+  - local: '/front-end/fe.gitlab-ci.yml'
+    rules:
+      - changes:
+        - 'front-end/*'
+  - local: '/back-end/be.gitlab-ci.yml'
+    rules:
+      - changes:
+        - 'back-end/*'
+default-job:
+  stage: lint
+  script:
+    - echo "This is a default job that always runs"
+  tags:
+    - zero-runner

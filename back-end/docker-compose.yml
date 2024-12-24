@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  nest-zero-api:
+    container_name: nest_zero_api
+    image: nest-zero-api-development
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    ports:
+      - ${BE_CONTAINER_PORT}:${BE_PORT}
+    networks:
+      - nest-zero-development
+    volumes:
+      - nest-zero-be-app:/usr/src/app
+      - nest-zero-be-app-data:/usr/src/app/node_modules
+
+networks:
+  nest-zero-development:
+    name: nest-zero-development
+    driver: bridge
+volumes:
+  nest-zero-be-app:
+  nest-zero-be-app-data:

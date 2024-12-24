@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  nest-zero-web:
+    container_name: nest_zero_web
+    build:
+      context: .
+      dockerfile: Dockerfile.${CI_ENVIRONMENT_NAME}
+    image: nest-zero-web:${CI_ENVIRONMENT_NAME}
+    ports:
+      - ${FE_CONTAINER_PORT}:${FE_PORT}
+    volumes:
+      - nest-zero-fe-app:/usr/src/app
+      - nest-zero-fe-app-data:/usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_URL_API=${NEXT_PUBLIC_URL_API}
+    networks:
+      - nest-zero-development       
+
+networks:
+  nest-zero-development:
+    name: nest-zero-development
+    driver: bridge
+
+volumes:
+  nest-zero-fe-app:
+  nest-zero-fe-app-data:

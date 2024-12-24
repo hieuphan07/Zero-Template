@@ -1,0 +1,142 @@
+variables:
+  BE_VERSION: 0.0.0
+  BE_IMAGE_NAME: nest_zero_api
+  BE_CONTAINER_NAME: nest_zero_api
+  GIT_STRATEGY: clone
+
+stages:
+  - lint
+  - testing
+  - build
+  - deploy
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+  policy: pull-push
+
+lint:check:
+  environment:
+    name: development
+  stage: lint
+  before_script:
+    - echo "This is a before script that runs before job."
+    - cd $BE_WORKDIR
+    - npm install --legacy-peer-deps
+  script:
+    - echo "Running ESLint..."
+    - npm run lint:check
+    - echo "ESLint check completed successfully"
+    - echo "Running code formatting check..."
+    - npm run format:check
+    - echo "Code formatting check completed successfully"
+    - echo "Running TypeScript checking..."
+    - npm run type:check
+    - echo "TypeScript checking completed successfully"
+    - echo "Running build process..."
+    - npm run build
+    - echo "Build completed successfully"
+  tags:
+    - zero-backend-runner
+
+testing:
+  stage: testing
+  script:
+    - echo "Running unit test..."
+    - echo "Unit test completed successfully"
+  tags:
+    - zero-backend-runner
+
+build_backend_development:
+  stage: build
+  environment:
+    name: development
+  before_script:
+    - cd $BE_WORKDIR
+    - chmod +x ./scripts/prepare-env.sh
+    - ./scripts/prepare-env.sh
+  script:
+    - echo "Build docker image ${CI_ENVIRONMENT_NAME}"
+    - docker-compose --env-file .env -f docker-compose.yml build
+    - rm -f .env
+    - echo "Build completed successfully"
+  only:
+    - develop
+  tags:
+    - zero-backend-runner    
+
+build_backend_production:
+  stage: build
+  environment:
+    name: production
+  before_script:
+    - cd $BE_WORKDIR
+    - chmod +x ./scripts/prepare-env.sh
+    - ./scripts/prepare-env.sh
+  script:
+    - echo "Build docker image ${CI_ENVIRONMENT_NAME}"
+    - docker build --build-arg CACHE_BUST=$BE_VERSION -t "${BE_IMAGE_NAME}_${CI_ENVIRONMENT_NAME}" -f Dockerfile .
+    - rm -f .env
+    - echo "Assign tag for docker image"
+    - docker tag "${BE_IMAGE_NAME}_${CI_ENVIRONMENT_NAME}" $CI_REGISTRY/$BE_IMAGE_NAME:$BE_VERSION-$CI_ENVIRONMENT_NAME
+    - echo "Push image to local registry"
+    - docker push $CI_REGISTRY/$BE_IMAGE_NAME:$BE_VERSION-$CI_ENVIRONMENT_NAME
+    - echo "Remove unused image"
+    - docker image prune -af
+    - echo "Build completed successfully"
+  only:
+    - main
+  tags:
+    - zero-backend-runner
+    
+deploy_to_development:
+  before_script:
+    - echo "This is a before script that runs before job."
+    - cd $BE_WORKDIR
+  environment:
+    name: development
+  stage: deploy
+  script:
+    - echo "Stop and remove current container"
+    - docker container stop "${BE_CONTAINER_NAME}" || true
+    - docker container rm "${BE_CONTAINER_NAME}" || true
+    - echo "Run container"
+    - docker-compose -f docker-compose.yml up -d --remove-orphans
+    - echo "Remove unused image"
+    - docker image prune -af
+    - echo "Running deploy process..."
+    - echo "Deploy ${CI_ENVIRONMENT_NAME} environment completed!"
+  only:
+    - develop
+  tags:
+    - zero-backend-runner
+
+deploy_to_production:
+  environment:
+    name: production
+  stage: deploy
+  script:
+    - echo "Stop and remove current container"
+    - docker container stop "${BE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
+    - docker container rm "${BE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
+    - echo "Remove unused image"
+    - docker image prune -af
+    - echo "Running deploy process..."
+    - echo "Pull image from local registry"
+    - docker pull $CI_REGISTRY/$BE_IMAGE_NAME:$BE_VERSION-$CI_ENVIRONMENT_NAME
+    - echo "Run container"
+    - |
+      docker run -d \
+        --name "${BE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" \
+        -p $BE_PORT:$BE_PORT \
+        --network nest-zero-service \
+        -v "nest-zero-be-app:/usr/src/app" \
+        -v "nest-zero-be-app-data:/usr/src/app/node_modules" \
+        "$CI_REGISTRY/$BE_IMAGE_NAME:$BE_VERSION-$CI_ENVIRONMENT_NAME"
+    - echo "Deploy ${CI_ENVIRONMENT_NAME} environment completed!"
+  only:
+    - main
+  tags:
+    - zero-backend-runner
+
