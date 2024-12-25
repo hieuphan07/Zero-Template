@@ -90,7 +90,7 @@ build_backend_production:
   tags:
     - zero-backend-runner
     
-deploy_to_development:
+deploy_backend_development:
   before_script:
     - echo "This is a before script that runs before job."
     - cd $BE_WORKDIR
@@ -112,7 +112,7 @@ deploy_to_development:
   tags:
     - zero-backend-runner
 
-deploy_to_production:
+deploy_backend_production:
   environment:
     name: production
   stage: deploy
