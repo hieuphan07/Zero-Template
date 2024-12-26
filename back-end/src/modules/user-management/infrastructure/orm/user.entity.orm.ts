@@ -1,22 +1,38 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { IsEmail, Length } from 'class-validator';
 
-@Entity('users')
+@Entity({ name: 'users' })
 export class UserEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn({ name: 'id', type: 'bigint' })
+  id: number;
 
-    @Column()
-    username: string;
+  @Column({ name: 'user_name', type: 'varchar', length: 150, nullable: false })
+  @Length(2, 150)
+  username: string;
 
-    @Column({ unique: true })
-    email: string;
+  @Column({ name: 'email', type: 'varchar', length: 255, unique: true })
+  @IsEmail()
+  email: string;
 
-    @Column()
-    password: string;
+  @Column({ name: 'password', type: 'varchar', length: 255, nullable: false })
+  @Length(8, 32)
+  password: string;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @Column({ name: 'phone_number', type: 'varchar', length: 15, nullable: true })
+  phoneNumber: string;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @Column({ name: 'last_login', type: 'timestamp', nullable: true })
+  lastLogin: Date;
+
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: false })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: false })
+  updatedAt: Date;
 }
