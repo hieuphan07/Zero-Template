@@ -13,7 +13,7 @@ export class User {
     username: string,
     email: string,
     password: string,
-    phoneNumber: string,
+    phoneNumber: string = null,
   ) {
     this.validateUsername(username);
     this._username = username;
