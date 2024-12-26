@@ -6,8 +6,9 @@ export class User {
   private _password: string;
   private _phoneNumber: string;
   private _lastLogin: Date;
-  private _createdAt: Date;
+  private readonly _createdAt: Date;
   private _updatedAt: Date;
+  private _deletedAt: Date;
 
   constructor(
     username: string,
@@ -58,6 +59,10 @@ export class User {
     return this._updatedAt;
   }
 
+  get deletedAt(): Date {
+    return this._deletedAt;
+  }
+
   // Setters with validation
   set id(value: number) {
     this._id = value;
@@ -87,6 +92,10 @@ export class User {
   set lastLogin(value: Date) {
     this._lastLogin = value;
     this.updateTimestamp();
+  }
+
+  set deletedAt(value: Date) {
+    this._deletedAt = value;
   }
 
   // Private methods

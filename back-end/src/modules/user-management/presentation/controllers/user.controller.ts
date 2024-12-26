@@ -1,25 +1,53 @@
-import { Controller, Get, Post, Put, Body, Param, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  HttpCode,
+  Delete,
+  HttpStatus,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserService } from '../../application/services/user.service';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { DeleteUserUseCase } from '../../application/use-cases/delete-user.use-case';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { DeleteUserResponseDto } from '../dto/delete-user.response.dto';
 
 @Controller('users')
 export class UserController {
-    constructor(private readonly userService: UserService) { }
+  constructor(
+    private readonly userService: UserService,
+    private readonly deleteUserUseCase: DeleteUserUseCase,
+  ) {}
 
-    @Post()
-    @HttpCode(201)
-    async createUser(@Body() createUserDto: CreateUserDto) {
-        return this.userService.createUser(createUserDto);
-    }
+  @Get(':id')
+  async getUser(@Param('id') id: number) {
+    return this.userService.getUser(id);
+  }
 
-    @Get(':id')
-    async getUser(@Param('id') id: string) {
-        return this.userService.getUser(Number(id));
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Delete user by ID' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User was successfully deleted',
+    type: DeleteUserResponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'User not found',
+  })
+  async deleteUser(@Param('id') id: number): Promise<DeleteUserResponseDto> {
+    try {
+      return await this.deleteUserUseCase.execute(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          success: false,
+          message: `No user found with ID: ${id}`,
+          deletedId: id,
+        });
+      }
+      throw error;
     }
-
-    @Put(':id')
-    async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-        return this.userService.updateUser(Number(id), updateUserDto);
-    }
+  }
 }

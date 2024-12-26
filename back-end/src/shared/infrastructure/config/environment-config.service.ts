@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { DatabaseConfig } from "./database.interface";
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { DatabaseConfig } from './database.interface';
 
 @Injectable()
 export class EnvironmentConfigService implements DatabaseConfig {
@@ -33,5 +33,4 @@ export class EnvironmentConfigService implements DatabaseConfig {
   getTypeORMMigrationsRun(): boolean {
     return this.configService.get<string>('TYPEORM_MIGRATIONSRUN') === 'true';
   }
-
 }
