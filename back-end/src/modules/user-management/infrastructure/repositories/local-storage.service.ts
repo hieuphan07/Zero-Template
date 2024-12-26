@@ -14,7 +14,9 @@ export const isDataSource = (value: unknown): value is DataSource => {
 
 export const addTransactionalDataSource = (dataSource: DataSource) => {
   dataSources.set(dataSource?.name ? dataSource.name : 'default', dataSource);
-  dataSource['@transactional/data-source'] = dataSource?.name ? dataSource.name : 'default';
+  dataSource['@transactional/data-source'] = dataSource?.name
+    ? dataSource.name
+    : 'default';
 
   return dataSource;
 };

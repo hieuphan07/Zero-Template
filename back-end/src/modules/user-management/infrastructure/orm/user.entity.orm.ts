@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { IsEmail, Length } from 'class-validator';
 
@@ -35,4 +36,7 @@ export class UserEntity {
 
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: false })
   updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
+  deletedAt: Date;
 }

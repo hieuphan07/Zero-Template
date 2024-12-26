@@ -17,7 +17,7 @@ import { addTransactionalDataSource } from 'src/modules/user-management/infrastr
         username: configService.getDatabaseUser(),
         password: configService.getDatabasePassword(),
         database: configService.getDatabaseName(),
-        entities: ['dist/**/*.entity.js'],
+        entities: ['dist/**/*.entity.orm.js'],
         synchronize: configService.getTypeORMSync(),
         logging: configService.getTypeORMLogging(),
       }),
