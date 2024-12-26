@@ -40,10 +40,7 @@ export class UserRepository implements IUserRepository {
   }
 
   async restore(id: number): Promise<void> {
-    const result = await this.repository.update(
-      { id }, 
-      { deletedAt: null }
-    );
+    const result = await this.repository.update({ id }, { deletedAt: null });
 
     if (result.affected === 0) {
       throw new NotFoundException(`Deleted user not found with ID: ${id}`);
@@ -51,12 +48,7 @@ export class UserRepository implements IUserRepository {
   }
 
   private toDomain(entity: UserEntity): User {
-    const user = new User(
-      entity.username,
-      entity.email,
-      entity.password,
-      entity.phoneNumber,
-    );
+    const user = new User(entity.username, entity.email, entity.password, entity.phoneNumber);
     user.id = entity.id;
     user.lastLogin = entity.lastLogin;
     return user;

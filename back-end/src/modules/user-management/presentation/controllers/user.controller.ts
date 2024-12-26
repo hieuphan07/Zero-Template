@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  HttpCode,
-  Delete,
-  HttpStatus,
-  NotFoundException,
-} from '@nestjs/common';
+import { Controller, Get, Param, HttpCode, Delete, HttpStatus, NotFoundException } from '@nestjs/common';
 import { UserService } from '../../application/services/user.service';
 import { DeleteUserUseCase } from '../../application/use-cases/delete-user.use-case';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';

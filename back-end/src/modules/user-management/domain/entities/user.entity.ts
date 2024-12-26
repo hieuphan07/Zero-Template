@@ -10,12 +10,7 @@ export class User {
   private _updatedAt: Date;
   private _deletedAt: Date;
 
-  constructor(
-    username: string,
-    email: string,
-    password: string,
-    phoneNumber: string = null,
-  ) {
+  constructor(username: string, email: string, password: string, phoneNumber: string = null) {
     this.validateUsername(username);
     this._username = username;
     this._email = new Email(email);

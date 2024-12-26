@@ -7,4 +7,4 @@ export interface DatabaseConfig {
   getTypeORMSync(): boolean;
   getTypeORMLogging(): boolean;
   getTypeORMMigrationsRun(): boolean;
-} 
+}

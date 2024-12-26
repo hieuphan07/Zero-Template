@@ -42,13 +42,13 @@ describe('UserController', () => {
       const expectedResult = {
         success: true,
         message: 'Xóa người dùng thành công',
-        deletedId: userId
+        deletedId: userId,
       };
-      
+
       jest.spyOn(deleteUserUseCase, 'execute').mockResolvedValue(expectedResult);
-      
+
       const result = await controller.deleteUser(userId);
-      
+
       expect(deleteUserUseCase.execute).toHaveBeenCalledWith(userId);
       expect(result).toEqual(expectedResult);
     });
@@ -60,13 +60,13 @@ describe('UserController', () => {
       const expectedResult = {
         id: userId,
         username: 'testuser',
-        email: 'test@example.com'
+        email: 'test@example.com',
       };
-      
+
       jest.spyOn(getUserUseCase, 'execute').mockResolvedValue(expectedResult as any);
-      
+
       const result = await controller.getUser(userId.toString());
-      
+
       expect(getUserUseCase.execute).toHaveBeenCalledWith(userId.toString());
       expect(result).toEqual(expectedResult);
     });

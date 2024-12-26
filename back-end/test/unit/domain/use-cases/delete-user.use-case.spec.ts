@@ -28,9 +28,9 @@ describe('DeleteUserUseCase', () => {
   it('should delete user successfully', async () => {
     const userId = 1;
     jest.spyOn(userRepository, 'findById').mockResolvedValue({ id: userId } as any);
-    
+
     const result = await deleteUserUseCase.execute(userId);
-    
+
     expect(result).toEqual({
       success: true,
       message: 'User deleted successfully',
@@ -41,7 +41,7 @@ describe('DeleteUserUseCase', () => {
   it('should throw NotFoundException when user not found', async () => {
     const userId = 999;
     jest.spyOn(userRepository, 'findById').mockResolvedValue(null);
-    
+
     await expect(deleteUserUseCase.execute(userId)).rejects.toThrow(NotFoundException);
   });
 });

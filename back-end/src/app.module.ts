@@ -5,10 +5,7 @@ import { UserManagementModule } from './modules/user-management/user-management.
 import { TypeOrmConfigModule } from './shared/infrastructure/database/typeorm.module';
 
 @Module({
-  imports: [
-    TypeOrmConfigModule,
-    UserManagementModule
-  ],
+  imports: [TypeOrmConfigModule, UserManagementModule],
   controllers: [AppController],
   providers: [AppService],
 })

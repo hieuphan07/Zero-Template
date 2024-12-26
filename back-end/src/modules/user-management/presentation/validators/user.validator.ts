@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-} from 'class-validator';
+import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
 import { IUserRepository } from '../../domain/repositories/user-repository.interface';
 
 @ValidatorConstraint({ name: 'UserExists', async: true })
