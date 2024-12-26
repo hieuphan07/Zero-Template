@@ -3,6 +3,7 @@ export type UserProps = {
   username: string;
   email: string;
   password: string;
+  phoneNumber?: string;
   lastLogin?: Date;
   createdAt?: Date;
   updatedAt?: Date;
