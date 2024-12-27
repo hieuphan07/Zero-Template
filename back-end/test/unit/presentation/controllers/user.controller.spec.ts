@@ -65,7 +65,7 @@ describe('UserController', () => {
 
       jest.spyOn(getUserUseCase, 'execute').mockResolvedValue(expectedResult as any);
 
-      const result = await controller.getUser(userId.toString());
+      const result = await controller.getUser(userId);
 
       expect(getUserUseCase.execute).toHaveBeenCalledWith(userId.toString());
       expect(result).toEqual(expectedResult);
