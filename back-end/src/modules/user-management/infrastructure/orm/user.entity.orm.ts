@@ -1,10 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { IsEmail, Length } from 'class-validator';
 
 @Entity({ name: 'users' })
-export class UserEntity {
+export class UserOrmEntity {
   @PrimaryGeneratedColumn({ name: 'id', type: 'bigint' })
   id: number;
+
+  @Column({ name: 'uuid', type: 'uuid', generated: 'uuid' })
+  uuid: string;
 
   @Column({ name: 'user_name', type: 'varchar', length: 150, nullable: false })
   @Length(2, 150)

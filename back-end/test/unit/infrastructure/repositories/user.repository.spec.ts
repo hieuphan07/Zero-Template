@@ -37,13 +37,10 @@ describe('UserRepository', () => {
 
   describe('findById', () => {
     it('should find and return a user by id', async () => {
-      const mockUser = {
-        id: 1,
-        username: 'testuser',
-        email: 'test@example.com',
-      };
+      const mockUser = new User('testuser', 'test@example.com', 'password');
+      mockUser.setId(1);
 
-      jest.spyOn(typeormRepository, 'findOne').mockResolvedValue(mockUser as User);
+      jest.spyOn(typeormRepository, 'findOne').mockResolvedValue(mockUser);
 
       const result = await userRepository.findById(1);
 
