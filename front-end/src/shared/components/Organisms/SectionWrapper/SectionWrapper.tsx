@@ -1,6 +1,6 @@
 "use client";
 
-import { SectionWrapperProps } from "@/shared/types/section-wrapper-type";
+import { SectionWrapperProps } from "@/shared/types/components-type/section-wrapper-type";
 
 const SectionWrapper = ({ children, className = "", maxWidth = "7xl", padding = true }: SectionWrapperProps) => {
   const maxWidthClasses = {

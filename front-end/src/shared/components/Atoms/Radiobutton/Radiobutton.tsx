@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { RadioButtonProps } from "@/shared/types/radiobutton-type";
+import { RadioButtonProps } from "@/shared/types/components-type/radiobutton-type";
 
 const RadioButton = (props: RadioButtonProps) => {
   const baseStyles = cn(

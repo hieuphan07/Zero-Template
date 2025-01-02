@@ -5,7 +5,7 @@ import Input from "@/shared/components/Atoms/Input/Input";
 import Button from "@/shared/components/Atoms/Button/Button";
 import { SearchIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SearchBarProps } from "@/shared/types/searchbar-type";
+import { SearchBarProps } from "@/shared/types/components-type/searchbar-type";
 
 const SearchBar = (props: SearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState("");

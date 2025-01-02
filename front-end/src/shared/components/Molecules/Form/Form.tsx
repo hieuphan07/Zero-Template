@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, Fragment } from "react";
 import Button from "@/shared/components/Atoms/Button/Button";
 import { XIcon } from "lucide-react";
-import { FormProps } from "@/shared/types/form-type";
+import { FormProps } from "@/shared/types/components-type/form-type";
 
 const Form = (props: FormProps) => {
   const [isOpen, setIsOpen] = useState(!props.isPopup);

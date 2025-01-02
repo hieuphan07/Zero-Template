@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ButtonProps } from "../../../types/button-type";
+import { ButtonProps } from "../../../types/components-type/button-type";
 
 const Button = (props: ButtonProps) => {
   const baseStyles =
@@ -37,6 +37,8 @@ const Button = (props: ButtonProps) => {
       props.border && `border border-${props.mainColor}`,
     ),
   };
+
+  const disabledStyles = "opacity-50 cursor-not-allowed";
 
   const ClickAction = () => {
     const button = document.activeElement as HTMLButtonElement;
@@ -74,10 +76,12 @@ const Button = (props: ButtonProps) => {
 
   return (
     <button
-      onClick={ClickAction}
+      onClick={props.disabled ? () => {} : ClickAction}
+      disabled={props.disabled}
       className={`
         ${baseStyles}
         ${props.isTransparent ? variants.transparent : variants.solid}
+        ${props.disabled ? disabledStyles : ""}
         ${props.className || ""}
       `}
       onMouseEnter={props.onMouseEnter}

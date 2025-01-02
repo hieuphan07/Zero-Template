@@ -1,4 +1,4 @@
-import { Color } from "./shared-types";
+import { Color } from "../common-type/shared-types";
 
 export type CheckboxProps = {
   name: string;

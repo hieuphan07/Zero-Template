@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { Color } from "./shared-types";
+import { Color } from "../common-type/shared-types";
 
 export type RadioButtonProps = {
   name: string;

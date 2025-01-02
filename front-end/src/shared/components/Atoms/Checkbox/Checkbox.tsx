@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { CheckboxProps } from "@/shared/types/checkbox-type";
+import { CheckboxProps } from "@/shared/types/components-type/checkbox-type";
 
 const Checkbox = (props: CheckboxProps) => {
   const [isChecked, setIsChecked] = useState(props.checked || false);

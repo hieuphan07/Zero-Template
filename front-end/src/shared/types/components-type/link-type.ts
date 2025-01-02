@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Color } from "./shared-types";
+import { Color } from "../common-type/shared-types";
 
 export type ZeroLinkProps = {
   href: string;
