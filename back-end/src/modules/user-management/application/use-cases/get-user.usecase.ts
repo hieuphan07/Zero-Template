@@ -3,10 +3,11 @@ import { User } from '../../domain/entities/user.entity';
 import { IUserRepository } from '../../domain/repositories/user-repository.interface';
 
 @Injectable()
-export class GetUserByIdUseCase {
+export class GetUserUseCase {
   constructor(@Inject('IUserRepository') private readonly userRepository: IUserRepository) {}
 
   async execute(id: number): Promise<User> {
-    return this.userRepository.findById(id);
+    const user = await this.userRepository.findById(id);
+    return user;
   }
 }
