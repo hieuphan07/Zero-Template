@@ -53,7 +53,8 @@ build_frontend_development:
   only:
     - develop
   tags:
-    - zero-frontend-runner    
+    - zero-frontend-runner
+  allow_failure: true
 
 build_frontend_production:
   stage: build
@@ -75,7 +76,7 @@ build_frontend_production:
     - main
   tags:
     - zero-frontend-runner
-    
+
 deploy_frontend_development:
   before_script:
     - echo "This is a before script that runs before job."
@@ -97,6 +98,7 @@ deploy_frontend_development:
     - develop
   tags:
     - zero-frontend-runner
+  allow_failure: true
 
 deploy_frontend_production:
   environment:
