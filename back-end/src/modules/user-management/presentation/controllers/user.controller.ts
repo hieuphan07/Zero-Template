@@ -11,13 +11,16 @@ import {
   BadRequestException,
   ConflictException,
   InternalServerErrorException,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '../../domain/entities/user.entity';
 import { CreateUserUseCase } from '../../application/use-cases/create-user.use-case';
 import { DeleteUserUseCase } from '../../application/use-cases/delete-user.use-case';
 import { DeleteUserResponseDto } from '../dto/delete-user.response.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { JwtAuthGuard } from 'src/modules/auth/presentation/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/modules/auth/presentation/guards/roles.guard';
 import { PaginatedResponseDto } from 'src/shared/dtos/paginated-response.dto';
 import { UserResponseDto } from '../dto/user-response.dto';
 import { PaginationQueryDto } from 'src/shared/dtos/pagination-query.dto';
@@ -91,6 +94,8 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -118,6 +123,8 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete user by ID' })
   @ApiResponse({
     status: HttpStatus.OK,
