@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { ZeroLinkProps } from "@/shared/types/link-type";
+import { ZeroLinkProps } from "@/shared/types/components-type/link-type";
 
 const ZeroLink = (props: ZeroLinkProps) => {
   const { href, className, target, rel, children, color, title, action, ...rest } = props;

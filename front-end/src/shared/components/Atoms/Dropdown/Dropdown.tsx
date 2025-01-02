@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { DropdownProps } from "@/shared/types/drop-down-type";
+import { DropdownProps } from "@/shared/types/components-type/drop-down-type";
 import { cn } from "@/lib/utils";
 
 const Dropdown = (props: DropdownProps) => {

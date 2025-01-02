@@ -8,8 +8,9 @@ import Checkbox from "@/shared/components/Atoms/Checkbox/Checkbox";
 import RadioButton from "@/shared/components/Atoms/Radiobutton/Radiobutton";
 import Input from "@/shared/components/Atoms/Input/Input";
 import List from "@/shared/components/Molecules/List/List";
-import { User } from "@/shared/types/item-type";
+import { User } from "@/app/admin/user/types/user-type";
 
+// For template only, change later with the actual page
 export default function Home() {
   const users: User[] = [
     {
@@ -208,7 +209,7 @@ export default function Home() {
         />
         <Button text="Button" action={() => {}} mainColor="warning" contextColor="danger" />
       </Form>
-      <List<User> items={users} />
+      <List<User> items={users} typeString="User" />
     </MainLayout>
   );
 }

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Color } from "./shared-types";
+import { Color } from "../common-type/shared-types";
 
 export type ButtonProps = {
   action: () => void;
@@ -14,4 +14,5 @@ export type ButtonProps = {
   manualHover?: boolean;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  disabled?: boolean;
 };

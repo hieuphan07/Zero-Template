@@ -3,16 +3,7 @@
 import { useState } from "react";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import ZeroLink from "../Link/ZeroLink";
-import { Color } from "@/shared/types/shared-types";
-
-type MenuTabProps = {
-  name: string;
-  path: string;
-  isCollapsed?: boolean;
-  children?: MenuTabProps[];
-  color?: Color;
-  className?: string;
-};
+import { MenuTabProps } from "@/shared/types/components-type/menutab-type";
 
 const MenuTab = (props: MenuTabProps) => {
   const [isExpanded, setIsExpanded] = useState(false);

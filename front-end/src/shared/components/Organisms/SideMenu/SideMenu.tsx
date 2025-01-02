@@ -6,43 +6,14 @@ import SearchBar from "@/shared/components/Molecules/SearchBar/SearchBar";
 import { LockIcon, SearchIcon, UnlockIcon } from "lucide-react";
 import Button from "@/shared/components/Atoms/Button/Button";
 import MenuTab from "../../Atoms/MenuTab/MenuTab";
-
-type MenuItem = {
-  name: string;
-  path: string;
-  children?: MenuItem[];
-};
-
-type SideMenuProps = {
-  isOpen: boolean;
-  onToggle: (open: boolean) => void;
-};
-
-const menuItems: MenuItem[] = [
-  { name: "Dashboard", path: "/dashboard" },
-  { name: "Profile", path: "/profile" },
-  {
-    name: "Management",
-    path: "/management",
-    children: [
-      { name: "Users", path: "/management/users" },
-      {
-        name: "Roles",
-        path: "/management/roles",
-        children: [{ name: "Permissions", path: "/management/roles/permissions" }],
-      },
-    ],
-  },
-  { name: "Help", path: "/help" },
-  { name: "About", path: "/about" },
-];
-
+import { MenuItem, SideMenuProps } from "@/shared/types/components-type/sidemenu-type";
+import { menuRoutes } from "@/shared/constants/side-menu-routes";
 const SideMenu = (props: SideMenuProps) => {
-  const [filteredItems, setFilteredItems] = useState<MenuItem[]>(menuItems);
+  const [filteredItems, setFilteredItems] = useState<MenuItem[]>(menuRoutes);
   const [locked, setLocked] = useState(false);
 
   const handleSearch = (searchTerm: string) => {
-    const filtered = menuItems.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filtered = menuRoutes.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
     setFilteredItems(filtered);
   };
 
