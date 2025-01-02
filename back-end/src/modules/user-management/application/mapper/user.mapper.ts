@@ -11,6 +11,7 @@ export class UserMapper {
       id: user.getId(),
       username: user.getUsername(),
       email: user.getEmail(),
+      password: user.getPassword(),
       phoneNumber: user.getPhoneNumber(),
       lastLogin: user.getLastLogin(),
       createdAt: user.getCreatedAt(),

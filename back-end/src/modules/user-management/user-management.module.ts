@@ -22,4 +22,4 @@ import { GetUserUseCase } from './application/use-cases/get-user.usecase';
     CreateUserUseCase,
   ],
 })
-export class UserManagementModule { }
+export class UserManagementModule {}

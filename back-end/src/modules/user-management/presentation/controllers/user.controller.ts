@@ -35,11 +35,12 @@ import { GetUserUseCase } from '../../application/use-cases/get-user.usecase';
 @Controller('users')
 export class UserController {
   constructor(
-    private readonly deleteUserUseCase: DeleteUserUseCase,
-    private readonly createUserUseCase: CreateUserUseCase,
     private readonly getUsersUseCase: GetUsersUseCase,
     private readonly getUserUseCase: GetUserUseCase,
+    private readonly createUserUseCase: CreateUserUseCase,
+    private readonly deleteUserUseCase: DeleteUserUseCase,
   ) {}
+
   @Get()
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -76,27 +77,6 @@ export class UserController {
     }
   }
 
-  @Get(':id')
-  @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @ApiOperation({ summary: 'Get user by id' })
-  @ApiResponse({
-    status: 200,
-    description: 'User',
-    type: UserResponseDto,
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Users not found',
-  })
-  async getUser(@Param('id') id: number): Promise<UserResponseDto> {
-    const user = await this.getUserUseCase.execute(id);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    return UserMapper.toDto(user);
-  }
-
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiBearerAuth('access-token')
@@ -124,6 +104,27 @@ export class UserController {
       }
       throw new BadRequestException(error.message);
     }
+  }
+
+  @Get(':id')
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiOperation({ summary: 'Get user by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'User',
+    type: UserResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Users not found',
+  })
+  async getUser(@Param('id') id: number): Promise<UserResponseDto> {
+    const user = await this.getUserUseCase.execute(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return UserMapper.toDto(user);
   }
 
   @Delete(':id')

@@ -82,4 +82,33 @@ export class UserRepository extends AbstractRepository<UserOrmEntity> implements
       },
     };
   }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.repository.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException(`User not found with email: ${email}`);
+    }
+    return UserMapper.toDomain(user);
+  }
+
+  async findByUsername(username: string): Promise<User> {
+    const user = await this.repository.findOne({ where: { username } });
+    if (!user) {
+      throw new NotFoundException(`User not found with username: ${username}`);
+    }
+    return UserMapper.toDomain(user);
+  }
+
+  async exists(
+    email: string,
+    username: string,
+    phoneNumber: string,
+  ): Promise<{ email: boolean; username: boolean; phoneNumber: boolean }> {
+    const [emailExists, usernameExists, phoneNumberExists] = await Promise.all([
+      this.repository.findOne({ where: { email } }),
+      this.repository.findOne({ where: { username } }),
+      this.repository.findOne({ where: { phoneNumber } }),
+    ]);
+    return { email: !!emailExists, username: !!usernameExists, phoneNumber: !!phoneNumberExists };
+  }
 }

@@ -20,6 +20,12 @@ export class UserResponseDto {
   username: string;
 
   @ApiProperty({
+    description: 'The password of the user',
+    example: 'password',
+  })
+  password: string;
+
+  @ApiProperty({
     description: 'The phone number of the user',
     example: '1234567890',
   })
