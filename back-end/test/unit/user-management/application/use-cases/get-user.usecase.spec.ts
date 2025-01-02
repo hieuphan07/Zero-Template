@@ -4,8 +4,8 @@ import { IUserRepository } from 'src/modules/user-management/domain/repositories
 import { User } from 'src/modules/user-management/domain/entities/user.entity';
 import { GetUserUseCase } from 'src/modules/user-management/application/use-cases/get-user.usecase';
 
-describe('GetUserByIdUseCase', () => {
-  let getUserByIdUseCase: GetUserUseCase;
+describe('GetUserUseCase', () => {
+  let getUserUseCase: GetUserUseCase;
   let userRepository: IUserRepository;
 
   const mockUser = new User('john_doe', 'john@example.com', 'password', '+1234567890');
@@ -23,7 +23,7 @@ describe('GetUserByIdUseCase', () => {
       ],
     }).compile();
 
-    getUserByIdUseCase = module.get<GetUserUseCase>(GetUserUseCase);
+    getUserUseCase = module.get<GetUserUseCase>(GetUserUseCase);
     userRepository = module.get<IUserRepository>('IUserRepository');
   });
 
@@ -34,7 +34,7 @@ describe('GetUserByIdUseCase', () => {
       jest.spyOn(userRepository, 'findById').mockResolvedValue(mockUser);
 
       // Act
-      const result = await getUserByIdUseCase.execute(userId);
+      const result = await getUserUseCase.execute(userId);
 
       // Assert
       expect(result).toBe(mockUser);
@@ -47,7 +47,7 @@ describe('GetUserByIdUseCase', () => {
       jest.spyOn(userRepository, 'findById').mockResolvedValue(null);
 
       // Act & Assert
-      await expect(getUserByIdUseCase.execute(userId)).rejects.toThrow(NotFoundException);
+      await expect(getUserUseCase.execute(userId)).rejects.toThrow(NotFoundException);
       expect(userRepository.findById).toHaveBeenCalledWith(userId);
     });
   });

@@ -1,24 +1,24 @@
 import { User } from '../../domain/entities/user.entity';
-import { UserDto } from '../dtos/user.dto';
 import { UserOrmEntity } from '../../infrastructure/orm/user.entity.orm';
 import { PaginatedResult } from 'src/shared/types/paginated-result.interface';
 import { PaginatedResponseDto } from 'src/shared/dtos/paginated-response.dto';
+import { UserResponseDto } from '../../presentation/dto/user-response.dto';
 
 export class UserMapper {
   // Domain -> DTO
-  static toDto(user: User): UserDto {
+  static toDto(user: User): UserResponseDto {
     return {
       id: user.getId(),
       username: user.getUsername(),
       email: user.getEmail(),
       phoneNumber: user.getPhoneNumber(),
-      lastLogin: user.getLastLogin()?.toISOString(),
-      createdAt: user.getCreatedAt()?.toISOString(),
-      updatedAt: user.getUpdatedAt()?.toISOString(),
+      lastLogin: user.getLastLogin(),
+      createdAt: user.getCreatedAt(),
+      updatedAt: user.getUpdatedAt(),
     };
   }
 
-  static toDTOList(entities: User[]): UserDto[] {
+  static toDTOList(entities: User[]): UserResponseDto[] {
     return entities.map((entity) => this.toDto(entity));
   }
 
@@ -47,7 +47,7 @@ export class UserMapper {
     return entities.map((entity) => this.toDomain(entity));
   }
 
-  static toPaginatedDTO(paginatedResult: PaginatedResult<User>): PaginatedResponseDto<UserDto> {
+  static toPaginatedDTO(paginatedResult: PaginatedResult<User>): PaginatedResponseDto<UserResponseDto> {
     return {
       data: this.toDTOList(paginatedResult.data),
       meta: {
