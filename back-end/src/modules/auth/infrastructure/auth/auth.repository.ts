@@ -14,7 +14,7 @@ export class AuthRepository implements IAuthRepository {
   constructor(
     @InjectRepository(UserOrmEntity)
     private readonly userRepository: Repository<UserOrmEntity>,
-  ) { }
+  ) {}
 
   private async hashPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, this.SALT_ROUNDS);

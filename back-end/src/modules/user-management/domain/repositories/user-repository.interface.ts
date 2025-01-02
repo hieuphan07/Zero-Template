@@ -9,4 +9,11 @@ export interface IUserRepository {
   softDelete(id: number): Promise<void>;
   restore(id: number): Promise<void>;
   findAll(query: PaginationQueryDto): Promise<PaginatedResult<User>>;
+  findByEmail(email: string): Promise<User>;
+  findByUsername(username: string): Promise<User>;
+  exists(
+    email: string,
+    username: string,
+    phoneNumber: string,
+  ): Promise<{ email: boolean; username: boolean; phoneNumber: boolean }>;
 }
