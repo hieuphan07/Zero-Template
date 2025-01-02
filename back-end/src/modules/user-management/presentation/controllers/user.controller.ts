@@ -10,21 +10,84 @@ import {
   Body,
   BadRequestException,
   ConflictException,
+  InternalServerErrorException,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '../../domain/entities/user.entity';
 import { CreateUserUseCase } from '../../application/use-cases/create-user.use-case';
 import { DeleteUserUseCase } from '../../application/use-cases/delete-user.use-case';
 import { DeleteUserResponseDto } from '../dto/delete-user.response.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { UserService } from '../../application/services/user.service';
+import { PaginatedResponseDto } from 'src/shared/dtos/paginated-response.dto';
+import { UserResponseDto } from '../dto/user-response.dto';
+import { PaginationQueryDto } from 'src/shared/dtos/pagination-query.dto';
+import { UserMapper } from '../../application/mapper/user.mapper';
+import { UserDto } from '../../application/dtos/user.dto';
+import { ApiPaginatedRequest } from 'src/shared/decorator/api-paginate-request.decorator';
+import { UserOrmEntity } from '../../infrastructure/orm/user.entity.orm';
+import { PaginationParams } from 'src/shared/decorator/pagination-params.decorator';
+import { GetUsersUseCase } from '../../application/use-cases/get-users.usecase';
+import { GetUserUseCase } from '../../application/use-cases/get-user.usecase';
+
+@ApiTags('Users')
 @Controller('users')
 export class UserController {
   constructor(
-    private readonly userService: UserService,
     private readonly deleteUserUseCase: DeleteUserUseCase,
     private readonly createUserUseCase: CreateUserUseCase,
+    private readonly getUsersUseCase: GetUsersUseCase,
+    private readonly getUserUseCase: GetUserUseCase,
   ) {}
+  @Get()
+  @ApiOperation({ summary: 'List all users' })
+  @ApiPaginatedRequest(UserOrmEntity)
+  @ApiResponse({
+    status: 200,
+    description: 'List of users',
+    type: PaginatedResponseDto<UserResponseDto>,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Users not found',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request, invalid parameters',
+  })
+  async listUsers(@PaginationParams(UserOrmEntity) query: PaginationQueryDto): Promise<PaginatedResponseDto<UserDto>> {
+    try {
+      const result = await this.getUsersUseCase.execute(query);
+      if (!result || result.data.length === 0) {
+        throw new NotFoundException('Users not found');
+      }
+      return UserMapper.toPaginatedDTO(result);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException('Users not found');
+      } else {
+        throw new InternalServerErrorException('Internal server error');
+      }
+    }
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get user by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'User',
+    type: UserResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Users not found',
+  })
+  async getUserById(@Param('id') id: number): Promise<UserDto> {
+    const user = await this.getUserUseCase.execute(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return UserMapper.toDto(user);
+  }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -51,11 +114,6 @@ export class UserController {
       }
       throw new BadRequestException(error.message);
     }
-  }
-
-  @Get(':id')
-  async getUser(@Param('id') id: number) {
-    return this.userService.getUser(id);
   }
 
   @Delete(':id')

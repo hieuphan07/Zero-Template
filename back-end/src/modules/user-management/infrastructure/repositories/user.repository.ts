@@ -5,13 +5,18 @@ import { UserOrmEntity } from '../orm/user.entity.orm';
 import { User } from '../../domain/entities/user.entity';
 import { IUserRepository } from '../../domain/repositories/user-repository.interface';
 import { UserMapper } from '../../application/mapper/user.mapper';
+import { PaginatedResult } from 'src/shared/types/paginated-result.interface';
+import { AbstractRepository } from 'src/shared/infrastructure/repositories/abstract.repository';
+import { PaginationQueryDto } from 'src/shared/dtos/pagination-query.dto';
 
 @Injectable()
-export class UserRepository implements IUserRepository {
+export class UserRepository extends AbstractRepository<UserOrmEntity> implements IUserRepository {
   constructor(
     @InjectRepository(UserOrmEntity)
-    private readonly repository: Repository<UserOrmEntity>,
-  ) {}
+    repository: Repository<UserOrmEntity>,
+  ) {
+    super(repository);
+  }
 
   async create(user: User): Promise<User> {
     try {
@@ -53,5 +58,28 @@ export class UserRepository implements IUserRepository {
     if (result.affected === 0) {
       throw new NotFoundException(`Deleted user not found with ID: ${id}`);
     }
+  }
+
+  async findAll(query: PaginationQueryDto): Promise<PaginatedResult<User>> {
+    const { page, limit, searchParams, sortParams } = query;
+    const queryBuilder = this.repository.createQueryBuilder('user');
+    if (searchParams) {
+      this.applySearchParams(queryBuilder, searchParams);
+    }
+    if (sortParams) {
+      this.applySortParams(queryBuilder, sortParams);
+    }
+    const [users, total] = await queryBuilder
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getManyAndCount();
+    return {
+      data: UserMapper.toDomainList(users),
+      meta: {
+        total,
+        page,
+        lastPage: Math.ceil(total / limit),
+      },
+    };
   }
 }
