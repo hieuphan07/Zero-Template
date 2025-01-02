@@ -107,7 +107,7 @@ describe('UserController', () => {
     it('should return a user when found', async () => {
       jest.spyOn(getUserUseCase, 'execute').mockResolvedValue(mockUser);
 
-      const result = await controller.getUserById(1);
+      const result = await controller.getUser(1);
 
       expect(result).toEqual(mockUserDto);
       expect(getUserUseCase.execute).toHaveBeenCalledWith(1);
@@ -116,7 +116,7 @@ describe('UserController', () => {
     it('should throw NotFoundException when user not found', async () => {
       jest.spyOn(getUserUseCase, 'execute').mockResolvedValue(null);
 
-      await expect(controller.getUserById(999)).rejects.toThrow(NotFoundException);
+      await expect(controller.getUser(999)).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -124,7 +124,7 @@ describe('UserController', () => {
     it('should return paginated users', async () => {
       jest.spyOn(getUsersUseCase, 'execute').mockResolvedValue(mockPaginatedResult);
 
-      const result = await controller.listUsers({ page: 1, limit: 10 });
+      const result = await controller.getUsers({ page: 1, limit: 10 });
 
       expect(result).toEqual(mockPaginatedDto);
       expect(getUsersUseCase.execute).toHaveBeenCalledWith({ page: 1, limit: 10 });
@@ -136,7 +136,7 @@ describe('UserController', () => {
         meta: { total: 0, page: 1, lastPage: 1 },
       });
 
-      await expect(controller.listUsers({ page: 1, limit: 10 })).rejects.toThrow(NotFoundException);
+      await expect(controller.getUsers({ page: 1, limit: 10 })).rejects.toThrow(NotFoundException);
     });
   });
 

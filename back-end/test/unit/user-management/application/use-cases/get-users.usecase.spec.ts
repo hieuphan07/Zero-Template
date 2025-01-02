@@ -20,8 +20,8 @@ const mockPaginatedResult: PaginatedResult<User> = {
   },
 };
 
-describe('ListUsersUseCase', () => {
-  let listUsersUseCase: GetUsersUseCase;
+describe('GetUsersUseCase', () => {
+  let getUsersUseCase: GetUsersUseCase;
   let userRepository: IUserRepository;
 
   beforeEach(async () => {
@@ -37,12 +37,12 @@ describe('ListUsersUseCase', () => {
       ],
     }).compile();
 
-    listUsersUseCase = module.get<GetUsersUseCase>(GetUsersUseCase);
+    getUsersUseCase = module.get<GetUsersUseCase>(GetUsersUseCase);
     userRepository = module.get<IUserRepository>('IUserRepository');
   });
 
   it('should be defined', () => {
-    expect(listUsersUseCase).toBeDefined();
+    expect(getUsersUseCase).toBeDefined();
   });
 
   describe('execute', () => {
@@ -57,7 +57,7 @@ describe('ListUsersUseCase', () => {
       jest.spyOn(userRepository, 'findAll').mockResolvedValue(mockPaginatedResult);
 
       // Act
-      const result = await listUsersUseCase.execute(query);
+      const result = await getUsersUseCase.execute(query);
 
       // Assert
       expect(result).toEqual(mockPaginatedResult);
@@ -83,7 +83,7 @@ describe('ListUsersUseCase', () => {
       jest.spyOn(userRepository, 'findAll').mockResolvedValue(emptyPaginatedResult);
 
       // Act
-      const result = await listUsersUseCase.execute(query);
+      const result = await getUsersUseCase.execute(query);
 
       // Assert
       expect(result).toEqual(emptyPaginatedResult);

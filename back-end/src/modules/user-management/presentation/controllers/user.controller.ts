@@ -25,7 +25,6 @@ import { PaginatedResponseDto } from 'src/shared/dtos/paginated-response.dto';
 import { UserResponseDto } from '../dto/user-response.dto';
 import { PaginationQueryDto } from 'src/shared/dtos/pagination-query.dto';
 import { UserMapper } from '../../application/mapper/user.mapper';
-import { UserDto } from '../../application/dtos/user.dto';
 import { ApiPaginatedRequest } from 'src/shared/decorator/api-paginate-request.decorator';
 import { UserOrmEntity } from '../../infrastructure/orm/user.entity.orm';
 import { PaginationParams } from 'src/shared/decorator/pagination-params.decorator';
@@ -42,6 +41,8 @@ export class UserController {
     private readonly getUserUseCase: GetUserUseCase,
   ) {}
   @Get()
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'List all users' })
   @ApiPaginatedRequest(UserOrmEntity)
   @ApiResponse({
@@ -57,7 +58,9 @@ export class UserController {
     status: 400,
     description: 'Bad request, invalid parameters',
   })
-  async listUsers(@PaginationParams(UserOrmEntity) query: PaginationQueryDto): Promise<PaginatedResponseDto<UserDto>> {
+  async getUsers(
+    @PaginationParams(UserOrmEntity) query: PaginationQueryDto,
+  ): Promise<PaginatedResponseDto<UserResponseDto>> {
     try {
       const result = await this.getUsersUseCase.execute(query);
       if (!result || result.data.length === 0) {
@@ -74,6 +77,8 @@ export class UserController {
   }
 
   @Get(':id')
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'Get user by id' })
   @ApiResponse({
     status: 200,
@@ -84,7 +89,7 @@ export class UserController {
     status: 404,
     description: 'Users not found',
   })
-  async getUserById(@Param('id') id: number): Promise<UserDto> {
+  async getUser(@Param('id') id: number): Promise<UserResponseDto> {
     const user = await this.getUserUseCase.execute(id);
     if (!user) {
       throw new NotFoundException('User not found');
