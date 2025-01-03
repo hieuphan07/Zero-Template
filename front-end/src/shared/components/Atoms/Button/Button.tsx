@@ -10,30 +10,30 @@ const Button = (props: ButtonProps) => {
   const variants = {
     solid: cn(
       `bg-${props.mainColor}`,
-      props.manualHover ? "" : "hover:bg-transparent",
+      props.manualHover ? "" : !props.disabled ? "hover:bg-transparent" : "",
       props.contextColor
         ? props.contextColor !== "default"
-          ? `text-${props.contextColor}-foreground ${props.manualHover ? "" : "hover:text-primary"}`
-          : `text-white ${props.manualHover ? "" : "hover:text-primary"}`
+          ? `text-${props.contextColor}-foreground ${props.manualHover ? "" : !props.disabled ? `hover:text-${props.contextColor}` : ""}`
+          : `text-white ${props.manualHover ? "" : !props.disabled ? `hover:text-${props.mainColor}` : ""}`
         : props.mainColor
           ? props.mainColor !== "default"
-            ? `text-${props.mainColor}-foreground ${props.manualHover ? "" : `hover:text-${props.mainColor}`}`
-            : `text-white ${props.manualHover ? "" : "hover:text-primary"}`
-          : `text-white ${props.manualHover ? "" : "hover:text-primary"}`,
+            ? `text-${props.mainColor}-foreground ${props.manualHover ? "" : !props.disabled ? `hover:text-${props.mainColor}` : ""}`
+            : `text-white ${props.manualHover ? "" : !props.disabled ? `hover:text-${props.mainColor}` : ""}`
+          : `text-white ${props.manualHover ? "" : !props.disabled ? `hover:text-primary` : ""}`,
       props.border && `border border-${props.mainColor}`,
     ),
     transparent: cn(
       "bg-transparent",
-      props.manualHover ? "" : `hover:bg-${props.mainColor}`,
+      props.manualHover ? "" : !props.disabled ? `hover:bg-${props.mainColor}` : "",
       props.contextColor
         ? props.contextColor !== "default"
-          ? `text-${props.contextColor}-foreground ${props.manualHover ? "" : "hover:text-primary"}`
-          : `text-primary ${props.manualHover ? "" : "hover:text-white"}`
+          ? `text-${props.contextColor}-foreground ${props.manualHover ? "" : !props.disabled ? `hover:text-${props.contextColor}` : ""}`
+          : `text-primary ${props.manualHover ? "" : !props.disabled ? "hover:text-white" : ""}`
         : props.mainColor
           ? props.mainColor !== "default"
-            ? `text-${props.mainColor}-foreground ${props.manualHover ? "" : "hover:text-primary"}`
-            : `text-primary ${props.manualHover ? "" : "hover:text-white"}`
-          : `text-primary ${props.manualHover ? "" : "hover:text-white"}`,
+            ? `text-${props.mainColor}-foreground ${props.manualHover ? "" : !props.disabled ? `hover:text-${props.mainColor}` : ""}`
+            : `text-primary ${props.manualHover ? "" : !props.disabled ? `hover:text-${props.mainColor}` : ""}`
+          : `text-primary ${props.manualHover ? "" : !props.disabled ? `hover:text-white` : ""}`,
       props.border && `border border-${props.mainColor}`,
     ),
   };
@@ -41,35 +41,37 @@ const Button = (props: ButtonProps) => {
   const disabledStyles = "opacity-50 cursor-not-allowed";
 
   const ClickAction = () => {
-    const button = document.activeElement as HTMLButtonElement;
-    if (button) {
-      const rect = button.getBoundingClientRect();
-      const x = (event as MouseEvent).clientX - rect.left;
-      const y = (event as MouseEvent).clientY - rect.top;
+    if (props.rippleEffect) {
+      const button = document.activeElement as HTMLButtonElement;
+      if (button) {
+        const rect = button.getBoundingClientRect();
+        const x = (event as MouseEvent).clientX - rect.left;
+        const y = (event as MouseEvent).clientY - rect.top;
 
-      const ripple = document.createElement("span");
-      ripple.style.position = "absolute";
-      ripple.style.left = `${x}px`;
-      ripple.style.top = `${y}px`;
-      ripple.style.transform = "translate(-50%, -50%)";
-      ripple.style.width = "0";
-      ripple.style.height = "0";
-      ripple.style.borderRadius = "50%";
-      ripple.style.backgroundColor = "rgba(128, 128, 128, 0.3)";
-      ripple.style.animation = "ripple 0.6s linear";
-      ripple.style.transition = "width 0.3s, height 0.3s";
-      ripple.style.animationDuration = "0.3s";
+        const ripple = document.createElement("span");
+        ripple.style.position = "absolute";
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        ripple.style.transform = "translate(-50%, -50%)";
+        ripple.style.width = "0";
+        ripple.style.height = "0";
+        ripple.style.borderRadius = "50%";
+        ripple.style.backgroundColor = "rgba(128, 128, 128, 0.3)";
+        ripple.style.animation = "ripple 0.6s linear";
+        ripple.style.transition = "width 0.3s, height 0.3s";
+        ripple.style.animationDuration = "0.3s";
 
-      button.style.position = "relative";
-      button.style.overflow = "hidden";
-      button.appendChild(ripple);
-      setTimeout(() => {
-        ripple.style.width = "100px";
-        ripple.style.height = "100px";
-      }, 300);
-      setTimeout(() => {
-        ripple.remove();
-      }, 600);
+        button.style.position = "relative";
+        button.style.overflow = "hidden";
+        button.appendChild(ripple);
+        setTimeout(() => {
+          ripple.style.width = "100px";
+          ripple.style.height = "100px";
+        }, 300);
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      }
     }
     props.action();
   };

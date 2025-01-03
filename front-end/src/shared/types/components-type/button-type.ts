@@ -15,4 +15,5 @@ export type ButtonProps = {
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   disabled?: boolean;
+  rippleEffect?: boolean;
 };

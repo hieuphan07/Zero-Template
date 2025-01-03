@@ -7,7 +7,7 @@ import { MainLayoutProps } from "@/shared/types/components-type/main-layout-type
 import SideMenu from "../Organisms/SideMenu/SideMenu";
 import { useState } from "react";
 
-const MainLayout = ({ children }: MainLayoutProps) => {
+const MainLayout = (props: MainLayoutProps) => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
   return (
@@ -17,11 +17,14 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       <SectionWrapper
         className={
           isSideMenuOpen
-            ? "w-[87.5vw] ml-[12.5vw] transition-all duration-500"
-            : "w-[100vw] ml-[0vw] transition-all duration-500"
+            ? "max-w-[87.5vw] ml-[12.5vw] transition-all duration-500 mt-5"
+            : "max-w-[100vw] ml-[0vw] transition-all duration-500 mt-5"
         }
+        maxWidthPercentage={props.maxWidthPercentage}
+        title={props.title}
+        titleColor={props.titleColor}
       >
-        {children}
+        {props.children}
       </SectionWrapper>
       <Footer />
     </>
