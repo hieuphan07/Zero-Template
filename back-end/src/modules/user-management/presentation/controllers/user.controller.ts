@@ -35,7 +35,7 @@ import { GetUserUseCase } from '../../application/use-cases/get-user.usecase';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 @ApiTags('Users')
-@Controller('users')
+@Controller('api/admin/users')
 export class UserController {
   constructor(
     private readonly getUsersUseCase: GetUsersUseCase,

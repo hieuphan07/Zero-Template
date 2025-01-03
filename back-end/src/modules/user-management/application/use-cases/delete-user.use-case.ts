@@ -12,7 +12,7 @@ export class DeleteUserUseCase {
   async execute(id: number): Promise<DeleteUserResponseDto> {
     const user = await this.userRepository.findById(id);
     if (!user) {
-      throw new NotFoundException(`No user found with ID: ${id}`);
+      throw new NotFoundException(`User not found with ID: ${id}`);
     }
     await this.userRepository.softDelete(id);
 

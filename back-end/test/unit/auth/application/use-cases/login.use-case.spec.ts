@@ -1,21 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { JwtService } from '@nestjs/jwt';
-import { LoginUseCase } from '../../../../../src/modules/auth/application/use-cases/login.use-case';
 import { UnauthorizedException } from '@nestjs/common';
-import { User } from '../../../../../src/modules/user-management/domain/entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
+import { LoginUseCase } from 'src/modules/auth/application/use-cases/login.use-case';
+import { LoginDto } from 'src/modules/auth/presentation/dtos/login.dto';
+import { User } from 'src/modules/user-management/domain/entities/user.entity';
 
 describe('LoginUseCase', () => {
-  let loginUseCase: LoginUseCase;
+  let useCase: LoginUseCase;
   let authRepository: any;
   let jwtService: JwtService;
+  let passwordService: any;
 
-  const mockAuthRepository = {
-    login: jest.fn(),
-  };
-
-  const mockJwtService = {
-    sign: jest.fn(),
-  };
+  const mockUser = new User('testuser', 'email@test.com', 'hashedPassword');
+  mockUser.setId(1);
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,63 +20,73 @@ describe('LoginUseCase', () => {
         LoginUseCase,
         {
           provide: 'IAuthRepository',
-          useValue: mockAuthRepository,
+          useValue: {
+            login: jest.fn(),
+          },
         },
         {
           provide: JwtService,
-          useValue: mockJwtService,
+          useValue: {
+            sign: jest.fn(),
+          },
+        },
+        {
+          provide: 'IPasswordHash',
+          useValue: {
+            compare: jest.fn(),
+          },
         },
       ],
     }).compile();
 
-    loginUseCase = module.get<LoginUseCase>(LoginUseCase);
+    useCase = module.get<LoginUseCase>(LoginUseCase);
     authRepository = module.get('IAuthRepository');
-    jwtService = module.get<JwtService>(JwtService);
+    jwtService = module.get(JwtService) as jest.Mocked<JwtService>;
+    passwordService = module.get('IPasswordHash');
   });
 
-  // Add a simple test to verify the setup
   it('should be defined', () => {
-    expect(loginUseCase).toBeDefined();
+    expect(useCase).toBeDefined();
   });
 
   describe('execute', () => {
-    const loginDto = {
-      username: 'test2',
-      password: 'test@123',
+    const loginDto: LoginDto = {
+      username: 'testuser',
+      password: 'password123',
     };
 
-    const mockUser = new User('test2', 'test2@gmail.com', 'test@123');
-    mockUser.getId = jest.fn().mockReturnValue('123'); // Mock getId() to return a valid ID
-    mockUser.getUsername = jest.fn().mockReturnValue('test2'); // Mock getUsername()
-
     it('should successfully login and return access token', async () => {
-      mockAuthRepository.login.mockResolvedValue(mockUser);
-      mockJwtService.sign.mockReturnValue('mock-jwt-token');
+      authRepository.login.mockResolvedValue(mockUser);
+      passwordService.compare.mockResolvedValue(true);
+      (jwtService.sign as jest.Mock).mockReturnValue('mock-jwt-token');
+      const result = await useCase.execute(loginDto);
 
-      const result = await loginUseCase.execute(loginDto);
-
-      expect(authRepository.login).toHaveBeenCalledWith(loginDto.username, loginDto.password);
-      expect(jwtService.sign).toHaveBeenCalledWith({
-        sub: mockUser.getId(),
-        username: mockUser.getUsername(),
-      });
       expect(result).toEqual({
         accessToken: 'mock-jwt-token',
         user: {
-          id: mockUser.getId().toString(),
-          username: mockUser.getUsername(),
+          id: '1',
+          username: 'testuser',
         },
+      });
+      expect(authRepository.login).toHaveBeenCalledWith(loginDto.username);
+      expect(passwordService.compare).toHaveBeenCalledWith(loginDto.password, mockUser.getPassword());
+      expect(jwtService.sign).toHaveBeenCalledWith({
+        username: mockUser.getUsername(),
+        sub: mockUser.getId(),
       });
     });
 
-    it('should throw UnauthorizedException when login fails', async () => {
-      const loginDto = { username: 'test2', password: 'test@123' };
-      authRepository.login = jest.fn().mockResolvedValue(null); // Mô phỏng đăng nhập thất bại
-      jwtService.sign = jest.fn();
+    it('should throw UnauthorizedException when user is not found', async () => {
+      authRepository.login.mockResolvedValue(null);
 
-      await expect(loginUseCase.execute(loginDto)).rejects.toThrow(UnauthorizedException);
-      expect(authRepository.login).toHaveBeenCalledWith(loginDto.username, loginDto.password);
-      expect(jwtService.sign).not.toHaveBeenCalled(); // Đảm bảo JWT sign không được gọi
+      await expect(useCase.execute(loginDto)).rejects.toThrow(new UnauthorizedException('Invalid username'));
+    });
+
+    it('should throw UnauthorizedException when password is invalid', async () => {
+      authRepository.login.mockResolvedValue(mockUser);
+      passwordService.compare.mockResolvedValue(false);
+
+      await expect(useCase.execute(loginDto)).rejects.toThrow(new UnauthorizedException('Invalid password'));
     });
   });
 });

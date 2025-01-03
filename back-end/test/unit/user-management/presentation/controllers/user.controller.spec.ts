@@ -21,6 +21,7 @@ describe('UserController', () => {
   let updateUserUseCase: UpdateUserUseCase;
 
   const mockUser = new User('john_doe', 'john@example.com', 'password', '+1234567890');
+  mockUser.setId(1);
   const mockUserDto = UserMapper.toDto(mockUser);
 
   const mockPaginatedResult: PaginatedResult<User> = {

@@ -31,10 +31,10 @@ describe('AuthRepository', () => {
 
       jest.spyOn(authRepository, 'login').mockResolvedValue(expectedToken as any);
 
-      const result = await authRepository.login(JSON.stringify(credentials), undefined);
+      const result = await authRepository.login(JSON.stringify(credentials));
 
       expect(result).toBe(expectedToken);
-      expect(authRepository.login).toHaveBeenCalledWith(JSON.stringify(credentials), undefined);
+      expect(authRepository.login).toHaveBeenCalledWith(JSON.stringify(credentials));
     });
 
     it('should throw NotFoundException when user not found', async () => {
@@ -42,7 +42,7 @@ describe('AuthRepository', () => {
 
       jest.spyOn(authRepository, 'login').mockRejectedValue(new NotFoundException('User not found'));
 
-      await expect(authRepository.login(JSON.stringify(credentials), undefined)).rejects.toThrow(NotFoundException);
+      await expect(authRepository.login(JSON.stringify(credentials))).rejects.toThrow(NotFoundException);
     });
   });
 });
