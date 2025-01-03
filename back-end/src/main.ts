@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -25,13 +25,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // Cấu hình CORS
-  await app.enableCors({
-    origin: '*', // Cho phép mọi nguồn
-    methods: '*', // Cho phép mọi phương thức (GET, POST, PUT, DELETE, v.v.)
-    allowedHeaders: '*', // Cho phép mọi header
+  app.enableCors({
+    origin: '*',
+    methods: '*',
+    allowedHeaders: '*',
   });
 
   await app.listen(process.env.BE_PORT ?? 8003);
 }
+
 bootstrap();
