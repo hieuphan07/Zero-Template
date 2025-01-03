@@ -46,7 +46,9 @@ const SearchBar = (props: SearchBarProps) => {
         mainColor={props.buttonMainColor}
         contextColor={props.buttonContextColor}
         iconBefore={<SearchIcon size={20} />}
-        className={`hover:bg-${props.buttonMainColor} opacity-100 hover:opacity-75 !transition-all !duration-300 hover:text-${props.buttonMainColor}-foreground ${props.attachToEachOther ? "rounded-none rounded-r-md" : ""}`}
+        border
+        manualHover
+        className={`hover:bg-${props.buttonMainColor} opacity-100 hover:opacity-75 !transition-all !duration-300 hover:text-${props.buttonContextColor} ${props.attachToEachOther ? "rounded-none rounded-r-md" : ""}`}
       />
     </div>
   );

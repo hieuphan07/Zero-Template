@@ -1,8 +1,8 @@
 // Template only, change later using the actual user type
 import { TableHeaders } from "../../../../shared/types/common-type/shared-types";
+import { DefaultItemType } from "@/shared/types/common-type/default-item-type";
 
-export type User = {
-  id: string;
+export interface User extends DefaultItemType {
   firstName: string;
   lastName: string;
   email: string;
@@ -13,7 +13,7 @@ export type User = {
   department?: string;
   phoneNumber?: string;
   profileImageUrl?: string;
-};
+}
 
 export const UserTableHeaders: TableHeaders = {
   firstName: {
