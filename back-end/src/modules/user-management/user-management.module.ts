@@ -7,9 +7,10 @@ import { DeleteUserUseCase } from './application/use-cases/delete-user.use-case'
 import { CreateUserUseCase } from './application/use-cases/create-user.use-case';
 import { GetUsersUseCase } from './application/use-cases/get-users.usecase';
 import { GetUserUseCase } from './application/use-cases/get-user.usecase';
+import { PasswordModule } from '../../shared/utils/password/password.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserOrmEntity])],
+  imports: [TypeOrmModule.forFeature([UserOrmEntity]), PasswordModule],
   controllers: [UserController],
   providers: [
     {
