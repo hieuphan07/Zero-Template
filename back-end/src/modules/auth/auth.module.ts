@@ -8,6 +8,9 @@ import { JwtStrategy } from './infrastructure/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { Module } from '@nestjs/common';
 import { RegisterUserUseCase } from './application/use-cases/register-user.use-case';
+import { PasswordModule } from 'src/shared/utils/password/password.module';
+import { UserManagementModule } from '../user-management/user-management.module';
+import { UserRepository } from '../user-management/infrastructure/repositories/user.repository';
 
 @Module({
   imports: [
@@ -17,6 +20,8 @@ import { RegisterUserUseCase } from './application/use-cases/register-user.use-c
       secret: process.env.JWT_SECRET || 'your-secret-key',
       signOptions: { expiresIn: '1h' },
     }),
+    PasswordModule,
+    UserManagementModule,
   ],
   controllers: [AuthController],
   providers: [
@@ -24,6 +29,10 @@ import { RegisterUserUseCase } from './application/use-cases/register-user.use-c
     {
       provide: 'IAuthRepository',
       useClass: AuthRepository,
+    },
+    {
+      provide: 'IUserRepository',
+      useClass: UserRepository,
     },
     LoginUseCase,
     RegisterUserUseCase,

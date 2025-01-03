@@ -48,7 +48,7 @@ describe('DeleteUserUseCase', () => {
     await expect(deleteUserUseCase.execute(userId)).rejects.toThrow(
       new NotFoundException({
         success: false,
-        message: `No user found with ID: ${userId}`,
+        message: `User not found with ID: ${userId}`,
         deletedId: userId,
       }),
     );

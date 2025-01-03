@@ -78,7 +78,7 @@ describe('AuthController', () => {
 
       // Mong đợi controller ném ra ngoại lệ đúng
       await expect(controller.register(registerDto)).rejects.toThrow(BadRequestException);
-      await expect(controller.register(registerDto)).rejects.toThrow('Invalid registration data');
+      await expect(controller.register(registerDto)).rejects.toThrow('Invalid email format');
     });
   });
 
