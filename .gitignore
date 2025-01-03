@@ -1,0 +1,6 @@
+#IDE
+/.idea/*
+/.idea/git_toolbox_blame.xml
+
+# OS
+.DS_Store!

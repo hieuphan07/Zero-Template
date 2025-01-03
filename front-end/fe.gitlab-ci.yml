@@ -40,7 +40,7 @@ testing:
   tags:
     - zero-frontend-runner
 
-build_fe_development:
+build_frontend_development:
   stage: build
   environment:
     name: development
@@ -53,9 +53,10 @@ build_fe_development:
   only:
     - develop
   tags:
-    - zero-frontend-runner    
+    - zero-frontend-runner
+  allow_failure: true
 
-build_fe_production:
+build_frontend_production:
   stage: build
   environment:
     name: production
@@ -75,8 +76,8 @@ build_fe_production:
     - main
   tags:
     - zero-frontend-runner
-    
-deploy_fe_to_development:
+
+deploy_frontend_development:
   before_script:
     - echo "This is a before script that runs before job."
     - cd $FE_WORKDIR
@@ -97,8 +98,9 @@ deploy_fe_to_development:
     - develop
   tags:
     - zero-frontend-runner
+  allow_failure: true
 
-deploy_fe_to_production:
+deploy_frontend_production:
   environment:
     name: production
   stage: deploy
@@ -115,7 +117,7 @@ deploy_fe_to_production:
     - |
       docker run -d \
         --name "${FE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" \
-        -p $FE_PORT:$FE_PORT \
+        -p $FE_PORT:80 \
         --network nest-zero-production \
         -v "nest-zero-fe-app:/usr/src/app" \
         -v "nest-zero-fe-app-data:/usr/src/app/node_modules" \

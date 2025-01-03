@@ -64,7 +64,8 @@ build_backend_development:
   only:
     - develop
   tags:
-    - zero-backend-runner    
+    - zero-backend-runner
+  allow_failure: true
 
 build_backend_production:
   stage: build
@@ -89,8 +90,8 @@ build_backend_production:
     - main
   tags:
     - zero-backend-runner
-    
-deploy_to_development:
+
+deploy_backend_development:
   before_script:
     - echo "This is a before script that runs before job."
     - cd $BE_WORKDIR
@@ -111,8 +112,9 @@ deploy_to_development:
     - develop
   tags:
     - zero-backend-runner
+  allow_failure: true
 
-deploy_to_production:
+deploy_backend_production:
   environment:
     name: production
   stage: deploy
