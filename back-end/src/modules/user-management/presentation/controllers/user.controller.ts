@@ -12,11 +12,13 @@ import {
   ConflictException,
   InternalServerErrorException,
   UseGuards,
+  Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '../../domain/entities/user.entity';
 import { CreateUserUseCase } from '../../application/use-cases/create-user.use-case';
 import { DeleteUserUseCase } from '../../application/use-cases/delete-user.use-case';
+import { UpdateUserUseCase } from '../../application/use-cases/update-user.use-case';
 import { DeleteUserResponseDto } from '../dto/delete-user.response.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { JwtAuthGuard } from 'src/modules/auth/presentation/guards/jwt-auth.guard';
@@ -30,6 +32,7 @@ import { UserOrmEntity } from '../../infrastructure/orm/user.entity.orm';
 import { PaginationParams } from 'src/shared/decorator/pagination-params.decorator';
 import { GetUsersUseCase } from '../../application/use-cases/get-users.usecase';
 import { GetUserUseCase } from '../../application/use-cases/get-user.usecase';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -39,6 +42,7 @@ export class UserController {
     private readonly getUserUseCase: GetUserUseCase,
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
+    private readonly updateUserUseCase: UpdateUserUseCase,
   ) {}
 
   @Get()
@@ -125,6 +129,38 @@ export class UserController {
       throw new NotFoundException('User not found');
     }
     return UserMapper.toDto(user);
+  }
+
+  @Put(':id')
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update Existing User' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User was successfully updated',
+    type: UserResponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'User not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Invalid input',
+  })
+  async updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+    try {
+      return await this.updateUserUseCase.execute(id, updateUserDto);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(`User ${id} not found`);
+      }
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('An error occurred while updating the user');
+    }
   }
 
   @Delete(':id')

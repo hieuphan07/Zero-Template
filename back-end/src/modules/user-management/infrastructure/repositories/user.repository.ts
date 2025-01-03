@@ -39,6 +39,23 @@ export class UserRepository extends AbstractRepository<UserOrmEntity> implements
     return UserMapper.toDomain(user);
   }
 
+  async update(id: number, user: Partial<User>): Promise<User> {
+    const userOrmEntity = await this.repository.findOne({ where: { id } });
+    if (!userOrmEntity) {
+      throw new NotFoundException(`User not found with ID: ${id}`);
+    }
+
+    try {
+      const updatedUserOrmEntity = await this.repository.save({
+        ...user,
+        updatedAt: new Date(),
+      });
+      return UserMapper.toDomain(updatedUserOrmEntity);
+    } catch (error) {
+      throw new Error(`Failed to update user: ${error.message}`);
+    }
+  }
+
   async delete(id: number): Promise<void> {
     const result = await this.repository.delete(id);
     if (result.affected === 0) {

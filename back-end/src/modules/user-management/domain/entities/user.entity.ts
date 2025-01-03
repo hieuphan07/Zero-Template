@@ -98,6 +98,10 @@ export class User {
     this.updateTimestamp();
   }
 
+  setUpdatedAt(value: Date): void {
+    this.updatedAt = value;
+  }
+
   setDeletedAt(value: Date): void {
     this.deletedAt = value;
   }
