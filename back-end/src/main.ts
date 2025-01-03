@@ -34,4 +34,6 @@ async function bootstrap() {
   await app.listen(process.env.BE_PORT ?? 8003);
 }
 
-bootstrap();
+bootstrap().then(() => {
+  console.log('Server started!');
+});
