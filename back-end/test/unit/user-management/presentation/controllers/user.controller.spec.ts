@@ -8,6 +8,8 @@ import { PaginatedResult } from 'src/shared/types/paginated-result.interface';
 import { DeleteUserUseCase } from 'src/modules/user-management/application/use-cases/delete-user.use-case';
 import { CreateUserUseCase } from 'src/modules/user-management/application/use-cases/create-user.use-case';
 import { CreateUserDto } from 'src/modules/user-management/presentation/dto/create-user.dto';
+import { UpdateUserUseCase } from 'src/modules/user-management/application/use-cases/update-user.use-case';
+import { UpdateUserDto } from 'src/modules/user-management/presentation/dto/update-user.dto';
 import { UserMapper } from 'src/modules/user-management/application/mapper/user.mapper';
 
 describe('UserController', () => {
@@ -16,6 +18,7 @@ describe('UserController', () => {
   let getUserUseCase: GetUserUseCase;
   let getUsersUseCase: GetUsersUseCase;
   let deleteUserUseCase: DeleteUserUseCase;
+  let updateUserUseCase: UpdateUserUseCase;
 
   const mockUser = new User('john_doe', 'john@example.com', 'password', '+1234567890');
   const mockUserDto = UserMapper.toDto(mockUser);
@@ -59,6 +62,12 @@ describe('UserController', () => {
             execute: jest.fn(),
           },
         },
+        {
+          provide: UpdateUserUseCase,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -67,6 +76,7 @@ describe('UserController', () => {
     getUserUseCase = module.get<GetUserUseCase>(GetUserUseCase);
     getUsersUseCase = module.get<GetUsersUseCase>(GetUsersUseCase);
     deleteUserUseCase = module.get<DeleteUserUseCase>(DeleteUserUseCase);
+    updateUserUseCase = module.get<UpdateUserUseCase>(UpdateUserUseCase);
   });
 
   it('should be defined', () => {
@@ -155,6 +165,66 @@ describe('UserController', () => {
       jest.spyOn(deleteUserUseCase, 'execute').mockRejectedValue(new NotFoundException());
 
       await expect(controller.deleteUser(999)).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('updateUser', () => {
+    const updateUserDto: UpdateUserDto = {
+      username: 'updated_john',
+      email: 'updated_john@example.com',
+      phoneNumber: '+1987654321',
+    };
+
+    const updatedUser = new User(updateUserDto.username, updateUserDto.email, 'password', updateUserDto.phoneNumber);
+
+    it('should update user successfully', async () => {
+      const mockExecute = jest.fn().mockResolvedValue(updatedUser);
+      jest.spyOn(updateUserUseCase, 'execute').mockImplementation(mockExecute);
+
+      const result = await controller.updateUser(1, updateUserDto);
+
+      expect(result).toBe(updatedUser);
+      expect(mockExecute).toHaveBeenCalledWith(1, updateUserDto);
+    });
+
+    it('should throw NotFoundException when user not found', async () => {
+      const mockExecute = jest.fn().mockRejectedValue(new NotFoundException());
+      jest.spyOn(updateUserUseCase, 'execute').mockImplementation(mockExecute);
+
+      await expect(controller.updateUser(999, updateUserDto)).rejects.toThrow(NotFoundException);
+      expect(mockExecute).toHaveBeenCalledWith(999, updateUserDto);
+    });
+
+    it('should handle partial updates', async () => {
+      const partialUpdateDto: Partial<UpdateUserDto> = {
+        username: 'updated_john',
+      };
+
+      const partiallyUpdatedUser = new User(
+        partialUpdateDto.username,
+        mockUser.getEmail(),
+        'password',
+        mockUser.getPhoneNumber(),
+      );
+
+      const mockExecute = jest.fn().mockResolvedValue(partiallyUpdatedUser);
+      jest.spyOn(updateUserUseCase, 'execute').mockImplementation(mockExecute);
+
+      const result = await controller.updateUser(1, partialUpdateDto);
+
+      expect(result).toBe(partiallyUpdatedUser);
+      expect(mockExecute).toHaveBeenCalledWith(1, partialUpdateDto);
+    });
+
+    it('should throw BadRequestException for invalid update data', async () => {
+      const invalidUpdateDto = {
+        email: 'invalid-email',
+      };
+
+      const mockExecute = jest.fn().mockRejectedValue(new BadRequestException());
+      jest.spyOn(updateUserUseCase, 'execute').mockImplementation(mockExecute);
+
+      await expect(controller.updateUser(1, invalidUpdateDto)).rejects.toThrow(BadRequestException);
     });
   });
 });
