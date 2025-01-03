@@ -5,8 +5,6 @@ variables:
   GIT_STRATEGY: clone
 
 stages:
-  - lint
-  - testing
   - build
   - deploy
 
@@ -15,30 +13,6 @@ cache:
   paths:
     - node_modules/
   policy: pull-push
-
-lint:check:
-  stage: lint
-  before_script:
-    - echo "This is a before script that runs before job."
-    - cd $FE_WORKDIR
-    - npm install --legacy-peer-deps
-  script:
-    - echo "Running ESLint..."
-    - npm run lint:check
-    - echo "ESLint check completed successfully"
-    - echo "Running build process..."
-    - npm run build
-    - echo "Build completed successfully"
-  tags:
-    - zero-frontend-runner
-
-testing:
-  stage: testing
-  script:
-    - echo "Running unit test..."
-    - echo "Unit test completed successfully"
-  tags:
-    - zero-frontend-runner
 
 build_frontend_development:
   stage: build

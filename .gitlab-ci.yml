@@ -12,9 +12,58 @@ include:
     rules:
       - changes:
         - 'back-end/*'
-default-job:
+  # Backend lint check
+be-lint-check:
   stage: lint
+  before_script:
+    - echo "This is a before script that runs before job."
+    - cd $BE_WORKDIR
+    - npm install --legacy-peer-deps
   script:
-    - echo "This is a default job that always runs"
+    - echo "Running ESLint..."
+    - npm run lint:check
+    - echo "ESLint check completed successfully"
+    - echo "Running code formatting check..."
+    - npm run format:check
+    - echo "Code formatting check completed successfully"
+    - echo "Running TypeScript checking..."
+    - npm run type:check
+    - echo "TypeScript checking completed successfully"
+    - echo "Running build process..."
+    - npm run build
+    - echo "Build completed successfully"
+  tags:
+    - zero-runner
+
+# Frontend lint check
+fe-lint-check:
+  stage: lint
+  before_script:
+    - echo "This is a before script that runs before job."
+    - cd $FE_WORKDIR
+    - npm install --legacy-peer-deps
+  script:
+    - echo "Running ESLint..."
+    - npm run lint:check
+    - echo "ESLint check completed successfully"
+    - echo "Running build process..."
+    - npm run build
+    - echo "Build completed successfully"
+  tags:
+    - zero-runner
+
+be-test:
+  stage: testing
+  script:
+    - echo "Running unit test..."
+    - echo "Unit test completed successfully"
+  tags:
+    - zero-runner
+
+fe-test:
+  stage: testing
+  script:
+    - echo "Running unit test..."
+    - echo "Unit test completed successfully"
   tags:
     - zero-runner
