@@ -25,11 +25,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // Cấu hình CORS
+  // Configure CORS
   await app.enableCors({
-    origin: '*', // Cho phép mọi nguồn
-    methods: '*', // Cho phép mọi phương thức (GET, POST, PUT, DELETE, v.v.)
-    allowedHeaders: '*', // Cho phép mọi header
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
+    credentials: true,
   });
 
   await app.listen(process.env.BE_PORT ?? 8003);

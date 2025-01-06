@@ -40,4 +40,3 @@ export class UpdateUserUseCase {
     return this.userRepository.update(id, existingUser);
   }
 }
-

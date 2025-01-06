@@ -46,8 +46,8 @@ export class UserController {
   ) {}
 
   @Get()
-  @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  // @ApiBearerAuth('access-token')
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'List all users' })
   @ApiPaginatedRequest(UserOrmEntity)
   @ApiResponse({

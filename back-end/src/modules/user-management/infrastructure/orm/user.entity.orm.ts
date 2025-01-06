@@ -12,11 +12,14 @@ export class UserOrmEntity {
   @Column({ name: 'uuid', type: 'uuid', generated: 'uuid' })
   uuid: string;
 
-  @Column({ name: 'user_name', type: 'varchar', length: 150, nullable: false })
+  @Property(PropertyType.Search)
+  @Property(PropertyType.Sort)
+  @Column({ name: 'username', type: 'varchar', length: 150, nullable: false })
   @Length(2, 150)
   username: string;
 
   @Property(PropertyType.Search)
+  @Property(PropertyType.Sort)
   @Column({ name: 'email', type: 'varchar', length: 255, unique: true })
   @IsEmail()
   email: string;
@@ -26,6 +29,7 @@ export class UserOrmEntity {
   password: string;
 
   @Property(PropertyType.Search)
+  @Property(PropertyType.Sort)
   @Column({ name: 'phone_number', type: 'varchar', length: 15, nullable: true })
   phoneNumber: string;
 
