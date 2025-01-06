@@ -86,6 +86,7 @@ const Button = (props: ButtonProps) => {
         ${props.disabled ? disabledStyles : ""}
         ${props.className || ""}
       `}
+      type={props.type ? props.type : "button"}
       onMouseEnter={props.onMouseEnter}
       onMouseLeave={props.onMouseLeave}
     >

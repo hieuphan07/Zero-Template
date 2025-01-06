@@ -8,16 +8,18 @@ import Form from "../Form/Form";
 import SearchBar from "../SearchBar/SearchBar";
 import { ListProps } from "@/shared/types/components-type/list-type";
 import Pagination from "../Pagination/Pagination";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { DefaultItemType } from "@/shared/types/common-type/default-item-type";
-import { SortProperty } from "@/shared/types/common-type/shared-types";
+import { FilterProperty, SortProperty } from "@/shared/types/common-type/shared-types";
 import { cn } from "@/lib/utils";
+import Checkbox from "../../Atoms/Checkbox/Checkbox";
 
 const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [listItems, setListItems] = useState<T[]>([]);
+  const [listItems, setListItems] = useState<T[]>(props.items ? props.items : []);
+  const [filter, setFilter] = useState<FilterProperty[]>([]);
   const headers = TypeTransfer[props.typeString].headers;
   const [sort, setSort] = useState<SortProperty[]>([
     ...Object.keys(headers).map(
@@ -28,25 +30,71 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
         }) as SortProperty,
     ),
   ]);
+
+  const filterFormRef = useRef<HTMLFormElement>(null);
+  const createFormRef = useRef<HTMLFormElement>(null);
+  const updateFormRef = useRef<HTMLFormElement>(null);
+  const deleteFormRef = useRef<HTMLFormElement>(null);
+
   const getListAPI = TypeTransfer[props.typeString].getListAPI;
   const detailPath = TypeTransfer[props.typeString].detailPath;
-  // const deleteAPI = TypeTransfer[props.typeString].deleteAPI;
-  // const updateAPI = TypeTransfer[props.typeString].updateAPI;
-  // const createAPI = TypeTransfer[props.typeString].createAPI;
+  const deleteAPI = TypeTransfer[props.typeString].deleteAPI;
+  const updateAPI = TypeTransfer[props.typeString].updateAPI;
+  const createAPI = TypeTransfer[props.typeString].createAPI;
 
   useEffect(() => {
     if (props.items) {
-      setListItems(props.items);
+      handleGivenList(sort, filter);
     } else {
-      handleGetList(page, sort);
+      handleGetList(page, sort, filter);
     }
     // eslint-disable-next-line
-  }, [props.items, page, sort]);
+  }, []);
 
-  const handleGetList = async (page: number, sort: SortProperty[]) => {
-    console.log(sort);
+  useEffect(() => {
+    if (props.items) {
+      handleGivenList(sort, filter);
+    } else {
+      handleGetList(page, sort, filter);
+    }
+    // eslint-disable-next-line
+  }, [props.items, page, sort, filter]);
+
+  const handleGetList = async (page: number, sort: SortProperty[], filter: FilterProperty[]) => {
+    console.log(page, sort, filter);
     const listItems = await getListAPI(page);
     setListItems(listItems);
+  };
+
+  const handleGivenList = (sort: SortProperty[], filter: FilterProperty[]) => {
+    let listItemData = [...listItems];
+    if (sort.length > 0) {
+      let sorted = false;
+      listItemData = listItemData.sort((a, b) => {
+        let result = 0;
+        sort.forEach((sortItem) => {
+          if (sortItem && sortItem.direction !== "default") {
+            const aValue = String(a[sortItem.key as keyof T]);
+            const bValue = String(b[sortItem.key as keyof T]);
+
+            result += sortItem.direction === "asc" ? (aValue > bValue ? 1 : -1) : bValue > aValue ? 1 : -1;
+          }
+        });
+        if (result !== 0) {
+          sorted = true;
+        }
+        return result;
+      });
+      if (!sorted) {
+        listItemData = props.items ? [...props.items] : [];
+      }
+    }
+    if (filter.length > 0) {
+      listItemData = listItemData.filter((item) => {
+        return filter.every((e) => item[e.key as keyof T] == e.value);
+      });
+    }
+    setListItems(listItemData);
   };
 
   const handleSort = (header: string) => {
@@ -60,6 +108,63 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
       setSort(newSort);
     } else {
       setSort([...sort, { key: header, direction: "asc" }]);
+    }
+  };
+
+  const handleFilter = () => {
+    const formData = new FormData(filterFormRef.current!);
+    const filterData = Object.fromEntries(formData.entries());
+    const isValid = props.filterValidation ? props.filterValidation(filterData) : true;
+    if (isValid) {
+      const filterExist = [...filter];
+      if (filterData) {
+        Object.keys(filterData).forEach((key) => {
+          const filterExistByKey = filterExist.find((e) => e.key == key);
+          if (filterData[key]) {
+            if (filterExistByKey) {
+              filterExistByKey.value = filterData[key].toString();
+            } else {
+              filterExist.push({ key: key, value: filterData[key].toString() });
+            }
+          }
+        });
+      }
+      setFilter(filterExist);
+    } else {
+      alert("Validation failed");
+    }
+  };
+
+  const handleCreate = () => {
+    const formData = new FormData(createFormRef.current!);
+    const createData = Object.fromEntries(formData.entries());
+    const isValid = props.insertValidation ? props.insertValidation(createData) : true;
+    if (isValid) {
+      createAPI(createData);
+    } else {
+      console.log("create not valid");
+    }
+  };
+
+  const handleUpdate = () => {
+    const formData = new FormData(updateFormRef.current!);
+    const updateData = Object.fromEntries(formData.entries());
+    const isValid = props.updateValidation ? props.updateValidation(updateData) : true;
+    if (isValid) {
+      updateAPI(updateData);
+    } else {
+      console.log("update not valid");
+    }
+  };
+
+  const handleDelete = () => {
+    const formData = new FormData(deleteFormRef.current!);
+    const deleteData = Object.fromEntries(formData.entries());
+    const isValid = props.deleteValidation ? props.deleteValidation(deleteData) : true;
+    if (isValid) {
+      deleteAPI(deleteData);
+    } else {
+      console.log("delete not valid");
     }
   };
 
@@ -104,10 +209,27 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     if (value instanceof Date) {
       return <p>{value.toISOString().split("T")[0]}</p>;
     }
-    if (typeof value === "string") {
-      return <p>{value}</p>;
+    if (typeof value === "boolean") {
+      return (
+        <Checkbox
+          name="checkbox"
+          checked={value}
+          label=""
+          className=""
+          boxColor="primary"
+          mainColor="default"
+          textClassName="font-bold"
+          disabled={true}
+        />
+      );
     }
-    return <p>{String(value)}</p>;
+    if (value) {
+      if (typeof value === "string") {
+        return <p>{value}</p>;
+      } else return <p>{String(value)}</p>;
+    } else {
+      return <p>No Data</p>;
+    }
   };
 
   return (
@@ -137,7 +259,12 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                 border
               />
             }
+            formTitle="Filter"
+            onSubmit={handleFilter}
             isPopup={true}
+            ref={filterFormRef}
+            onSubmitNoReload
+            onSubmitClosePopUp
           >
             {props.filterForm}
           </Form>
@@ -154,22 +281,23 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
             />
           }
           isPopup={true}
+          formTitle="Insert"
+          onSubmit={handleCreate}
+          ref={createFormRef}
+          onSubmitNoReload
         >
-          {props.inputForm}
+          {props.insertForm}
         </Form>
       </div>
       <div className="w-full flex flex-row justify-center">
         {Object.entries(headers).map(
           ([key, header], index) =>
             !header.hidden && (
-              <div key={key} className={columnStyle}>
-                <div
-                  className={cn(headerStyle, `${index === 0 ? "rounded-tl-lg" : ""}`)}
-                  onClick={() => handleSort(key)}
-                >
+              <div key={key} className={cn(columnStyle, `${index === 0 ? "" : ""}`)}>
+                <div className={cn(headerStyle, `${index === 0 ? "" : ""}`)} onClick={() => handleSort(key)}>
                   <p className="whitespace-nowrap font-bold">{header.label}</p>
                   <Button
-                    action={() => handleSort(key)}
+                    action={() => {}}
                     text=""
                     mainColor="default"
                     contextColor="danger"
@@ -202,8 +330,8 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
               </div>
             ),
         )}
-        <div key={"actions"} className={columnStyle}>
-          <div className={cn(headerStyle, "rounded-tr-lg")}>
+        <div key={"actions"} className={cn(columnStyle)}>
+          <div className={cn(headerStyle)}>
             <p className="whitespace-nowrap font-bold">Actions</p>
             <Button
               action={() => {}}
@@ -238,6 +366,10 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                   />
                 }
                 isPopup={true}
+                formTitle="Update"
+                onSubmit={handleUpdate}
+                ref={updateFormRef}
+                onSubmitNoReload
               >
                 {props.updateForm}
               </Form>
@@ -254,6 +386,10 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                   />
                 }
                 isPopup={true}
+                formTitle="Delete"
+                onSubmit={handleDelete}
+                ref={deleteFormRef}
+                onSubmitNoReload
               >
                 {props.deleteForm}
               </Form>

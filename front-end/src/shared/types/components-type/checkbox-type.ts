@@ -1,12 +1,12 @@
 import { Color } from "../common-type/shared-types";
+import { ComponentDefaultProps } from "./component-default-type";
 
-export type CheckboxProps = {
+export type CheckboxProps = ComponentDefaultProps & {
   name: string;
   label?: string;
   checked?: boolean;
   disabled?: boolean;
   required?: boolean;
-  className?: string;
   textClassName?: string;
   mainColor?: Color;
   boxColor?: Color;

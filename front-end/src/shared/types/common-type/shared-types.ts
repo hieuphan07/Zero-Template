@@ -5,6 +5,11 @@ export type SortProperty = {
   direction: "asc" | "desc" | "default";
 };
 
+export type FilterProperty = {
+  key: string;
+  value: string;
+};
+
 export type TableHeaders = {
   [key: string]: TableHeader;
 };

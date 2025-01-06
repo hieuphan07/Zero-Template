@@ -76,12 +76,32 @@ const Form = (props: FormProps) => {
           ref={formRef}
           className={`bg-background rounded-lg p-6 w-[80%] h-[80%] animate-slideDown ${props.className}`}
         >
-          <form name={props.formName} className={`h-full relative overflow-hidden ${props.className}`}>
+          <form
+            name={props.formName}
+            className={`h-full relative overflow-hidden ${props.className}`}
+            onSubmit={
+              props.onSubmitNoReload
+                ? (event) => {
+                    event.preventDefault();
+                    props.onSubmit();
+                    if (props.onSubmitClosePopUp) {
+                      handleToggle();
+                    }
+                  }
+                : () => {
+                    props.onSubmit();
+                    if (props.onSubmitClosePopUp) {
+                      handleToggle();
+                    }
+                  }
+            }
+            ref={props.ref}
+          >
             <label
               htmlFor={props.formName}
               className={`flex justify-center w-full text-4xl font-bold ${props.formTextClassName}`}
             >
-              {props.formText}
+              {props.formTitle}
             </label>
             <Button
               text=""
@@ -96,16 +116,31 @@ const Form = (props: FormProps) => {
             <div
               className={`absolute bottom-0 w-full z-10 bg-background flex justify-end ${props.belowButtonsClassName}`}
             >
-              {props.belowButtons?.map((button, index) => <Fragment key={index}>{button}</Fragment>)}
-              <Button
-                key={-1}
-                text={"Cancel"}
-                action={handleToggle}
-                mainColor={"primary"}
-                contextColor={"default"}
-                isTransparent={true}
-                border
-              />
+              {props.manualBelowButtons ? (
+                props.belowButtons?.map((button, index) => <Fragment key={index}>{button}</Fragment>)
+              ) : (
+                <div className="flex gap-4">
+                  <Button
+                    key={-2}
+                    text={"Submit"}
+                    action={() => {}}
+                    mainColor={"primary"}
+                    contextColor={"default"}
+                    isTransparent={true}
+                    border
+                    type="submit"
+                  />
+                  <Button
+                    key={-1}
+                    text={"Cancel"}
+                    action={handleToggle}
+                    mainColor={"primary"}
+                    contextColor={"default"}
+                    isTransparent={true}
+                    border
+                  />
+                </div>
+              )}
             </div>
           </form>
         </div>

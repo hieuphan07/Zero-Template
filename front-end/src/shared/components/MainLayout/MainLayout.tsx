@@ -20,7 +20,11 @@ const MainLayout = (props: MainLayoutProps) => {
             ? "max-w-[87.5vw] ml-[12.5vw] transition-all duration-500 mt-5"
             : "max-w-[100vw] ml-[0vw] transition-all duration-500 mt-5"
         }
-        maxWidthPercentage={props.maxWidthPercentage}
+        maxWidthPercentage={
+          isSideMenuOpen && props.maxWidthPercentage
+            ? (props.maxWidthPercentage * 100) / 87.5
+            : props.maxWidthPercentage
+        }
         title={props.title}
         titleColor={props.titleColor}
       >

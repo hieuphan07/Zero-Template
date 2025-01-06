@@ -1,6 +1,7 @@
 import { Color } from "../common-type/shared-types";
+import { ComponentDefaultProps } from "./component-default-type";
 
-export type DropdownProps = {
+export type DropdownProps = ComponentDefaultProps & {
   apiEndpoint: string;
   backgroundColor?: Color;
   contextColor?: Color;
@@ -8,5 +9,4 @@ export type DropdownProps = {
   placeholder?: string;
   // eslint-disable-next-line
   action?: (item: any) => void;
-  className?: string;
 };

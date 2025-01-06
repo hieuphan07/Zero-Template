@@ -87,6 +87,7 @@ const Checkbox = (props: CheckboxProps) => {
           {props.label}
         </label>
       )}
+      <input type="hidden" name={props.name} value={isChecked ? "true" : "false"} />
     </div>
   );
 };
