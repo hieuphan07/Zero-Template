@@ -58,6 +58,63 @@ export default function Home() {
 
   const templateForm = (
     <>
+      <Input
+        type="text"
+        name="search"
+        placeholder="Search..."
+        className="mt-10 !w-[20%] ml-[20%]"
+        contextColor="warning"
+      />
+      <RadioButton
+        name="radio"
+        value="radio"
+        label="Radio"
+        className=""
+        contextColor="danger"
+        textClassName="font-bold"
+      />
+      <RadioButton
+        name="radio"
+        value="radio2"
+        label="Radio2"
+        className=""
+        contextColor="warning"
+        textClassName="font-bold"
+      />
+      <Checkbox
+        name="checkbox"
+        label="Checkbox"
+        className=""
+        boxColor="warning"
+        mainColor="danger"
+        textClassName="font-bold"
+      />
+    </>
+  );
+
+  const filterForm = (
+    <>
+      <RadioButton
+        name="firstName"
+        value="John"
+        label="John"
+        className=""
+        contextColor="danger"
+        textClassName="font-bold"
+      />
+      <RadioButton
+        name="firstName"
+        value="Jane"
+        label="Jane"
+        className=""
+        contextColor="warning"
+        textClassName="font-bold"
+      />
+    </>
+  );
+
+  const updateForm = (
+    <>
       <Dropdown
         apiEndpoint="https://api.example.com/data"
         placeholder="Search..."
@@ -107,55 +164,11 @@ export default function Home() {
         textClassName="font-bold"
       />
       <Button text="Button" action={() => {}} mainColor="warning" contextColor="danger" />
-      <Dropdown
-        apiEndpoint="https://api.example.com/data"
-        placeholder="Search..."
-        clickOpen={true}
-        action={() => {}}
-        className="mt-10 w-[20%] ml-[20%]"
-      />
-      <SearchBar
-        onSearch={() => {}}
-        placeholder="Search..."
-        className="mt-10 w-[20%] ml-[20%]"
-        inputMainColor="warning"
-        buttonMainColor="warning"
-        attachToEachOther={true}
-        focusBorder={true}
-        focusBorderColor="danger"
-      />
-      <Input
-        type="text"
-        name="search"
-        placeholder="Search..."
-        className="mt-10 !w-[20%] ml-[20%]"
-        contextColor="warning"
-      />
-      <RadioButton
-        name="radio"
-        value="radio"
-        label="Radio"
-        className=""
-        contextColor="danger"
-        textClassName="font-bold"
-      />
-      <RadioButton
-        name="radio"
-        value="radio2"
-        label="Radio2"
-        className=""
-        contextColor="warning"
-        textClassName="font-bold"
-      />
-      <Checkbox
-        name="checkbox"
-        label="Checkbox"
-        className=""
-        boxColor="warning"
-        mainColor="danger"
-        textClassName="font-bold"
-      />
-      <Button text="Button" action={() => {}} mainColor="warning" contextColor="danger" />
+    </>
+  );
+
+  const deleteForm = (
+    <>
       <Dropdown
         apiEndpoint="https://api.example.com/data"
         placeholder="Search..."
@@ -210,7 +223,14 @@ export default function Home() {
 
   return (
     <MainLayout title="Template Form" maxWidthPercentage={80}>
-      <List<User> items={users} typeString="User" inputForm={templateForm} />
+      <List<User>
+        items={users}
+        typeString="User"
+        insertForm={templateForm}
+        filterForm={filterForm}
+        updateForm={updateForm}
+        deleteForm={deleteForm}
+      />
     </MainLayout>
   );
 }

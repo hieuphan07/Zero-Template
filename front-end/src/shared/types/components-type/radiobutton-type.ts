@@ -1,7 +1,8 @@
 import { ChangeEvent } from "react";
 import { Color } from "../common-type/shared-types";
+import { ComponentDefaultProps } from "./component-default-type";
 
-export type RadioButtonProps = {
+export type RadioButtonProps = ComponentDefaultProps & {
   name: string;
   value: string;
   label?: string;
@@ -9,7 +10,6 @@ export type RadioButtonProps = {
   contextColor?: Color;
   textColor?: Color;
   disabled?: boolean;
-  className?: string;
   textClassName?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };

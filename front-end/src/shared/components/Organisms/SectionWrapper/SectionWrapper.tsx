@@ -7,7 +7,7 @@ const SectionWrapper = (props: SectionWrapperProps) => {
     <section className={`w-full h-[90vh] overflow-y-auto ${props.className}`}>
       <div
         className={`
-          mx-auto p-4 sm:p-6 lg:p-10 bg-white rounded-xl shadow-lg
+          mx-auto p-4 sm:p-6 lg:p-10 bg-white rounded-xl shadow-lg transition-all duration-500
         `}
         style={{ maxWidth: `${props.maxWidthPercentage}%` }}
       >

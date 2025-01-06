@@ -1,9 +1,9 @@
 import { Color } from "../common-type/shared-types";
+import { ComponentDefaultProps } from "./component-default-type";
 
-export type SearchBarProps = {
+export type SearchBarProps = ComponentDefaultProps & {
   onSearch: (searchTerm: string) => void;
   placeholder?: string;
-  className?: string;
   inputMainColor: Color;
   inputContextColor?: Color;
   buttonText?: boolean;
