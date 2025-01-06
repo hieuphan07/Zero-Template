@@ -19,17 +19,14 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [listItems, setListItems] = useState<T[]>(props.items ? props.items : []);
+  const [meta, setMeta] = useState({
+    total: 0,
+    page: 1,
+    lastPage: 1,
+  });
   const [filter, setFilter] = useState<FilterProperty[]>([]);
   const headers = TypeTransfer[props.typeString].headers;
-  const [sort, setSort] = useState<SortProperty[]>([
-    ...Object.keys(headers).map(
-      (header) =>
-        ({
-          key: header,
-          direction: "default",
-        }) as SortProperty,
-    ),
-  ]);
+  const [sort, setSort] = useState<SortProperty | null>(null);
 
   const filterFormRef = useRef<HTMLFormElement>(null);
   const createFormRef = useRef<HTMLFormElement>(null);
@@ -44,52 +41,45 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
 
   useEffect(() => {
     if (props.items) {
-      handleGivenList(sort, filter);
+      handleGivenList(sort || undefined, filter);
     } else {
-      handleGetList(page, sort, filter);
+      handleGetList(page, sort || undefined, filter);
     }
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     if (props.items) {
-      handleGivenList(sort, filter);
+      handleGivenList(sort || undefined, filter);
     } else {
-      handleGetList(page, sort, filter);
+      handleGetList(page, sort || undefined, filter);
     }
     // eslint-disable-next-line
   }, [props.items, page, sort, filter]);
 
-  const handleGetList = async (page: number, sort: SortProperty[], filter: FilterProperty[]) => {
-    console.log(page, sort, filter);
-    const listItems = await getListAPI(page);
-    setListItems(listItems);
+  const handleGetList = async (page: number, sort?: SortProperty, filter?: FilterProperty[]) => {
+    const listItems = await getListAPI({
+      page: page,
+      limit: 10,
+      sortBy: sort?.key,
+      sortDirection: sort?.direction === "asc" ? "ASC" : "DESC",
+      searchBy: filter?.[0]?.key,
+      searchValue: filter?.[0]?.value,
+    });
+    setListItems(listItems?.data);
+    setMeta(listItems?.meta);
   };
 
-  const handleGivenList = (sort: SortProperty[], filter: FilterProperty[]) => {
+  const handleGivenList = (sort?: SortProperty, filter?: FilterProperty[]) => {
     let listItemData = [...listItems];
-    if (sort.length > 0) {
-      let sorted = false;
+    if (sort) {
       listItemData = listItemData.sort((a, b) => {
-        let result = 0;
-        sort.forEach((sortItem) => {
-          if (sortItem && sortItem.direction !== "default") {
-            const aValue = String(a[sortItem.key as keyof T]);
-            const bValue = String(b[sortItem.key as keyof T]);
-
-            result += sortItem.direction === "asc" ? (aValue > bValue ? 1 : -1) : bValue > aValue ? 1 : -1;
-          }
-        });
-        if (result !== 0) {
-          sorted = true;
-        }
-        return result;
+        const aValue = String(a[sort.key as keyof T]);
+        const bValue = String(b[sort.key as keyof T]);
+        return sort.direction === "asc" ? (aValue > bValue ? 1 : -1) : bValue > aValue ? 1 : -1;
       });
-      if (!sorted) {
-        listItemData = props.items ? [...props.items] : [];
-      }
     }
-    if (filter.length > 0) {
+    if (filter && filter.length > 0) {
       listItemData = listItemData.filter((item) => {
         return filter.every((e) => item[e.key as keyof T] == e.value);
       });
@@ -98,17 +88,10 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   };
 
   const handleSort = (header: string) => {
-    const foundSort = sort.find((sort) => sort.key === header);
-    if (foundSort) {
-      const newSort = [...sort];
-      if (foundSort) {
-        foundSort.direction =
-          foundSort.direction === "asc" ? "desc" : foundSort.direction === "desc" ? "default" : "asc";
-      }
-      setSort(newSort);
-    } else {
-      setSort([...sort, { key: header, direction: "asc" }]);
-    }
+    setSort((prevSort) => {
+      const newDirection = prevSort?.key === header ? (prevSort.direction === "asc" ? "desc" : "asc") : "asc"; // default to "asc" if sorting by a different header
+      return { key: header, direction: newDirection };
+    });
   };
 
   const handleFilter = () => {
@@ -302,10 +285,12 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                     mainColor="default"
                     contextColor="danger"
                     iconBefore={
-                      sort.find((sort) => sort.key === key)?.direction === "asc" ? (
-                        <ArrowUp size={20} />
-                      ) : sort.find((sort) => sort.key === key)?.direction === "desc" ? (
-                        <ArrowDown size={20} />
+                      sort?.key === key ? (
+                        sort?.direction === "asc" ? (
+                          <ArrowUp size={20} />
+                        ) : (
+                          <ArrowDown size={20} />
+                        )
                       ) : (
                         <ArrowUpDown size={20} />
                       )
@@ -316,7 +301,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                     isTransparent
                   />
                 </div>
-                {listItems.map((item, rowIndex) => (
+                {listItems?.map((item, rowIndex) => (
                   <div
                     key={rowIndex}
                     className={`flex items-center justify-center flex-1 w-full border-b p-3 text-black bg-gray-100 cursor-pointer ${props.rowClassName} item-row-${rowIndex}`}
@@ -346,7 +331,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
               disabled
             />
           </div>
-          {listItems.map((item, rowIndex) => (
+          {listItems?.map((item, rowIndex) => (
             <div
               key={rowIndex}
               className={`flex gap-2 items-center justify-center flex-1 w-full border-b p-3 text-black bg-gray-100 cursor-pointer ${props.rowClassName} item-row-${rowIndex}`}
@@ -398,8 +383,8 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
         </div>
       </div>
       <Pagination
-        currentPage={page}
-        totalPages={10}
+        currentPage={meta.page}
+        totalPages={meta.lastPage}
         onPageChange={(page) => {
           setPage(page);
         }}

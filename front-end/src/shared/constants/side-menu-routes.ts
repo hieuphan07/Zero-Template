@@ -7,9 +7,9 @@ export const menuRoutes: MenuItem[] = [
   { name: "Profile", path: "/profile" },
   {
     name: "Management",
-    path: "/management",
+    path: "/admin",
     children: [
-      { name: "Users", path: "/management/users" },
+      { name: "Users", path: "admin/user" },
       {
         name: "Roles",
         path: "/management/roles",

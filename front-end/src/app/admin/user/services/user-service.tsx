@@ -1,11 +1,13 @@
 import { IRequestBuilder, RequestBuilder } from "@/shared/utils/functions/api/request-builder";
 import { User } from "../types/user-type";
 import { httpClient } from "@/shared/utils/functions/api";
+import { PaginationParamsType } from "@/shared/types/common-type/pagination-params-type";
+import { PaginatedListType } from "@/shared/types/common-type/paginated-list-type";
 
 interface IUserService {
   // change later
   // eslint-disable-next-line
-  getUsers(params?: any): Promise<User[]>;
+  getUsers(params?: any): Promise<PaginatedListType<User>>;
   getUser(id: string): Promise<User>;
   createUser(user: User): Promise<User>;
   updateUser(id: string, user: User): Promise<User>;
@@ -28,17 +30,12 @@ export class UserService implements IUserService {
   }
 
   // Below is template, change and remove eslint-disable later
-  // eslint-disable-next-line
-  public async getUsers(params?: any): Promise<User[]> {
-    const response = await httpClient.get<User[]>({
-      url: "http://localhost:3001/users",
-      config: {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      },
-    });
-    return response.payload;
+  public async getUsers(params: PaginationParamsType): Promise<PaginatedListType<User>> {
+    const payload = (await httpClient.get<PaginatedListType<User>>({
+      url: "http://localhost:3001/api/admin/users",
+      config: { params },
+    })) as unknown as PaginatedListType<User>;
+    return payload;
   }
 
   // eslint-disable-next-line

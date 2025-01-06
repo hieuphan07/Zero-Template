@@ -3,6 +3,7 @@ import { UserOrmEntity } from '../../infrastructure/orm/user.entity.orm';
 import { PaginatedResult } from 'src/shared/types/paginated-result.interface';
 import { PaginatedResponseDto } from 'src/shared/dtos/paginated-response.dto';
 import { UserResponseDto } from '../../presentation/dto/user-response.dto';
+import { FormatHelper } from '../../presentation/helper/format.helper';
 
 export class UserMapper {
   // Domain -> DTO
@@ -13,9 +14,9 @@ export class UserMapper {
       email: user.getEmail(),
       password: user.getPassword(),
       phoneNumber: user.getPhoneNumber(),
-      lastLogin: user.getLastLogin(),
-      createdAt: user.getCreatedAt(),
-      updatedAt: user.getUpdatedAt(),
+      lastLogin: FormatHelper.formatDateTime(user.getLastLogin()),
+      createdAt: FormatHelper.formatDateTime(user.getCreatedAt()),
+      updatedAt: FormatHelper.formatDateTime(user.getUpdatedAt()),
     };
   }
 

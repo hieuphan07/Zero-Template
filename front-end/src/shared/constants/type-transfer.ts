@@ -1,6 +1,7 @@
 import { UserTableHeaders } from "@/app/admin/user/types/user-type";
 import { TableHeaders } from "../types/common-type/shared-types";
 import { userService } from "@/app/admin/user/services/user-service";
+import { PaginationParamsType } from "../types/common-type/pagination-params-type";
 
 export const TypeTransfer: Record<
   string,
@@ -9,7 +10,7 @@ export const TypeTransfer: Record<
     // eslint-disable-next-line
     repository: any;
     // eslint-disable-next-line
-    getListAPI: any;
+    getListAPI: (params: PaginationParamsType) => Promise<any>;
     // eslint-disable-next-line
     getAPI: any;
     // eslint-disable-next-line
@@ -25,7 +26,7 @@ export const TypeTransfer: Record<
   User: {
     headers: UserTableHeaders,
     repository: userService,
-    getListAPI: userService.getUsers,
+    getListAPI: (params: PaginationParamsType) => userService.getUsers(params),
     getAPI: userService.getUser,
     createAPI: userService.createUser,
     updateAPI: userService.updateUser,
