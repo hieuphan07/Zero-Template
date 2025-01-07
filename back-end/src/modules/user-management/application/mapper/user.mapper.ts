@@ -14,9 +14,9 @@ export class UserMapper {
       email: user.getEmail(),
       password: user.getPassword(),
       phoneNumber: user.getPhoneNumber(),
-      lastLogin: FormatHelper.formatDateTime(user.getLastLogin()),
-      createdAt: FormatHelper.formatDateTime(user.getCreatedAt()),
-      updatedAt: FormatHelper.formatDateTime(user.getUpdatedAt()),
+      lastLogin: user.getLastLogin() ? FormatHelper.formatDateTime(user.getLastLogin()) : '',
+      createdAt: user.getCreatedAt() ? FormatHelper.formatDateTime(user.getCreatedAt()) : '',
+      updatedAt: user.getUpdatedAt() ? FormatHelper.formatDateTime(user.getUpdatedAt()) : '',
     };
   }
 
