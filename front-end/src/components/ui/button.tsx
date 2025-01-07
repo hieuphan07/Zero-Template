@@ -15,7 +15,7 @@ const buttonVariants = cva(
           "bg-danger hover:bg-danger focus:border-danger hover:border-danger accent-danger text-danger text-danger-foreground focus:ring-danger hover:text-danger-foreground border border-danger hover:text-danger",
         outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary:
-          "bg-secondary hover:bg-secondary focus:border-secondary hover:border-secondary accent-secondary text-secondary-foreground focus:ring-secondary hover:text-secondary-foreground border border-secondary hover:text-secondary",
+          "bg-secondary hover:bg-secondary focus:border-secondary hover:border-secondary accent-secondary text-secondary text-secondary-foreground focus:ring-secondary hover:text-secondary-foreground border border-secondary hover:text-secondary",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline bg-background",
         warning:

@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Color } from "../common-type/shared-types";
 import { ComponentDefaultProps } from "./component-default-type";
 
@@ -7,4 +8,5 @@ export type MenuTabProps = ComponentDefaultProps & {
   isCollapsed?: boolean;
   children?: MenuTabProps[];
   color?: Color;
+  icon?: ReactNode;
 };

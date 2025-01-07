@@ -88,7 +88,7 @@ const SideMenu = (props: SideMenuProps) => {
 
         <nav className={`transition-all duration-300 ml-0 ${!props.isOpen ? "flex items-center h-full" : ""}`}>
           <div
-            className={`flex flex-col justify-start transition-all duration-300 ${!props.isOpen ? "gap-6 h-full" : "gap-2"}`}
+            className={`flex flex-col justify-start transition-all duration-300 ${!props.isOpen ? "gap-6 h-full" : "gap-6"}`}
           >
             {filteredItems.map((item, index) => (
               <Fragment key={index}>
@@ -98,6 +98,7 @@ const SideMenu = (props: SideMenuProps) => {
                   color={"primary"}
                   isCollapsed={!props.isOpen}
                   className={`ml-0 ${!props.isOpen ? "ml-2" : ""}`}
+                  icon={item.icon}
                 >
                   {item.children}
                 </MenuTab>

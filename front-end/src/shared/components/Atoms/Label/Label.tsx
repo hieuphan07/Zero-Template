@@ -16,14 +16,14 @@ const Label = (props: LabelProps) => {
         ${props.className}
       `}
       htmlFor={props.htmlFor}
-      suppressHydrationWarning
     >
       {truncateText(props.text)}
-      {/* <span
+      <span
         className={`
           absolute left-0 top-full z-10
           hidden ${
-            ((props.translate && props.t && props.t(props.text).length > 10) || (!props.translate && props.text.length > 10)) &&
+            ((props.translate && props.t && props.t(props.text).length > 10) ||
+              (!props.translate && props.text.length > 10)) &&
             "group-hover:block"
           }
           bg-black text-white
@@ -32,7 +32,7 @@ const Label = (props: LabelProps) => {
         `}
       >
         {props.t ? props.t(props.text) : props.text}
-      </span> */}
+      </span>
     </label>
   );
 };
