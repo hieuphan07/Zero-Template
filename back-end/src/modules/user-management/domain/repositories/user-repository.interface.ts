@@ -4,7 +4,7 @@ import { PaginatedResult } from 'src/shared/types/paginated-result.interface';
 
 export interface IUserRepository {
   create(user: User): Promise<User>;
-  update(id: number, user: Partial<User>): Promise<User>;
+  update(id: number, user: User): Promise<User>;
   findById(id: number): Promise<User>;
   delete(id: number): Promise<void>;
   softDelete(id: number): Promise<void>;
