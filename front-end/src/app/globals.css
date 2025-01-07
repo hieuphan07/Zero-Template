@@ -12,7 +12,7 @@ body {
     --foreground: rgb(10 10 10);
     --primary: rgb(200, 200, 200);
     --primary-foreground: rgb(128, 128, 128);
-    --secondary: rgb(240, 240, 240);
+    --secondary: rgb(0, 162, 255);
     --secondary-foreground: rgb(31, 41, 55);
     --warning: rgb(245, 158, 11);
     --warning-foreground: rgb(255, 255, 255);

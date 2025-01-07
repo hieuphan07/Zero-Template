@@ -4,10 +4,15 @@ import { useState } from "react";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import ZeroLink from "../Link/ZeroLink";
 import { MenuTabProps } from "@/shared/types/components-type/menutab-type";
+import { usePathname } from "next/navigation";
+import { useTranslation } from "react-i18next";
+import Label from "../Label/Label";
 
 const MenuTab = (props: MenuTabProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const pathname = usePathname();
+  console.log(pathname);
+  const { t } = useTranslation();
   const toggleExpand = (e: React.MouseEvent) => {
     if (props.children?.length) {
       e.preventDefault();
@@ -21,10 +26,11 @@ const MenuTab = (props: MenuTabProps) => {
         <ZeroLink
           href={props.path}
           className="flex-1 flex items-center gap-2"
-          color={props.color}
+          color={pathname === "/" + props.path ? "secondary" : props.color}
           action={toggleExpand}
         >
-          <span>{props.isCollapsed ? props.name.charAt(0) : props.name}</span>
+          {props.icon}
+          <Label text={props.isCollapsed ? "" : props.name} t={t} translate={true} inheritedClass={true} />
           {props.children && props.children.length > 0 && (
             <span className="transition-transform duration-300">
               {isExpanded ? <ChevronDownIcon size={16} /> : <ChevronRightIcon size={16} />}
@@ -34,15 +40,16 @@ const MenuTab = (props: MenuTabProps) => {
       </div>
 
       {props.children && props.children.length > 0 && isExpanded && (
-        <div className={`${props.isCollapsed ? "ml-2" : "ml-4"} transition-all duration-300 mt-2 flex flex-col gap-2`}>
+        <div className={`${props.isCollapsed ? "ml-0" : "ml-2"} transition-all duration-300 mt-2 flex flex-col gap-2`}>
           {props.children.map((child, index) => (
             <MenuTab
               key={index}
               name={child.name}
               path={child.path}
-              color={props.color}
+              color={pathname === child.path ? "secondary" : props.color}
               isCollapsed={props.isCollapsed}
               className="text-sm"
+              icon={child.icon}
             >
               {child.children}
             </MenuTab>
