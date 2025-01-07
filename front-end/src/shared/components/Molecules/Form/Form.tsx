@@ -4,8 +4,11 @@ import { useState, useRef, useEffect, Fragment } from "react";
 import Button from "@/shared/components/Atoms/Button/Button";
 import { XIcon } from "lucide-react";
 import { FormProps } from "@/shared/types/components-type/form-type";
+import Label from "../../Atoms/Label/Label";
+import { useTranslation } from "react-i18next";
 
 const Form = (props: FormProps) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(!props.isPopup);
   const formRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -97,12 +100,12 @@ const Form = (props: FormProps) => {
             }
             ref={props.ref}
           >
-            <label
-              htmlFor={props.formName}
+            <Label
+              text={props.formTitle ?? ""}
+              t={t}
+              translate={true}
               className={`flex justify-center w-full text-4xl font-bold ${props.formTextClassName}`}
-            >
-              {props.formTitle}
-            </label>
+            />
             <Button
               text=""
               iconBefore={<XIcon />}

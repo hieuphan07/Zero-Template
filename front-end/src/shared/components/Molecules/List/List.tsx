@@ -10,10 +10,12 @@ import { ListProps } from "@/shared/types/components-type/list-type";
 import Pagination from "../Pagination/Pagination";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "next-i18next";
 import { DefaultItemType } from "@/shared/types/common-type/default-item-type";
 import { FilterProperty, SortProperty } from "@/shared/types/common-type/shared-types";
 import { cn } from "@/lib/utils";
 import Checkbox from "../../Atoms/Checkbox/Checkbox";
+import Label from "../../Atoms/Label/Label";
 
 const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   const router = useRouter();
@@ -25,14 +27,15 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     lastPage: 1,
   });
   const [filter, setFilter] = useState<FilterProperty[]>([]);
-  const headers = TypeTransfer[props.typeString].headers;
-  const [sort, setSort] = useState<SortProperty | null>(null);
 
   const filterFormRef = useRef<HTMLFormElement>(null);
   const createFormRef = useRef<HTMLFormElement>(null);
   const updateFormRef = useRef<HTMLFormElement>(null);
   const deleteFormRef = useRef<HTMLFormElement>(null);
 
+  const { t } = useTranslation("common");
+  const headers = TypeTransfer[props.typeString].headers;
+  const [sort, setSort] = useState<SortProperty | null>(null);
   const getListAPI = TypeTransfer[props.typeString].getListAPI;
   const detailPath = TypeTransfer[props.typeString].detailPath;
   const deleteAPI = TypeTransfer[props.typeString].deleteAPI;
@@ -208,10 +211,12 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     }
     if (value) {
       if (typeof value === "string") {
-        return <p>{value}</p>;
-      } else return <p>{String(value)}</p>;
+        return <Label text={value} t={t} translate={true} className="" inheritedClass />;
+      } else {
+        return <Label text={String(value)} t={t} translate={true} className="" inheritedClass />;
+      }
     } else {
-      return <p>No Data</p>;
+      return <Label text={"common:text.no-data"} t={t} translate={true} className="" inheritedClass />;
     }
   };
 
@@ -221,7 +226,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
         <div className="flex gap-4 w-[50%]">
           <SearchBar
             onSearch={() => {}}
-            placeholder="Search..."
+            placeholder={t("common:button.search") + "..."}
             className="w-full"
             inputMainColor="primary"
             buttonMainColor="primary"
@@ -234,7 +239,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
             formButton={
               <Button
                 action={() => {}}
-                text="Filter"
+                text="common:button.filter"
                 mainColor="primary"
                 iconAfter={<FilterIcon size={20} />}
                 contextColor="default"
@@ -242,7 +247,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                 border
               />
             }
-            formTitle="Filter"
+            formTitle={"common:button.filter"}
             onSubmit={handleFilter}
             isPopup={true}
             ref={filterFormRef}
@@ -264,7 +269,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
             />
           }
           isPopup={true}
-          formTitle="Insert"
+          formTitle={t("common:button.create")}
           onSubmit={handleCreate}
           ref={createFormRef}
           onSubmitNoReload
@@ -277,8 +282,18 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
           ([key, header], index) =>
             !header.hidden && (
               <div key={key} className={cn(columnStyle, `${index === 0 ? "" : ""}`)}>
-                <div className={cn(headerStyle, `${index === 0 ? "" : ""}`)} onClick={() => handleSort(key)}>
-                  <p className="whitespace-nowrap font-bold">{header.label}</p>
+                <div
+                  className={cn(headerStyle, `${index === 0 ? "" : ""}`)}
+                  onClick={() => (header.sortable ? handleSort(key) : "")}
+                >
+                  <Label
+                    text={header.label}
+                    t={t}
+                    className="whitespace-nowrap font-bold"
+                    inheritedClass
+                    translate={true}
+                  />
+                  <br />
                   <Button
                     action={() => {}}
                     text=""
@@ -299,25 +314,35 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                     manualHover
                     border={false}
                     isTransparent
+                    disabled={!header.sortable}
                   />
                 </div>
-                {listItems?.map((item, rowIndex) => (
-                  <div
-                    key={rowIndex}
-                    className={`flex items-center justify-center flex-1 w-full border-b p-3 text-black bg-gray-100 cursor-pointer ${props.rowClassName} item-row-${rowIndex}`}
-                    onMouseOver={() => hoverRow(rowIndex)}
-                    onMouseLeave={() => unhoverRow(rowIndex)}
-                    onClick={() => handleRowClick(item.id)}
-                  >
-                    {renderCell(item, key)}
-                  </div>
-                ))}
+                <div className="flex flex-col w-full flex-1 items-stretch">
+                  {listItems.map((item, rowIndex) => (
+                    <div
+                      key={rowIndex}
+                      className={`flex whitespace-nowrap items-center justify-center flex-1 w-full border-b p-3 text-black bg-gray-100 cursor-pointer ${props.rowClassName} item-row-${rowIndex}`}
+                      onMouseOver={() => hoverRow(rowIndex)}
+                      onMouseLeave={() => unhoverRow(rowIndex)}
+                      onClick={() => handleRowClick(item.id)}
+                    >
+                      {renderCell(item, key)}
+                    </div>
+                  ))}
+                </div>
               </div>
             ),
         )}
         <div key={"actions"} className={cn(columnStyle)}>
           <div className={cn(headerStyle)}>
-            <p className="whitespace-nowrap font-bold">Actions</p>
+            <Label
+              text="common:text.actions"
+              translate={true}
+              t={t}
+              inheritedClass
+              className="whitespace-nowrap font-bold"
+            />
+            <br />
             <Button
               action={() => {}}
               text=""
@@ -351,7 +376,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                   />
                 }
                 isPopup={true}
-                formTitle="Update"
+                formTitle={t("common:button.update")}
                 onSubmit={handleUpdate}
                 ref={updateFormRef}
                 onSubmitNoReload
@@ -371,7 +396,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                   />
                 }
                 isPopup={true}
-                formTitle="Delete"
+                formTitle={t("common:button.delete")}
                 onSubmit={handleDelete}
                 ref={deleteFormRef}
                 onSubmitNoReload

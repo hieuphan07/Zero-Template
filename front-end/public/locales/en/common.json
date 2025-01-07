@@ -1,0 +1,28 @@
+{
+    "button": {
+        "sort": "Sort",
+        "create": "Create",
+        "update": "Update",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "save": "Save",
+        "search": "Search",
+        "reset": "Reset",
+        "filter": "Filter",
+        "clear": "Clear",
+        "close": "Close",
+        "add": "Add",
+        "edit": "Edit",
+        "view": "View",
+        "download": "Download"
+    },
+    "text": {
+        "actions": "Actions",
+        "no-data": "No data",
+        "admin": "Admin",
+        "user": "User",
+        "super-admin": "Super Admin",
+        "manager": "Manager",
+        "employee": "Employee"
+    }
+}

@@ -2,8 +2,11 @@
 
 import { cn } from "@/lib/utils";
 import { ButtonProps } from "../../../types/components-type/button-type";
+import Label from "../Label/Label";
+import { useTranslation } from "next-i18next";
 
 const Button = (props: ButtonProps) => {
+  const { t } = useTranslation();
   const baseStyles =
     "inline-flex items-center justify-center rounded-md font-medium transition-colors transition-all duration-500 focus:outline-none w-full font-bold sm:w-auto text-sm sm:text-base px-2 py-2 sm:px-3 sm:py-3 ";
 
@@ -89,9 +92,10 @@ const Button = (props: ButtonProps) => {
       type={props.type ? props.type : "button"}
       onMouseEnter={props.onMouseEnter}
       onMouseLeave={props.onMouseLeave}
+      suppressHydrationWarning
     >
       {props.iconBefore && <span className="">{props.iconBefore}</span>}
-      {props.text && <span className="">{props.text}</span>}
+      {props.text && <Label text={props.text} translate={true} t={t} inheritedClass={true} />}
       {props.iconAfter && <span className="">{props.iconAfter}</span>}
     </button>
   );

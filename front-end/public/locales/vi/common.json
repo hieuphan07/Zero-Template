@@ -1,0 +1,28 @@
+{
+    "button": {
+        "sort": "Sắp xếp",
+        "create": "Tạo mới",
+        "update": "Cập nhật",
+        "delete": "Xóa",
+        "cancel": "Hủy",
+        "save": "Lưu",
+        "search": "Tìm kiếm",
+        "reset": "Đặt lại",
+        "filter": "Lọc",
+        "clear": "Xóa",
+        "close": "Đóng",
+        "add": "Thêm",
+        "edit": "Sửa",
+        "view": "Xem",
+        "download": "Tải xuống"
+    },
+    "text": {
+        "actions": "Hành động",
+        "no-data": "Không có dữ liệu",
+        "admin": "Quản trị viên",
+        "user": "Người dùng",
+        "super-admin": "Quản trị viên cao cấp",
+        "manager": "Quản lý",
+        "employee": "Nhân viên"
+    }
+}

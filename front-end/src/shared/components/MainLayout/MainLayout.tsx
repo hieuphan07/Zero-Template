@@ -5,10 +5,20 @@ import Footer from "../Organisms/Footer/Footer";
 import SectionWrapper from "../Organisms/SectionWrapper/SectionWrapper";
 import { MainLayoutProps } from "@/shared/types/components-type/main-layout-type";
 import SideMenu from "../Organisms/SideMenu/SideMenu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { appWithTranslation } from "next-i18next";
+import { useTranslation } from "react-i18next";
 
 const MainLayout = (props: MainLayoutProps) => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const defaultLanguage = i18n?.options?.fallbackLng || i18n?.language || "en";
+    if (i18n && typeof i18n.changeLanguage === "function") {
+      i18n.changeLanguage(defaultLanguage as string);
+    }
+  }, [i18n]);
 
   return (
     <>
@@ -35,4 +45,5 @@ const MainLayout = (props: MainLayoutProps) => {
   );
 };
 
-export default MainLayout;
+// eslint-disable-next-line
+export default appWithTranslation(MainLayout as any);
