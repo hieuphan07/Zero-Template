@@ -7,4 +7,6 @@ export type LabelProps = ComponentDefaultProps & {
   inheritedClass?: boolean;
   htmlFor?: string;
   translate?: boolean;
+  truncate?: boolean;
+  onClick?: () => void;
 };

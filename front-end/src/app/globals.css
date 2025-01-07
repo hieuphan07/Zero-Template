@@ -12,7 +12,7 @@ body {
     --foreground: rgb(10 10 10);
     --primary: rgb(200, 200, 200);
     --primary-foreground: rgb(128, 128, 128);
-    --secondary: rgb(0, 162, 255);
+    --secondary: rgb(240, 240, 240);
     --secondary-foreground: rgb(31, 41, 55);
     --warning: rgb(245, 158, 11);
     --warning-foreground: rgb(255, 255, 255);
@@ -62,10 +62,42 @@ body {
     from {
       transform: translateY(-50%);
       opacity: 0;
+      pointer-events: none;
     }
     to {
       transform: translateY(0);
       opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.5s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(0%);
+      opacity: 1;
+      pointer-events: none;
+    }
+    to {
+      transform: translateY(-50%);
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  .progress-5-seconds {
+    animation: progress 5s linear;
+  }
+
+  @keyframes progress {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
     }
   }
 
