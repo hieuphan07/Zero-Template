@@ -211,12 +211,12 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     }
     if (value) {
       if (typeof value === "string") {
-        return <Label text={value} t={t} translate={true} className="" inheritedClass />;
+        return <Label text={value} t={t} truncate translate={true} className="" inheritedClass />;
       } else {
-        return <Label text={String(value)} t={t} translate={true} className="" inheritedClass />;
+        return <Label text={String(value)} t={t} truncate translate={true} className="" inheritedClass />;
       }
     } else {
-      return <Label text={"common:text.no-data"} t={t} translate={true} className="" inheritedClass />;
+      return <Label text={"common:text.no-data"} t={t} truncate translate={true} className="" inheritedClass />;
     }
   };
 

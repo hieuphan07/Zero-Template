@@ -50,8 +50,70 @@ const Form = (props: FormProps) => {
 
   if (!props.isPopup) {
     return (
-      <form name={props.formName} className={`w-full ${props.className}`}>
-        {props.children}
+      <form
+        name={props.formName}
+        className={`w-full ${props.className}`}
+        onSubmit={
+          props.onSubmitNoReload
+            ? (event) => {
+                event.preventDefault();
+                props.onSubmit();
+                if (props.onSubmitClosePopUp) {
+                  handleToggle();
+                }
+              }
+            : () => {
+                props.onSubmit();
+                if (props.onSubmitClosePopUp) {
+                  handleToggle();
+                }
+              }
+        }
+        ref={props.ref}
+      >
+        <Label
+          text={props.formTitle ?? ""}
+          t={t}
+          translate={true}
+          className={`flex justify-center w-full text-4xl font-bold ${props.formTextClassName}`}
+        />
+        <Button
+          text=""
+          iconBefore={<XIcon />}
+          action={handleToggle}
+          mainColor={"default"}
+          contextColor={"primary"}
+          className="!w-auto absolute top-0 right-0"
+          isTransparent={true}
+        />
+        <div className="h-[85%] overflow-y-auto">{props.children}</div>
+        <div className={`absolute bottom-0 w-full z-10 bg-background flex justify-end ${props.belowButtonsClassName}`}>
+          {props.manualBelowButtons ? (
+            props.belowButtons?.map((button, index) => <Fragment key={index}>{button}</Fragment>)
+          ) : (
+            <div className="flex gap-4">
+              <Button
+                key={-2}
+                text={"Submit"}
+                action={() => {}}
+                mainColor={"primary"}
+                contextColor={"default"}
+                isTransparent={true}
+                border
+                type="submit"
+              />
+              <Button
+                key={-1}
+                text={"Cancel"}
+                action={handleToggle}
+                mainColor={"primary"}
+                contextColor={"default"}
+                isTransparent={true}
+                border
+              />
+            </div>
+          )}
+        </div>
       </form>
     );
   }

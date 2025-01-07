@@ -26,7 +26,7 @@ const MenuTab = (props: MenuTabProps) => {
         <ZeroLink
           href={props.path}
           className="flex-1 flex items-center gap-2"
-          color={pathname === "/" + props.path ? "secondary" : props.color}
+          color={pathname === "/" + props.path ? "info" : props.color}
           action={toggleExpand}
         >
           {props.icon}
