@@ -11,22 +11,22 @@ export interface User extends DefaultItemType {
 
 export const UserTableHeaders: TableHeaders = {
   username: {
-    label: "Username",
+    label: "user-management:username",
     sortable: true,
     hidden: false,
   },
   email: {
-    label: "Email",
-    sortable: true,
-    hidden: false,
-  },
-  lastLogin: {
-    label: "Last Login",
+    label: "user-management:email",
     sortable: true,
     hidden: false,
   },
   phoneNumber: {
-    label: "Phone Number",
+    label: "user-management:phoneNumber",
+    sortable: true,
+    hidden: false,
+  },
+  lastLogin: {
+    label: "user-management:lastLogin",
     sortable: true,
     hidden: false,
   },

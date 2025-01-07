@@ -48,6 +48,7 @@ const Input = (props: InputProps) => {
       className={`${baseStyles} ${props.className}`}
       onChange={props.delayOnChange ? handleChange : props.onChange}
       onKeyDown={props.onKeyDown}
+      suppressHydrationWarning
     />
   );
 };

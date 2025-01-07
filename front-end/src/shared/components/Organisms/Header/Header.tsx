@@ -3,8 +3,12 @@
 import { Bell, Languages, MessageCircle, Moon, Settings } from "lucide-react";
 import { UserIcon } from "lucide-react";
 import Button from "../../Atoms/Button/Button";
+import i18n from "@/shared/utils/functions/multilingual/i18n";
 
 const Header = () => {
+  const changeLanguage = (language: string) => {
+    i18n.changeLanguage(language);
+  };
   return (
     <header className="flex sticky right-0 top-0 justify-between w-full">
       <div />
@@ -19,7 +23,7 @@ const Header = () => {
           border={false}
         />
         <Button
-          action={() => {}}
+          action={() => changeLanguage("vi")}
           text=""
           mainColor="secondary"
           contextColor="primary"
@@ -28,7 +32,7 @@ const Header = () => {
           border={false}
         />
         <Button
-          action={() => {}}
+          action={() => changeLanguage("en")}
           text=""
           mainColor="secondary"
           contextColor="primary"
