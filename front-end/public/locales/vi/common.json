@@ -23,6 +23,7 @@
         "user": "Người dùng",
         "super-admin": "Quản trị viên cao cấp",
         "manager": "Quản lý",
-        "employee": "Nhân viên"
+        "employee": "Nhân viên",
+        "filter": "Lọc"
     }
 }

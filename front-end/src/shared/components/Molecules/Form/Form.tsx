@@ -76,6 +76,7 @@ const Form = (props: FormProps) => {
           t={t}
           translate={true}
           className={`flex justify-center w-full text-4xl font-bold ${props.formTextClassName}`}
+          inheritedClass
         />
         <Button
           text=""
@@ -167,6 +168,7 @@ const Form = (props: FormProps) => {
               t={t}
               translate={true}
               className={`flex justify-center w-full text-4xl font-bold ${props.formTextClassName}`}
+              inheritedClass
             />
             <Button
               text=""
