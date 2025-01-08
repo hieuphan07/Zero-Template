@@ -1,9 +1,8 @@
 "use client";
 
 import { TypeTransfer } from "../../../constants/type-transfer";
-import { ArrowDown, ArrowUp, ArrowUpDown, FilterIcon, PlusIcon, TrashIcon } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, EditIcon, FilterIcon, PlusIcon, TrashIcon } from "lucide-react";
 import Button from "../../Atoms/Button/Button";
-import { EditIcon } from "lucide-react";
 import Form from "../Form/Form";
 import SearchBar from "../SearchBar/SearchBar";
 import { ListProps } from "@/shared/types/components-type/list-type";
@@ -261,6 +260,8 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
             {props.filterForm}
           </Form>
         </div>
+
+        {/* Insert Form: customized by p-thanhhieu */}
         <Form
           formButton={
             <Button
@@ -278,6 +279,25 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
           ref={createFormRef}
           onSubmitNoReload
           className={props.insertFormClassName}
+          manualBelowButtons={true}
+          belowButtons={[
+            <Button
+              key={-1}
+              text="Cancel"
+              action={() => {}}
+              mainColor="secondary"
+              manualHover={true}
+              className="mr-4 !px-6 !py-3 !bg-[#E9E9E9] !text-[#676767]"
+            />,
+            <Button
+              key={-2}
+              text="Save"
+              action={() => {}}
+              mainColor="primary"
+              className="!px-6 !py-3 !bg-[#5E5F5F] !text-[#DCDCDC]"
+              iconBefore={<i className="fa fa-save" style={{ marginRight: "0.5rem" }} />}
+            />,
+          ]}
         >
           {props.insertForm}
         </Form>

@@ -13,7 +13,7 @@ const Label = (props: LabelProps) => {
     <label
       className={`
         group relative
-        ${props.inheritedClass ? "" : "block text-sm font-medium text-gray-700"} 
+        ${props.inheritedClass ? "" : "block text-sm font-medium text-gray-700"}
         ${props.className}
         ${props.onClick ? "cursor-pointer" : ""}
       `}
@@ -21,6 +21,7 @@ const Label = (props: LabelProps) => {
       htmlFor={props.htmlFor}
     >
       {truncateText(props.text)}
+      {props.required && <span className="text-red-500 ml-1">*</span>}
       <span
         className={`
           absolute left-0 top-full z-10

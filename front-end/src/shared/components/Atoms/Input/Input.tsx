@@ -38,6 +38,7 @@ const Input = (props: InputProps) => {
 
   return (
     <input
+      id={props.id}
       type={props.type ? props.type : "text"}
       name={props.name}
       defaultValue={props.defaultValue}
@@ -48,6 +49,7 @@ const Input = (props: InputProps) => {
       className={`${baseStyles} ${props.className}`}
       onChange={props.delayOnChange ? handleChange : props.onChange}
       onKeyDown={props.onKeyDown}
+      onBlur={props.onBlur}
       suppressHydrationWarning
     />
   );

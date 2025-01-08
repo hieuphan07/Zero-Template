@@ -11,7 +11,6 @@ import Label from "../Label/Label";
 const MenuTab = (props: MenuTabProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const pathname = usePathname();
-  console.log(pathname);
   const { t } = useTranslation();
   const toggleExpand = (e: React.MouseEvent) => {
     if (props.children?.length) {

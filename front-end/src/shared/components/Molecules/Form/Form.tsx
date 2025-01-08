@@ -144,7 +144,7 @@ const Form = (props: FormProps) => {
         >
           <form
             name={props.formName}
-            className={`h-full relative overflow-hidden ${props.className}`}
+            className={`h-full relative overflow-hidden w-full`}
             onSubmit={
               props.onSubmitNoReload
                 ? (event) => {
@@ -188,6 +188,15 @@ const Form = (props: FormProps) => {
               ) : (
                 <div className="flex gap-4">
                   <Button
+                    key={-1}
+                    text={"Cancel"}
+                    action={handleToggle}
+                    mainColor={"primary"}
+                    contextColor={"default"}
+                    isTransparent={true}
+                    border
+                  />
+                  <Button
                     key={-2}
                     text={"Submit"}
                     action={() => {}}
@@ -196,15 +205,6 @@ const Form = (props: FormProps) => {
                     isTransparent={true}
                     border
                     type="submit"
-                  />
-                  <Button
-                    key={-1}
-                    text={"Cancel"}
-                    action={handleToggle}
-                    mainColor={"primary"}
-                    contextColor={"default"}
-                    isTransparent={true}
-                    border
                   />
                 </div>
               )}

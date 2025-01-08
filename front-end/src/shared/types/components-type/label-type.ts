@@ -9,4 +9,5 @@ export type LabelProps = ComponentDefaultProps & {
   translate?: boolean;
   truncate?: boolean;
   onClick?: () => void;
+  required?: boolean;
 };

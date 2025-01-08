@@ -11,7 +11,25 @@ const Checkbox = (props: CheckboxProps) => {
     if (!props.disabled) {
       const newChecked = !isChecked;
       setIsChecked(newChecked);
-      props.onChange?.(newChecked);
+      if (props.onChange) {
+        const hiddenInput = document.getElementById(props.id || props.name) as HTMLInputElement;
+        if (hiddenInput) {
+          // If onChange expects ChangeEvent, create synthetic event
+          const event = {
+            target: {
+              type: "checkbox",
+              checked: newChecked,
+              name: props.name,
+              value: newChecked.toString(),
+              id: props.id || props.name,
+            },
+          } as React.ChangeEvent<HTMLInputElement>;
+          props.onChange(event);
+        } else {
+          // Otherwise just pass the boolean
+          props.onChange(newChecked);
+        }
+      }
     }
   };
 
@@ -87,7 +105,7 @@ const Checkbox = (props: CheckboxProps) => {
           {props.label}
         </label>
       )}
-      <input type="hidden" name={props.name} value={isChecked ? "true" : "false"} />
+      <input type="hidden" id={props.id} name={props.name} value={isChecked ? "true" : "false"} />
     </div>
   );
 };

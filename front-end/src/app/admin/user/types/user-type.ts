@@ -9,6 +9,14 @@ export interface User extends DefaultItemType {
   lastLogin: Date;
 }
 
+export interface UserCreate {
+  username: string;
+  email: string;
+  password: string;
+  phoneNumber: string;
+  roles?: string[];
+}
+
 export const UserTableHeaders: TableHeaders = {
   username: {
     label: "user-management:username",
