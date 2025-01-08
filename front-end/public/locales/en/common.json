@@ -23,6 +23,7 @@
         "user": "User",
         "super-admin": "Super Admin",
         "manager": "Manager",
-        "employee": "Employee"
+        "employee": "Employee",
+        "filter": "Filter"
     }
 }

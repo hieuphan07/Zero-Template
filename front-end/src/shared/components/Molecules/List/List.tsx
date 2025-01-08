@@ -179,15 +179,18 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   const columnStyle = cn(
     props.cellClassName,
     "flex flex-1 flex-col items-center justify-center text-center",
-    "scale-100 hover:scale-105 z-[2] hover:z-[5]",
-    "border-none hover:border-2 hover:border-primary hover:border-solid",
+    props.listHoverSpeicalEffect ? "scale-100 hover:scale-105 z-[2] hover:z-[5]" : "",
+    "border-none",
+    props.listHoverSpeicalEffect ? "hover:border-2 hover:border-primary hover:border-solid" : "",
     "group cursor-pointer origin-center",
     "transition-all duration-300 text-white items-center text-center",
   );
 
   const headerStyle = cn(
     props.headerClassName,
-    "transition-all w-full duration-300 bg-primary px-3 py-3 group-hover:px-6 text-md group-hover:text-xl",
+    "transition-all w-full duration-300 bg-primary px-3 py-3",
+    props.listHoverSpeicalEffect ? "group-hover:px-6" : "",
+    props.listHoverSpeicalEffect ? "group-hover:text-xl" : "",
   );
 
   const renderCell = (item: T, key: string) => {
@@ -247,9 +250,10 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                 border
               />
             }
-            formTitle={"common:button.filter"}
+            formTitle={props.filterFormTitle || "common:text.filter"}
             onSubmit={handleFilter}
             isPopup={true}
+            className={props.filterFormClassName}
             ref={filterFormRef}
             onSubmitNoReload
             onSubmitClosePopUp
@@ -269,10 +273,11 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
             />
           }
           isPopup={true}
-          formTitle={t("common:button.create")}
+          formTitle={props.insertFormTitle || "common:button.create"}
           onSubmit={handleCreate}
           ref={createFormRef}
           onSubmitNoReload
+          className={props.insertFormClassName}
         >
           {props.insertForm}
         </Form>
@@ -376,10 +381,11 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                   />
                 }
                 isPopup={true}
-                formTitle={t("common:button.update")}
+                formTitle={props.updateFormTitle || "common:button.update"}
                 onSubmit={handleUpdate}
                 ref={updateFormRef}
                 onSubmitNoReload
+                className={props.updateFormClassName}
               >
                 {props.updateForm}
               </Form>
@@ -396,10 +402,11 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                   />
                 }
                 isPopup={true}
-                formTitle={t("common:button.delete")}
+                formTitle={props.deleteFormTitle || "common:button.delete"}
                 onSubmit={handleDelete}
                 ref={deleteFormRef}
                 onSubmitNoReload
+                className={props.deleteFormClassName}
               >
                 {props.deleteForm}
               </Form>
