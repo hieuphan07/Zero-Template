@@ -26,8 +26,7 @@ export class RequestBuilder implements IRequestBuilder {
   }
 
   buildUrl(additionalPath?: string): string {
-    // const baseUrl = `/${this.prefix}/${this.version}/${this.resourcePath}`;
-    const baseUrl = `/${this.prefix}/${this.resourcePath}`;
+    const baseUrl = `${process.env.NEXT_PUBLIC_URL_API}/${this.prefix}/${this.version}/${this.resourcePath}`;
     return additionalPath ? `${baseUrl}/${additionalPath}` : baseUrl;
   }
 }

@@ -10,5 +10,5 @@ export type CheckboxProps = ComponentDefaultProps & {
   textClassName?: string;
   mainColor?: Color;
   boxColor?: Color;
-  onChange?: (checked: boolean) => void;
+  onChange?: (checked: boolean | React.ChangeEvent<HTMLInputElement>) => void;
 };

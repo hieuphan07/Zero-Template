@@ -95,7 +95,15 @@ const Button = (props: ButtonProps) => {
       suppressHydrationWarning
     >
       {props.iconBefore && <span className="">{props.iconBefore}</span>}
-      {props.text && <Label text={props.text} translate={true} t={t} inheritedClass={true} />}
+      {props.text && (
+        <Label
+          text={props.text}
+          translate={true}
+          t={t}
+          inheritedClass={true}
+          className="cursor-pointer font-semibold text-sm"
+        />
+      )}
       {props.iconAfter && <span className="">{props.iconAfter}</span>}
     </button>
   );
