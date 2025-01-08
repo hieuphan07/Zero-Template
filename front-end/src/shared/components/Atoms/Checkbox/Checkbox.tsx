@@ -3,8 +3,11 @@
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { CheckboxProps } from "@/shared/types/components-type/checkbox-type";
+import Label from "../Label/Label";
+import { useTranslation } from "next-i18next";
 
 const Checkbox = (props: CheckboxProps) => {
+  const { t } = useTranslation();
   const [isChecked, setIsChecked] = useState(props.checked || false);
 
   const handleClick = () => {
@@ -101,9 +104,14 @@ const Checkbox = (props: CheckboxProps) => {
         )}
       </div>
       {props.label && (
-        <label onClick={handleClick} className={labelStyles}>
-          {props.label}
-        </label>
+        <Label
+          onClick={handleClick}
+          className={labelStyles}
+          htmlFor={props.id}
+          text={props.label}
+          t={t}
+          translate={true}
+        />
       )}
       <input type="hidden" id={props.id} name={props.name} value={isChecked ? "true" : "false"} />
     </div>

@@ -11,17 +11,29 @@ body {
     --background: rgb(250 250 250);
     --foreground: rgb(10 10 10);
     --primary: rgb(200, 200, 200);
+    --primary-500: rgb(255, 255, 255);
     --primary-foreground: rgb(128, 128, 128);
+    --primary-foreground-500: rgb(0, 0, 0);
     --secondary: rgb(240, 240, 240);
+    --secondary-500: rgb(255, 255, 255);
     --secondary-foreground: rgb(31, 41, 55);
+    --secondary-foreground-500: rgb(0, 0, 0);
     --warning: rgb(245, 158, 11);
+    --warning-500: rgb(253, 245, 200);
     --warning-foreground: rgb(255, 255, 255);
+    --warning-foreground-500: rgb(96, 96, 96);
     --success: rgb(34, 197, 94);
+    --success-500: rgb(207, 255, 189);
     --success-foreground: rgb(255, 255, 255);
+    --success-foreground-500: rgb(96, 96, 96);
     --danger: rgb(239, 68, 68);
+    --danger-500: rgb(254, 225, 225);
     --danger-foreground: rgb(255, 255, 255);
+    --danger-foreground-500: rgb(96, 96, 96);
     --info: rgb(96, 165, 250);
+    --info-500: rgb(214, 233, 255);
     --info-foreground: rgb(255, 255, 255);
+    --info-foreground-500: rgb(96, 96, 96);
     --light: rgb(249, 250, 251);
     --light-foreground: rgb(31, 41, 55);
     --dark: rgb(17, 24, 39);
@@ -71,11 +83,11 @@ body {
     }
   }
 
-  .animate-slideUp {
-    animation: slideUp 0.5s ease-out;
+  .animate-slideUpOut {
+    animation: slideUpOut 0.5s ease-out;
   }
 
-  @keyframes slideUp {
+  @keyframes slideUpOut {
     from {
       transform: translateY(0%);
       opacity: 1;
@@ -85,6 +97,77 @@ body {
       transform: translateY(-50%);
       opacity: 0;
       pointer-events: none;
+      display: none;
+    }
+  }
+
+  .animate-slideLeft {
+    animation: slideLeft 0.5s ease-out;
+  }
+
+  @keyframes slideLeft {
+    from {
+      transform: translateX(50%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  .animate-slideRight {
+    animation: slideRight 0.5s ease-out;
+  }
+
+  @keyframes slideRight {
+    from {
+      transform: translateX(-50%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  .animate-slideLeftOut {
+    animation: slideLeftOut 0.5s ease-out;
+  }
+
+  @keyframes slideLeftOut {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: none;
+    }
+    to {
+      transform: translateX(-50%);
+      opacity: 0;
+      pointer-events: none;
+      display: none;
+    }
+  }
+
+  .animate-slideRightOut {
+    animation: slideRightOut 0.5s ease-out;
+  }
+
+  @keyframes slideRightOut {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: none;
+    }
+    to {
+      transform: translateX(50%);
+      opacity: 0;
+      pointer-events: none;
+      display: none;
     }
   }
 
