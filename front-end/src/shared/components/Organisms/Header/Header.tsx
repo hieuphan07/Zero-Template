@@ -24,7 +24,13 @@ const Header = () => {
   const { showNotification } = useNotification();
 
   const onNotiClick = () => {
-    showNotification({ title: "Notification", text: "This is a notification" });
+    showNotification({
+      title: "Notification",
+      content: <div>This is a notification</div>,
+      position: "bottom-right",
+      enableOtherElements: true,
+      color: "primary",
+    });
   };
 
   const LanguageChange = () => {

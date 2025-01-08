@@ -39,6 +39,7 @@ const SearchBar = (props: SearchBarProps) => {
         placeholder={props.placeholder}
         className={`flex-1 !focus:outline-none !ring-0 !focus:ring-0 ${props.attachToEachOther ? "rounded-none rounded-l-md" : ""}`}
         contextColor={props.inputContextColor}
+        border
       />
       <Button
         action={handleSearch}

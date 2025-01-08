@@ -15,6 +15,9 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [notification, setNotification] = useState<NotificationProps | null>(null);
 
   const showNotification = (config: NotificationProps) => {
+    if (notification) {
+      return;
+    }
     setNotification(config);
   };
 
@@ -25,9 +28,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   return (
     <NotificationContext.Provider value={{ showNotification, hideNotification }}>
       {children}
-      {notification && (
-        <Notification title={notification.title} text={notification.text} className={notification.className} />
-      )}
+      {notification && <Notification {...notification} />}
     </NotificationContext.Provider>
   );
 };

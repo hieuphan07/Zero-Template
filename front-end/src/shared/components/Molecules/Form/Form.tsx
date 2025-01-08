@@ -14,13 +14,26 @@ const Form = (props: FormProps) => {
   const popupRef = useRef<HTMLDivElement>(null);
 
   const handleToggle = () => {
-    setIsOpen(!isOpen);
+    if (isOpen) {
+      closeFormPopup();
+    } else {
+      setIsOpen(true);
+    }
   };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (formRef.current && !formRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+      if (props.isPopup) {
+        if (formRef.current && event.target) {
+          const formZIndex = window.getComputedStyle(formRef.current).zIndex;
+          const targetZIndex = window.getComputedStyle(event.target as HTMLElement).zIndex;
+          if (formZIndex < targetZIndex) {
+            return;
+          }
+          if (!formRef.current.contains(event.target as Node)) {
+            closeFormPopup();
+          }
+        }
       }
     };
 
@@ -31,6 +44,7 @@ const Form = (props: FormProps) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   useEffect(() => {
@@ -47,6 +61,21 @@ const Form = (props: FormProps) => {
       }
     };
   }, [isOpen, props.isPopup]);
+
+  const closeFormPopup = () => {
+    if (!props.isPopup) {
+      return;
+    }
+    if (formRef.current) {
+      formRef.current.classList.add("animate-slideUpOut");
+    }
+    setTimeout(() => {
+      if (formRef.current) {
+        formRef.current.classList.remove("animate-slideUpOut");
+      }
+      setIsOpen(false);
+    }, 500);
+  };
 
   if (!props.isPopup) {
     return (
@@ -77,15 +106,6 @@ const Form = (props: FormProps) => {
           translate={true}
           className={`flex justify-center w-full text-4xl font-bold ${props.formTextClassName}`}
           inheritedClass
-        />
-        <Button
-          text=""
-          iconBefore={<XIcon />}
-          action={handleToggle}
-          mainColor={"default"}
-          contextColor={"primary"}
-          className="!w-auto absolute top-0 right-0"
-          isTransparent={true}
         />
         <div className="h-[85%] overflow-y-auto">{props.children}</div>
         <div className={`absolute bottom-0 w-full z-10 bg-background flex justify-end ${props.belowButtonsClassName}`}>
@@ -140,7 +160,7 @@ const Form = (props: FormProps) => {
       >
         <div
           ref={formRef}
-          className={`bg-background rounded-lg p-6 w-[80%] h-[80%] animate-slideDown ${props.className}`}
+          className={`bg-background rounded-lg p-6 w-[80%] h-[80%] animate-slideDown z-[51] ${props.className}`}
         >
           <form
             name={props.formName}

@@ -4,8 +4,11 @@ import { ComponentDefaultProps } from "./component-default-type";
 
 export type InputProps = ComponentDefaultProps & {
   type?: string;
+  isError?: boolean;
   backgroundColor?: Color;
   contextColor?: Color;
+  border?: boolean;
+  inputClassName?: string;
   defaultValue?: string | number;
   value?: string | number;
   placeholder?: string;

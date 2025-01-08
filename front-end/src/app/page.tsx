@@ -67,6 +67,7 @@ export default function Home() {
         mainColor="danger"
         textClassName="font-bold"
       />
+      <Button text="Button" type="button" action={() => {}} mainColor="warning" contextColor="danger" />
     </>
   );
 
