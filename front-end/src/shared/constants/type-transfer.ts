@@ -1,37 +1,29 @@
 import { UserTableHeaders } from "@/app/admin/user/types/user-type";
-import { TableHeaders } from "../types/common-type/shared-types";
+import { TableHeaders, TransferType } from "../types/common-type/shared-types";
 import { userService } from "@/app/admin/user/services/user-service";
 import { PaginationParamsType } from "../types/common-type/pagination-params-type";
 
-export const TypeTransfer: Record<
-  string,
-  {
-    headers: TableHeaders;
-    // eslint-disable-next-line
-    repository: any;
-    // eslint-disable-next-line
-    getListAPI: (params: PaginationParamsType) => Promise<any>;
-    // eslint-disable-next-line
-    getAPI: any;
-    // eslint-disable-next-line
-    createAPI: any;
-    // eslint-disable-next-line
-    updateAPI: any;
-    // eslint-disable-next-line
-    deleteAPI: any;
-    listPath: string;
-    detailPath: string;
-  }
-> = {
-  User: {
-    headers: UserTableHeaders,
-    repository: userService,
-    getListAPI: (params: PaginationParamsType) => userService.getUsers(params),
-    getAPI: userService.getUser,
-    createAPI: userService.createUser,
-    updateAPI: userService.updateUser,
-    deleteAPI: userService.deleteUser,
-    listPath: "/admin/user",
-    detailPath: "/admin/user/",
-  },
+// Function to create each entry dynamically
+const createUserTypeTransferEntry = (
+  headers: TableHeaders,
+  // eslint-disable-next-line
+  repository: any,
+  listPath: string,
+  detailPath: string,
+): TransferType => {
+  return {
+    headers,
+    repository,
+    getListAPI: (params: PaginationParamsType) => repository.getUsers(params), // Dynamically bind the API method
+    getAPI: () => repository.getUser(),
+    createAPI: () => repository.createUser(),
+    updateAPI: () => repository.updateUser(),
+    deleteAPI: () => repository.deleteUser(),
+    listPath,
+    detailPath,
+  };
+};
+
+export const TypeTransfer: Record<string, TransferType> = {
+  User: createUserTypeTransferEntry(UserTableHeaders, userService, "/admin/user", "/admin/user/"),
 };

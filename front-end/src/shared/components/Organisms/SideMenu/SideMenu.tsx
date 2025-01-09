@@ -8,10 +8,12 @@ import Button from "@/shared/components/Atoms/Button/Button";
 import MenuTab from "../../Atoms/MenuTab/MenuTab";
 import { MenuItem, SideMenuProps } from "@/shared/types/components-type/sidemenu-type";
 import { menuRoutes } from "@/shared/constants/side-menu-routes";
+import { useRouter } from "next/navigation";
+
 const SideMenu = (props: SideMenuProps) => {
   const [filteredItems, setFilteredItems] = useState<MenuItem[]>(menuRoutes);
   const [locked, setLocked] = useState(false);
-
+  const router = useRouter();
   const handleSearch = (searchTerm: string) => {
     const filtered = menuRoutes.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
     setFilteredItems(filtered);
@@ -49,6 +51,7 @@ const SideMenu = (props: SideMenuProps) => {
                 className="w-full min-h-[2vw] h-[2vw] object-cover object-left"
                 width={100000}
                 height={100000}
+                onClick={() => router.push("/")}
               />
             </div>
             <SearchBar
@@ -72,6 +75,7 @@ const SideMenu = (props: SideMenuProps) => {
                 className="w-full aspect-square object-contain"
                 width={1000000}
                 height={100000}
+                onClick={() => router.push("/")}
               />
             </div>
             <Button

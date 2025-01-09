@@ -10,4 +10,5 @@ export type NotificationProps = ComponentDefaultProps & {
   confirmButton?: boolean;
   enableOtherElements?: boolean;
   contentClassName?: string;
+  closeOnClick?: boolean;
 };

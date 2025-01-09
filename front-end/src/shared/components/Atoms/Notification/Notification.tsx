@@ -16,6 +16,7 @@ const Notification = (props: NotificationProps) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      if (!props.closeOnClick) return;
       if (contextRef.current && event.target) {
         const formZIndex = window.getComputedStyle(contextRef.current).zIndex;
         const targetZIndex = window.getComputedStyle(event.target as HTMLElement).zIndex;
@@ -117,9 +118,9 @@ const Notification = (props: NotificationProps) => {
     >
       <div
         ref={contextRef}
-        className={`relative bg-${props.color || "primary"}-500 overflow-hidden rounded-lg min-w-[30vw] max-w-[60vw] shadow-sm border-[1px] border-${props.color || "primary"} w-fit ${inAnimationStyle[props.position || "center"]} ${props.className}`}
+        className={`relative bg-${props.color || "primary"}-500 overflow-hidden rounded-lg min-w-[20vw] max-w-[40vw] shadow-sm border-[1px] border-${props.color || "primary"} w-fit ${inAnimationStyle[props.position || "center"]} ${props.className}`}
       >
-        <div className="relative p-6 pb-2">
+        <div className="relative p-4 pb-2">
           {props.title && (
             <div
               className={`flex justify-center items-center gap-2 w-full text-2xl font-bold mb-4 underline underline-offset-1 text-${props.color || "primary"}-foreground500`}
@@ -141,7 +142,7 @@ const Notification = (props: NotificationProps) => {
             isTransparent={true}
           />
           <div
-            className={`mt-4 w-full h-full flex justify-center items-center min-h-[100px] text-${props.color || "primary"}-foreground500 ${props.contentClassName}`}
+            className={`mt-4 w-full h-full flex justify-center items-center min-h-[50px] text-${props.color || "primary"}-foreground500 ${props.contentClassName}`}
           >
             {props.content}
           </div>

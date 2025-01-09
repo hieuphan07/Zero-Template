@@ -12,7 +12,7 @@ const Label = (props: LabelProps) => {
   return (
     <label
       className={`
-        group relative
+        relative custom-label
         ${props.inheritedClass ? "" : "block text-sm font-medium text-gray-700"}
         ${props.className}
         ${props.onClick ? "cursor-pointer" : ""}
@@ -25,12 +25,13 @@ const Label = (props: LabelProps) => {
       <span
         className={`
           absolute left-0 top-full z-10
-          hidden ${
-            props.truncate &&
-            ((props.translate && props.t && props.t(props.text).length > 10) ||
-              (!props.translate && props.text.length > 10)) &&
-            "group-hover:block"
-          }
+          hidden
+           ${
+             props.truncate &&
+             ((props.translate && props.t && props.t(props.text).length > 10) ||
+               (!props.translate && props.text.length > 10)) &&
+             "label-extended-span"
+           }
           bg-black text-white
           px-2 py-1 rounded
           text-sm whitespace-nowrap
