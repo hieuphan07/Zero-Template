@@ -7,4 +7,5 @@ export type MainLayoutProps = ComponentDefaultProps & {
   title?: string;
   titleColor?: Color;
   maxWidthPercentage?: number;
+  containerClassName?: string;
 };

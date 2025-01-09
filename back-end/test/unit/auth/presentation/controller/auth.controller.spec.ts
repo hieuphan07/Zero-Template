@@ -89,10 +89,12 @@ describe('AuthController', () => {
         password: 'password123',
       };
       const expectedResponse: LoginResponseDto = {
-        accessToken: 'test-token',
-        user: {
-          id: 'test-id',
-          username: 'testuser',
+        payload: {
+          accessToken: 'test-token',
+          user: {
+            id: 'test-id',
+            username: 'testuser',
+          },
         },
       };
 

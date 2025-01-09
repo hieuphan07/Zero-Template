@@ -6,7 +6,7 @@ import { RegisterDto } from '../dtos/register.dto';
 import { RegisterUserUseCase } from '../../application/use-cases/register-user.use-case';
 import { ApiResponse, ApiOperation } from '@nestjs/swagger';
 
-@Controller('api/auth')
+@Controller('api/v1/auth')
 export class AuthController {
   constructor(
     private readonly loginUseCase: LoginUseCase,
@@ -41,6 +41,14 @@ export class AuthController {
   }
 
   @Post('login')
+  @ApiResponse({
+    status: 404,
+    description: 'common:auth.user-not-found',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'common:auth.invalid-credentials',
+  })
   async login(@Body() loginDto: LoginDto): Promise<LoginResponseDto> {
     try {
       return await this.loginUseCase.execute(loginDto);

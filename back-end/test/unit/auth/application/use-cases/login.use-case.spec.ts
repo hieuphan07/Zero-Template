@@ -62,10 +62,12 @@ describe('LoginUseCase', () => {
       const result = await useCase.execute(loginDto);
 
       expect(result).toEqual({
-        accessToken: 'mock-jwt-token',
-        user: {
-          id: '1',
-          username: 'testuser',
+        payload: {
+          accessToken: 'mock-jwt-token',
+          user: {
+            id: '1',
+            username: 'testuser',
+          },
         },
       });
       expect(authRepository.login).toHaveBeenCalledWith(loginDto.username);

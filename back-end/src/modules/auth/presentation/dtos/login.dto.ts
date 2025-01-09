@@ -12,9 +12,11 @@ export class LoginDto {
 }
 
 export class LoginResponseDto {
-  accessToken: string;
-  user: {
-    id: string;
-    username: string;
+  payload: {
+    accessToken: string;
+    user: {
+      id: string;
+      username: string;
+    };
   };
 }
