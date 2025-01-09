@@ -35,11 +35,14 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   const { t } = useTranslation("common");
   const headers = TypeTransfer[props.typeString].headers;
   const [sort, setSort] = useState<SortProperty | null>(null);
+  const repository = TypeTransfer[props.typeString].repository;
+  console.log(repository);
   const getListAPI = TypeTransfer[props.typeString].getListAPI;
   const detailPath = TypeTransfer[props.typeString].detailPath;
   const deleteAPI = TypeTransfer[props.typeString].deleteAPI;
   const updateAPI = TypeTransfer[props.typeString].updateAPI;
   const createAPI = TypeTransfer[props.typeString].createAPI;
+  console.log(getListAPI);
 
   useEffect(() => {
     if (props.items) {
@@ -68,6 +71,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
       searchBy: filter?.[0]?.key,
       searchValue: filter?.[0]?.value,
     });
+    console.log(listItems);
     setListItems(listItems?.data);
     setMeta(listItems?.meta);
   };

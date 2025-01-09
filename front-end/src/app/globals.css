@@ -198,4 +198,12 @@ body {
       transform: scale(1);
     }
   }
+
+  .label-extended-span {
+    display: none; /* Initially hidden */
+  }
+  
+  .custom-label:hover .label-extended-span {
+    display: block; /* Shown on hover */
+  }
 }
