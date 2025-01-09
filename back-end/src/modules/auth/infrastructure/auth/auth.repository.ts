@@ -16,7 +16,7 @@ export class AuthRepository implements IAuthRepository {
   async login(username: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { username } });
     if (!user) {
-      throw new UnauthorizedException('Invalid username or password');
+      throw new UnauthorizedException('common:auth.invalid-credentials');
     }
 
     user.lastLogin = new Date();
@@ -32,7 +32,7 @@ export class AuthRepository implements IAuthRepository {
       return UserMapper.toDomain(savedUser);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
-        throw new ConflictException('User already exists');
+        throw new ConflictException('common:auth.user-already-exists');
       }
       throw error;
     }

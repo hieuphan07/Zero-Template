@@ -32,7 +32,6 @@ export const onResponse = (response: AxiosResponse): AxiosResponse => {
 
 export const onResponseError = (error: AxiosError<ApiFailureResponse>) => {
   const element = document.getElementById("block-screen");
-
   if (element && element?.style?.display) {
     element.style.display = "none";
   }
@@ -47,14 +46,13 @@ export const onResponseError = (error: AxiosError<ApiFailureResponse>) => {
   } else if (errorData && errorData.message) {
     // !Todo:Notification Error
     if (Array.isArray(errorData.message) && errorData?.message?.length > 0) {
-      console.error(errorData.message[0]);
+      console.log(errorData.message[0]);
     } else {
-      console.error(errorData.message);
+      console.log(errorData.message);
     }
   } else {
-    console.error(error?.message);
+    console.log(error?.message);
   }
-
   return Promise.reject(error);
 };
 

@@ -85,10 +85,9 @@ class HttpClient implements IHttpClient {
     if (isAxiosError(error)) {
       const errorData = error.response?.data;
       const errorMessage =
-        typeof errorData.error === "string"
-          ? ErrorMessages.get(errorData.error) || errorData.error
-          : this.extractErrorMessages(errorData.error);
-
+        typeof errorData.message === "string"
+          ? ErrorMessages.get(errorData.message) || errorData.message
+          : this.extractErrorMessages(errorData.message);
       return errorMessage || "Network error!";
     }
     return "Network error!";
@@ -119,7 +118,7 @@ class HttpClient implements IHttpClient {
         }
         resolve(result);
       } catch (error) {
-        reject(this.handleError(error));
+        reject(new Error(this.handleError(error)));
       }
     });
   }

@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { NotificationProvider } from "@/shared/hooks/useNotification";
 import UnAuthHeader from "../Organisms/Header/UnAuthHeader";
 
-const MainLayout = (props: MainLayoutProps) => {
+const UnAuthLayout = (props: MainLayoutProps) => {
   const { i18n } = useTranslation();
 
   useEffect(() => {
@@ -28,6 +28,7 @@ const MainLayout = (props: MainLayoutProps) => {
           maxWidthPercentage={props.maxWidthPercentage}
           title={props.title}
           titleColor={props.titleColor}
+          containerClassName={props.containerClassName}
         >
           {props.children}
         </SectionWrapper>
@@ -38,4 +39,4 @@ const MainLayout = (props: MainLayoutProps) => {
 };
 
 // eslint-disable-next-line
-export default appWithTranslation(MainLayout as any);
+export default appWithTranslation(UnAuthLayout as any);

@@ -8,4 +8,5 @@ export type SectionWrapperProps = ComponentDefaultProps & {
   titleColor?: Color;
   maxWidthPercentage?: number;
   padding?: boolean;
+  containerClassName?: string;
 };

@@ -14,7 +14,9 @@
         "add": "Add",
         "edit": "Edit",
         "view": "View",
-        "download": "Download"
+        "download": "Download",
+        "login": "Login",
+        "dont-have-account": "Don't have an account? Sign up"
     },
     "text": {
         "actions": "Actions",
@@ -24,6 +26,24 @@
         "super-admin": "Super Admin",
         "manager": "Manager",
         "employee": "Employee",
-        "filter": "Filter"
+        "login": "Login",
+        "filter": "Filter",
+        "error": "Error"
+    },
+    "message": {
+        "login-failed": "Login failed",
+        "login-success": "Login success"
+    },
+    "auth": {
+        "login": "Login",
+        "username": "Username",
+        "password": "Password",
+        "remember-me": "Remember me",
+        "enter-your-username": "Enter your username",
+        "enter-your-password": "Enter your password",
+        "username-must-be-at-least-2-characters-long": "Username must be at least 2 characters long",
+        "password-must-be-at-least-8-characters-long": "Password must be at least 8 characters long",
+        "invalid-credentials": "Invalid username or password",
+        "user-not-found": "User not found"
     }
 }

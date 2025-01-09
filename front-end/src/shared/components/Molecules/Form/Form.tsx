@@ -107,7 +107,7 @@ const Form = (props: FormProps) => {
           className={`flex justify-center w-full text-4xl font-bold ${props.formTextClassName}`}
           inheritedClass
         />
-        <div className="h-[85%] overflow-y-auto">{props.children}</div>
+        <div className={`h-[85%] overflow-y-auto ${props.childrenClassName}`}>{props.children}</div>
         <div className={`absolute bottom-0 w-full z-10 bg-background flex justify-end ${props.belowButtonsClassName}`}>
           {props.manualBelowButtons ? (
             props.belowButtons?.map((button, index) => <Fragment key={index}>{button}</Fragment>)
@@ -199,7 +199,7 @@ const Form = (props: FormProps) => {
               className="!w-auto absolute top-0 right-0"
               isTransparent={true}
             />
-            <div className="h-[85%] overflow-y-auto">{props.children}</div>
+            <div className={`h-[85%] overflow-y-auto ${props.childrenClassName}`}>{props.children}</div>
             <div
               className={`absolute bottom-0 w-full z-10 bg-background flex justify-end ${props.belowButtonsClassName}`}
             >

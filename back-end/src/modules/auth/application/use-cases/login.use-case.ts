@@ -18,21 +18,23 @@ export class LoginUseCase {
     const user = await this.authRepository.login(loginDto.username);
 
     if (!user) {
-      throw new UnauthorizedException('Invalid username');
+      throw new UnauthorizedException('common:auth.invalid-credentials');
     }
 
     const isValidPassword = await this.passwordService.compare(loginDto.password, user.getPassword());
     if (!isValidPassword) {
-      throw new UnauthorizedException('Invalid password');
+      throw new UnauthorizedException('common:auth.invalid-credentials');
     }
     const payload = { username: user.getUsername(), sub: user.getId() };
     const accessToken = this.jwtService.sign(payload);
 
     return {
-      accessToken,
-      user: {
-        id: user.getId().toString(),
-        username: user.getUsername(),
+      payload: {
+        accessToken,
+        user: {
+          id: user.getId().toString(),
+          username: user.getUsername(),
+        },
       },
     };
   }

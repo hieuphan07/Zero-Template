@@ -16,6 +16,7 @@ export type FormProps = ComponentDefaultProps & {
   popUpButtonMainColor?: Color;
   popUpButtonContextColor?: Color;
   manualBelowButtons?: boolean;
+  childrenClassName?: string;
   belowButtons?: ReactNode[];
   belowButtonsClassName?: string;
 };
