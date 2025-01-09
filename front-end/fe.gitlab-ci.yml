@@ -22,7 +22,7 @@ build_frontend_development:
     - cd $FE_WORKDIR
   script:
     - echo "Build docker image ${CI_ENVIRONMENT_NAME}"
-    - docker-compose -f docker-compose.yml build
+    - docker compose -f docker-compose.yml build
     - echo "Build completed successfully"
   only:
     - develop
@@ -63,7 +63,7 @@ deploy_frontend_development:
     - docker container stop "${FE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
     - docker container rm "${FE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
     - echo "Run container"
-    - docker-compose -f docker-compose.yml up -d --remove-orphans
+    - docker compose -f docker-compose.yml up -d --remove-orphans
     - echo "Remove unused image"
     - docker image prune -af
     - echo "Running deploy process..."

@@ -1,5 +1,18 @@
-version: '3.8'
 services:
+  nest-zero-mysql:
+    image: mysql:8.0
+    container_name: nest-zero-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: '${MYSQL_DATABASE}'
+      MYSQL_USER: '${MYSQL_USER}'
+      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+    ports:
+      - ${DATABASE_PORT}:${MYSQL_TCP_PORT}
+    volumes:
+      - nest-zero-mysql:/var/lib/mysql
+
   nest-zero-api:
     container_name: nest_zero_api
     image: nest-zero-api-development
@@ -8,16 +21,15 @@ services:
       dockerfile: Dockerfile.development
     ports:
       - ${BE_CONTAINER_PORT}:${BE_PORT}
-    networks:
-      - nest-zero-development
-    volumes:
-      - nest-zero-be-app:/usr/src/app
-      - nest-zero-be-app-data:/usr/src/app/node_modules
+    restart: unless-stopped
+    depends_on:
+      - nest-zero-mysql
 
 networks:
-  nest-zero-development:
+  default:
     name: nest-zero-development
     driver: bridge
 volumes:
-  nest-zero-be-app:
-  nest-zero-be-app-data:
+  nest-zero-mysql:
+    driver: local
+

@@ -24,14 +24,13 @@ build_backend_development:
     - ./scripts/prepare-env.sh
   script:
     - echo "Build docker image ${CI_ENVIRONMENT_NAME}"
-    - docker-compose --env-file .env -f docker-compose.yml build
+    - docker compose --env-file .env -f docker-compose.yml build nest-zero-api
     - rm -f .env
     - echo "Build completed successfully"
   only:
     - develop
   tags:
     - zero-backend-runner
-  allow_failure: true
 
 build_backend_production:
   stage: build
@@ -66,19 +65,16 @@ deploy_backend_development:
   stage: deploy
   script:
     - echo "Stop and remove current container"
-    - docker container stop "${BE_CONTAINER_NAME}" || true
-    - docker container rm "${BE_CONTAINER_NAME}" || true
+    - docker stop "${BE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
+    - docker rm "${BE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
     - echo "Run container"
-    - docker-compose -f docker-compose.yml up -d --remove-orphans
-    - echo "Remove unused image"
-    - docker image prune -af
+    - docker compose -f docker-compose.yml up -d --remove-orphans
     - echo "Running deploy process..."
     - echo "Deploy ${CI_ENVIRONMENT_NAME} environment completed!"
   only:
     - develop
   tags:
     - zero-backend-runner
-  allow_failure: true
 
 deploy_backend_production:
   environment:
