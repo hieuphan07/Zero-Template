@@ -17,7 +17,7 @@ const options: DataSourceOptions & SeederOptions = {
     process.env.NODE_ENV === 'local' ? String(process.env.TYPEORM_SYNCHRONIZE).toLowerCase() === 'true' : false,
   migrationsRun:
     process.env.NODE_ENV === 'local' ? String(process.env.TYPEORM_MIGRATIONSRUN).toLowerCase() === 'true' : false,
-  migrations: ['src/shared/infrastructure/database/migrations/*.{ts,js}'],
+  migrations: ['dist/shared/infrastructure/database/migrations/*.{ts,js}'],
   migrationsTableName: 'history',
   seedTracking: true,
   seeds: [join(__dirname, '../../database/seeds/*.{ts,js}')],
