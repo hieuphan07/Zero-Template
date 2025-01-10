@@ -7,6 +7,7 @@ import { UserCreate } from "./types/user-type";
 import MainLayout from "@/shared/components/MainLayout/MainLayout";
 import CreateUserForm from "./components/CreateUserForm";
 import userValidators from "./utils/user-validator";
+import DeleteUserForm from "./components/DeleteUserForm";
 
 export default function UserPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -95,7 +96,7 @@ export default function UserPage() {
   };
 
   return (
-    <MainLayout title="Users Management" maxWidthPercentage={80}>
+    <MainLayout title="user-management:title.user-management-title" maxWidthPercentage={80}>
       <List<User>
         typeString="User"
         insertForm={
@@ -110,6 +111,8 @@ export default function UserPage() {
         insertFormClassName="!w-1/3"
         insertFormTitle="user-management:create-new-user"
         insertResetForm={resetForm}
+        deleteForm={<DeleteUserForm />}
+        deleteFormClassName="!w-1/4 !h-1/4"
       />
     </MainLayout>
   );

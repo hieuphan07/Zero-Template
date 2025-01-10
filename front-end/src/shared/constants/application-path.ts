@@ -6,6 +6,7 @@ export const AllPath: { [key: string]: ApplicationPath } = {
   profile: { path: "/profile", name: "common:path.profile" },
   admin: { path: "/admin", name: "common:path.admin" },
   adminUser: { path: "/admin/user", name: "common:path.adminUser" },
+  adminUserDetail: { path: "/admin/user/:id", name: "common:path.adminUserDetail" },
   adminRoles: { path: "/admin/roles", name: "common:path.adminRoles" },
   adminRolesPermissions: { path: "/admin/roles/permissions", name: "common:path.adminRolesPermissions" },
   help: { path: "/help", name: "common:path.help" },

@@ -15,10 +15,10 @@ const createUserTypeTransferEntry = (
     headers,
     repository,
     getListAPI: (params: PaginationParamsType) => repository.getUsers(params), // Dynamically bind the API method
-    getAPI: () => repository.getUser(),
+    getAPI: (id: string) => repository.getUser(id),
     createAPI: (user: UserCreate) => repository.createUser(user),
     updateAPI: () => repository.updateUser(),
-    deleteAPI: () => repository.deleteUser(),
+    deleteAPI: (id: string) => repository.deleteUser(id),
     listPath,
     detailPath,
   };

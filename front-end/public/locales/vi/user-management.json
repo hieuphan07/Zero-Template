@@ -1,4 +1,8 @@
 {
+  "title": {
+    "user-management-title": "Quản lý người dùng",
+    "user-detail-title": "Chi tiết người dùng"
+  },
   "create-new-user": "Tạo người dùng mới",
   "tabs": {
     "userInfo": "Thông tin người dùng",

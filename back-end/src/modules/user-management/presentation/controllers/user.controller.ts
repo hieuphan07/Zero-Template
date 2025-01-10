@@ -46,8 +46,8 @@ export class UserController {
   ) {}
 
   @Get()
-  @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  // @ApiBearerAuth('access-token')
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'List all users' })
   @ApiPaginatedRequest(UserOrmEntity)
   @ApiResponse({
@@ -111,8 +111,8 @@ export class UserController {
   }
 
   @Get(':id')
-  @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  // @ApiBearerAuth('access-token')
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'Get user by id' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -165,8 +165,8 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  @ApiBearerAuth('access-token')
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  // @ApiBearerAuth('access-token')
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete user by ID' })
   @ApiResponse({
     status: HttpStatus.OK,

@@ -68,7 +68,7 @@ const Dropdown = (props: DropdownProps) => {
     if (inputRef.current) {
       inputRef.current.value = item.label;
     }
-    props.action?.(item.value);
+    props.action?.(item);
     setIsOpen(false);
   };
 

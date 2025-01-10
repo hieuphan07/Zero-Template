@@ -38,6 +38,8 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     { label: "50", value: 50 },
   ] as DropdownOption[];
 
+  const notification = useNotification();
+
   const filterFormRef = useRef<HTMLFormElement>(null);
   const createFormRef = useRef<HTMLFormElement>(null);
   const updateFormRef = useRef<HTMLFormElement>(null);
@@ -59,7 +61,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     if (props.items) {
       handleGivenList(sort || undefined, filter);
     } else {
-      handleGetList(page, sort || undefined, filter);
+      handleGetList(page, sort || undefined, filter, recordPerPage);
     }
     // eslint-disable-next-line
   }, []);
@@ -79,17 +81,40 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     filter?: FilterProperty[],
     recordPerPage?: number,
   ) => {
-    const listItems = await getListAPI({
-      page: page,
-      limit: recordPerPage,
-      sortBy: sort?.key,
-      sortDirection: sort?.direction === "asc" ? "ASC" : "DESC",
-      searchBy: filter?.[0]?.key,
-      searchValue: filter?.[0]?.value,
-    });
-    console.log(listItems.data);
-    setListItems(listItems?.data);
-    setMeta(listItems?.meta);
+    try {
+      const listItems = await getListAPI({
+        page: page,
+        limit: recordPerPage,
+        sortBy: sort?.key,
+        sortDirection: sort?.direction === "asc" ? "ASC" : "DESC",
+        searchBy: filter?.[0]?.key,
+        searchValue: filter?.[0]?.value,
+      });
+      setListItems(listItems?.data);
+      setMeta(listItems?.meta);
+    } catch (error) {
+      setListItems([]);
+      setMeta({
+        total: 0,
+        page: 1,
+        lastPage: 1,
+      });
+      showNotification({
+        title: "",
+        content: (
+          <Label
+            text={(error as Error).message || "common:message.get-list-failed"}
+            t={t}
+            translate={true}
+            className="!text-lg !font-bold"
+          />
+        ),
+        color: "danger",
+        position: "top-right",
+        closeOnClick: true,
+        enableOtherElements: true,
+      });
+    }
   };
 
   const handleGivenList = (sort?: SortProperty, filter?: FilterProperty[]) => {
@@ -206,12 +231,46 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     }
   };
 
-  const handleDelete = () => {
-    const formData = new FormData(deleteFormRef.current!);
-    const deleteData = Object.fromEntries(formData.entries());
-    const isValid = props.deleteValidation ? props.deleteValidation(deleteData) : true;
+  const handleDelete = async (id: string) => {
+    const isValid = props.deleteValidation ? props.deleteValidation(id) : true;
     if (isValid) {
-      deleteAPI(deleteData);
+      try {
+        await deleteAPI(id);
+        notification.showNotification({
+          title: "",
+          content: (
+            <Label text={"common:message.delete-success"} t={t} translate={true} className="!text-lg !font-bold" />
+          ),
+          color: "success",
+          position: "top-right",
+          closeOnClick: true,
+          enableOtherElements: true,
+        });
+        // Refresh the list after successful deletion
+        if (props.items) {
+          handleGivenList(sort || undefined, filter);
+        } else {
+          handleGetList(page, sort || undefined, filter, recordPerPage);
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          notification.showNotification({
+            title: "",
+            content: (
+              <Label
+                text={error.message || "common:message.delete-failed"}
+                t={t}
+                translate={true}
+                className="!text-lg !font-bold"
+              />
+            ),
+            color: "danger",
+            position: "top-right",
+            closeOnClick: true,
+            enableOtherElements: true,
+          });
+        }
+      }
     } else {
       console.log("delete not valid");
     }
@@ -349,136 +408,145 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
         </Form>
       </div>
       <div className="w-full flex flex-row justify-center">
-        {Object.entries(headers).map(
-          ([key, header], index) =>
-            !header.hidden && (
-              <div key={key} className={cn(columnStyle, `${index === 0 ? "" : ""}`)}>
-                <div
-                  className={cn(headerStyle, `${index === 0 ? "" : ""}`)}
-                  onClick={() => (header.sortable ? handleSort(key) : "")}
-                >
-                  <Label
-                    text={header.label}
-                    t={t}
-                    className="whitespace-nowrap font-bold"
-                    inheritedClass
-                    translate={true}
-                  />
-                  <br />
-                  <Button
-                    action={() => {}}
-                    text=""
-                    mainColor="default"
-                    contextColor="danger"
-                    iconBefore={
-                      sort?.key === key ? (
-                        sort?.direction === "asc" ? (
-                          <ArrowUp size={20} />
-                        ) : (
-                          <ArrowDown size={20} />
-                        )
-                      ) : (
-                        <ArrowUpDown size={20} />
-                      )
-                    }
-                    className="!p-2 !outline-none hover:outline-none hover:text-white "
-                    manualHover
-                    border={false}
-                    isTransparent
-                    disabled={!header.sortable}
-                  />
-                </div>
-                <div className="flex flex-col w-full flex-1 items-stretch">
-                  {listItems?.map((item, rowIndex) => (
-                    <div
-                      key={rowIndex}
-                      className={`flex whitespace-nowrap items-center justify-center flex-1 w-full border-b p-3 text-black bg-gray-100 cursor-pointer ${props.rowClassName} item-row-${rowIndex}`}
-                      onMouseOver={() => hoverRow(rowIndex)}
-                      onMouseLeave={() => unhoverRow(rowIndex)}
-                      onClick={() => handleRowClick(item.id)}
-                    >
-                      {renderCell(item, key)}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ),
-        )}
-        <div key={"actions"} className={cn(columnStyle)}>
-          <div className={cn(headerStyle)}>
-            <Label
-              text="common:text.actions"
-              translate={true}
-              t={t}
-              inheritedClass
-              className="whitespace-nowrap font-bold"
-            />
-            <br />
-            <Button
-              action={() => {}}
-              text=""
-              mainColor="default"
-              contextColor="danger"
-              iconBefore={<ArrowUpDown size={20} />}
-              className="!p-2 !outline-none hover:outline-none hover:text-white "
-              manualHover
-              border={false}
-              isTransparent
-              disabled
-            />
+        {listItems.length === 0 ? (
+          <div className="w-full text-center py-4">
+            <Label text="common:text.no-data" t={t} translate={true} className="text-lg" />
           </div>
-          {listItems?.map((item, rowIndex) => (
-            <div
-              key={rowIndex}
-              className={`flex gap-2 items-center justify-center flex-1 w-full border-b p-3 text-black bg-gray-100 cursor-pointer ${props.rowClassName} item-row-${rowIndex}`}
-              onMouseOver={() => hoverRow(rowIndex)}
-              onMouseLeave={() => unhoverRow(rowIndex)}
-            >
-              <Form
-                formButton={
-                  <Button
-                    action={() => {}}
-                    text=""
-                    mainColor="primary"
-                    contextColor="default"
-                    iconBefore={<EditIcon size={20} />}
-                    className="!p-2"
-                    border
-                  />
-                }
-                isPopup={true}
-                formTitle={props.updateFormTitle || "common:button.update"}
-                onSubmit={handleUpdate}
-                ref={updateFormRef}
-                onSubmitNoReload
-                className={props.updateFormClassName}
-              >
-                {props.updateForm}
-              </Form>
-              <Form
-                formButton={
-                  <Button
-                    action={() => {}}
-                    text=""
-                    mainColor="danger"
-                    contextColor="danger"
-                    iconBefore={<TrashIcon size={20} />}
-                    className="!p-2"
-                    border
-                  />
-                }
-                isPopup={true}
-                formTitle={props.deleteFormTitle || "common:button.delete"}
-                onSubmit={handleDelete}
-                ref={deleteFormRef}
-                onSubmitNoReload
-                className={props.deleteFormClassName}
-              >
-                {props.deleteForm}
-              </Form>
+        ) : (
+          <>
+            {Object.entries(headers).map(
+              ([key, header], index) =>
+                !header.hidden && (
+                  <div key={key} className={cn(columnStyle, `${index === 0 ? "" : ""}`)}>
+                    <div
+                      className={cn(headerStyle, `${index === 0 ? "" : ""}`)}
+                      onClick={() => (header.sortable ? handleSort(key) : "")}
+                    >
+                      <Label
+                        text={header.label}
+                        t={t}
+                        className="whitespace-nowrap font-bold"
+                        inheritedClass
+                        translate={true}
+                      />
+                      <br />
+                      <Button
+                        action={() => {}}
+                        text=""
+                        mainColor="default"
+                        contextColor="danger"
+                        iconBefore={
+                          sort?.key === key ? (
+                            sort?.direction === "asc" ? (
+                              <ArrowUp size={20} />
+                            ) : (
+                              <ArrowDown size={20} />
+                            )
+                          ) : (
+                            <ArrowUpDown size={20} />
+                          )
+                        }
+                        className="!p-2 !outline-none hover:outline-none hover:text-white "
+                        manualHover
+                        border={false}
+                        isTransparent
+                        disabled={!header.sortable}
+                      />
+                    </div>
+                    <div className="flex flex-col w-full flex-1 items-stretch">
+                      {listItems.map((item, rowIndex) => (
+                        <div
+                          key={rowIndex}
+                          className={`flex whitespace-nowrap items-center justify-center flex-1 w-full border-b p-3 text-black bg-gray-100 cursor-pointer ${props.rowClassName} item-row-${rowIndex}`}
+                          onMouseOver={() => hoverRow(rowIndex)}
+                          onMouseLeave={() => unhoverRow(rowIndex)}
+                          onClick={() => handleRowClick(item.id)}
+                        >
+                          {renderCell(item, key)}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ),
+            )}
+            <div key={"actions"} className={cn(columnStyle)}>
+              <div className={cn(headerStyle)}>
+                <Label
+                  text="common:text.actions"
+                  translate={true}
+                  t={t}
+                  inheritedClass
+                  className="whitespace-nowrap font-bold"
+                />
+                <br />
+                <Button
+                  action={() => {}}
+                  text=""
+                  mainColor="default"
+                  contextColor="danger"
+                  iconBefore={<ArrowUpDown size={20} />}
+                  className="!p-2 !outline-none hover:outline-none hover:text-white "
+                  manualHover
+                  border={false}
+                  isTransparent
+                  disabled
+                />
+              </div>
+              {listItems?.map((item, rowIndex) => (
+                <div
+                  key={rowIndex}
+                  className={`flex gap-2 items-center justify-center flex-1 w-full border-b p-3 text-black bg-gray-100 cursor-pointer ${props.rowClassName} item-row-${rowIndex}`}
+                  onMouseOver={() => hoverRow(rowIndex)}
+                  onMouseLeave={() => unhoverRow(rowIndex)}
+                >
+                  <Form
+                    formButton={
+                      <Button
+                        action={() => {}}
+                        text=""
+                        mainColor="primary"
+                        contextColor="default"
+                        iconBefore={<EditIcon size={20} />}
+                        className="!p-2"
+                        border
+                      />
+                    }
+                    isPopup={true}
+                    formTitle={props.updateFormTitle || "common:button.update"}
+                    onSubmit={handleUpdate}
+                    ref={updateFormRef}
+                    onSubmitNoReload
+                    className={props.updateFormClassName}
+                  >
+                    {props.updateForm}
+                  </Form>
+                  <Form
+                    formButton={
+                      <Button
+                        action={() => {}}
+                        text=""
+                        mainColor="danger"
+                        contextColor="danger"
+                        iconBefore={<TrashIcon size={20} />}
+                        className="!p-2"
+                        border
+                      />
+                    }
+                    isPopup={true}
+                    formTitle={props.deleteFormTitle || "common:button.delete"}
+                    onSubmit={() => handleDelete(item.id)}
+                    ref={deleteFormRef}
+                    onSubmitNoReload
+                    onSubmitClosePopUp
+                    className={props.deleteFormClassName}
+                  >
+                    {props.deleteForm}
+                  </Form>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
       </div>
       <div className="flex flex-row gap-2 items-center">
         <Label text="common:text.recordPerPage" translate className="text-black font-bold text-lg text-center" />

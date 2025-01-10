@@ -26,6 +26,7 @@ export type TableHeader = {
 export type ApplicationPath = {
   path: string;
   name: string;
+  params?: { [key: string]: string };
 };
 
 export type TransferType = {
@@ -35,13 +36,13 @@ export type TransferType = {
   // eslint-disable-next-line
   getListAPI: (params: PaginationParamsType) => Promise<any>;
   // eslint-disable-next-line
-  getAPI: any;
+  getAPI: (id: string) => Promise<any>;
   // eslint-disable-next-line
   createAPI: (params: any) => Promise<ApiSuccessResponse<any>>;
   // eslint-disable-next-line
   updateAPI: any;
   // eslint-disable-next-line
-  deleteAPI: any;
+  deleteAPI: (id: string) => Promise<any>;
   listPath: string;
   detailPath: string;
 };

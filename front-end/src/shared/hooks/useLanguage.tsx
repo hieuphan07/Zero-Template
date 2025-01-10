@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { useTranslation } from "next-i18next";
+import { usePathname } from "next/navigation";
 
 interface LanguageContextType {
   currentLanguage: string;
@@ -15,6 +16,7 @@ const LANGUAGE_STORAGE_KEY = "app_language";
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const { i18n } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
+  const pathname = usePathname();
 
   // Initialize language from sessionStorage
   useEffect(() => {
@@ -28,6 +30,15 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
       setCurrentLanguage(defaultLanguage as string);
     }
   }, [currentLanguage, i18n]);
+
+  // Apply language change on route change
+  useEffect(() => {
+    const savedLanguage = sessionStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (savedLanguage) {
+      i18n.changeLanguage(savedLanguage);
+      setCurrentLanguage(savedLanguage);
+    }
+  }, [pathname, i18n]);
 
   // Change language and save it in sessionStorage
   const changeLanguage = async (lang: string) => {
