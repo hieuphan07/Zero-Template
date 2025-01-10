@@ -22,6 +22,11 @@ export type TableHeader = {
   hidden?: boolean;
 };
 
+export type ApplicationPath = {
+  path: string;
+  name: string;
+};
+
 export type TransferType = {
   headers: TableHeaders;
   // eslint-disable-next-line

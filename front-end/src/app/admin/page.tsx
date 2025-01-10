@@ -113,7 +113,7 @@ export default function AdminPage() {
   const updateForm = (
     <>
       <Dropdown
-        apiEndpoint="https://api.example.com/data"
+        options={[{label: "10", value: 10}, {label: "20", value: 20}, {label: "30", value: 30}, {label: "50", value: 50}]}
         placeholder="Search..."
         clickOpen={true}
         action={() => {}}
@@ -167,7 +167,7 @@ export default function AdminPage() {
   const deleteForm = (
     <>
       <Dropdown
-        apiEndpoint="https://api.example.com/data"
+        options={[{label: "10", value: 10}, {label: "20", value: 20}, {label: "30", value: 30}, {label: "50", value: 50}]}
         placeholder="Search..."
         clickOpen={true}
         action={() => {}}

@@ -15,6 +15,8 @@ import { FilterProperty, SortProperty } from "@/shared/types/common-type/shared-
 import { cn } from "@/lib/utils";
 import Checkbox from "../../Atoms/Checkbox/Checkbox";
 import Label from "../../Atoms/Label/Label";
+import Dropdown from "../../Atoms/Dropdown/Dropdown";
+import { DropdownOption } from "@/shared/types/components-type/drop-down-type";
 
 const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   const router = useRouter();
@@ -26,6 +28,13 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     lastPage: 1,
   });
   const [filter, setFilter] = useState<FilterProperty[]>([]);
+  const [recordPerPage, setRecordPerPage] = useState(10);
+  const recordPerPageOptions = [
+    { label: "10", value: 10 },
+    { label: "20", value: 20 },
+    { label: "30", value: 30 },
+    { label: "50", value: 50 },
+  ] as DropdownOption[];
 
   const filterFormRef = useRef<HTMLFormElement>(null);
   const createFormRef = useRef<HTMLFormElement>(null);
@@ -57,15 +66,20 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     if (props.items) {
       handleGivenList(sort || undefined, filter);
     } else {
-      handleGetList(page, sort || undefined, filter);
+      handleGetList(page, sort || undefined, filter, recordPerPage);
     }
     // eslint-disable-next-line
-  }, [props.items, page, sort, filter]);
+  }, [props.items, page, sort, filter, recordPerPage]);
 
-  const handleGetList = async (page: number, sort?: SortProperty, filter?: FilterProperty[]) => {
+  const handleGetList = async (
+    page: number,
+    sort?: SortProperty,
+    filter?: FilterProperty[],
+    recordPerPage?: number,
+  ) => {
     const listItems = await getListAPI({
       page: page,
-      limit: 10,
+      limit: recordPerPage,
       sortBy: sort?.key,
       sortDirection: sort?.direction === "asc" ? "ASC" : "DESC",
       searchBy: filter?.[0]?.key,
@@ -229,7 +243,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   return (
     <div className={`w-full flex flex-col gap-4 ${props.className}`}>
       <div className="flex gap-4 items-center w-full justify-between">
-        <div className="flex gap-4 w-[50%]">
+        <div className="flex gap-4 w-[50%] justify-center items-center">
           <SearchBar
             onSearch={() => {}}
             placeholder={t("common:button.search") + "..."}
@@ -347,7 +361,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                   />
                 </div>
                 <div className="flex flex-col w-full flex-1 items-stretch">
-                  {listItems.map((item, rowIndex) => (
+                  {listItems?.map((item, rowIndex) => (
                     <div
                       key={rowIndex}
                       className={`flex whitespace-nowrap items-center justify-center flex-1 w-full border-b p-3 text-black bg-gray-100 cursor-pointer ${props.rowClassName} item-row-${rowIndex}`}
@@ -437,6 +451,20 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
             </div>
           ))}
         </div>
+      </div>
+      <div className="flex flex-row gap-2 items-center">
+        <Label text="Record Per Page:" className="text-black font-bold text-lg text-center" />
+        <Dropdown
+          options={recordPerPageOptions}
+          placeholder="Search..."
+          clickOpen={true}
+          action={(item) => {
+            setRecordPerPage(item.value);
+          }}
+          inputClassName="text-center"
+          allowSearch={false}
+          defaultValue={recordPerPage}
+        />
       </div>
       <Pagination
         currentPage={meta.page}

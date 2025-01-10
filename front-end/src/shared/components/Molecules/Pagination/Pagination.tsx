@@ -3,6 +3,7 @@ import Button from "../../Atoms/Button/Button";
 import Input from "../../Atoms/Input/Input";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import Label from "../../Atoms/Label/Label";
 
 interface PaginationProps {
   currentPage: number;
@@ -183,15 +184,20 @@ const Pagination = (props: PaginationProps) => {
           </>
         )}
       </div>
-      <Input
-        type="number"
-        value={pageInputValue}
-        name="page"
-        className="max-w-[120px] text-center"
-        delayOnChange={1000}
-        onChangeBeforeDelay={(e) => setPageInputValue(Number(e.target.value))}
-        onChange={(e) => goToPage(Number(e.target.value))}
-      />
+      <div className="flex flex-row gap-2 items-center">
+        <Label text="To Page:" className="text-black font-bold text-lg text-center" />
+        <Input
+          type="number"
+          value={pageInputValue}
+          name="page"
+          className="max-w-[120px]"
+          inputClassName="text-center"
+          delayOnChange={1000}
+          onChangeBeforeDelay={(e) => setPageInputValue(Number(e.target.value))}
+          onChange={(e) => goToPage(Number(e.target.value))}
+          border
+        />
+      </div>
     </div>
   );
 };
