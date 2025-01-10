@@ -15,6 +15,6 @@ export interface IUserRepository {
   exists(
     email: string,
     username: string,
-    phoneNumber: string,
-  ): Promise<{ email: boolean; username: boolean; phoneNumber: boolean }>;
+    phoneNumber?: string,
+  ): Promise<{ email: boolean; username: boolean; phoneNumber?: boolean }>;
 }

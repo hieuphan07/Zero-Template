@@ -29,11 +29,13 @@
     "username": {
       "required": "Username is required",
       "minLength": "Username must be at least 2 characters",
-      "invalid": "Username can only contain letters, numbers, underscores and hyphens"
+      "invalid": "Username can only contain letters, numbers, underscores and hyphens",
+      "exist": "Username already exists"
     },
     "email": {
       "required": "Email is required",
-      "invalid": "Please provide a valid email address"
+      "invalid": "Please provide a valid email address",
+      "exist": "Email already exists"
     },
     "password": {
       "required": "Password is required",
@@ -43,7 +45,8 @@
     "phoneNumber": {
       "required": "Phone number is required",
       "length": "Phone number must be between 10 and 15 characters",
-      "invalid": "Please provide a valid phone number"
+      "invalid": "Please provide a valid phone number",
+      "exist": "Phone number already exists"
     }
   },
   "notification": {

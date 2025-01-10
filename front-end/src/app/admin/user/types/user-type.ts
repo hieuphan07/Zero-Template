@@ -5,7 +5,7 @@ import { DefaultItemType } from "@/shared/types/common-type/default-item-type";
 export interface User extends DefaultItemType {
   username: string;
   email: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   lastLogin: Date;
 }
 
