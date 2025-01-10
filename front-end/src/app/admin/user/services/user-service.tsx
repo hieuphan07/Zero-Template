@@ -41,9 +41,11 @@ export class UserService implements IUserService {
     return payload;
   }
 
-  // eslint-disable-next-line
   public async getUser(id: string): Promise<User> {
-    throw new Error("Method not implemented.");
+    const payload = (await httpClient.get<User>({
+      url: this.requestBuilder.buildUrl(id),
+    })) as unknown as User;
+    return payload;
   }
 
   public async createUser(user: UserCreate): Promise<ApiSuccessResponse<User>> {
@@ -58,9 +60,10 @@ export class UserService implements IUserService {
     throw new Error("Method not implemented.");
   }
 
-  // eslint-disable-next-line
   public async deleteUser(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
+    await httpClient.delete({
+      url: this.requestBuilder.buildUrl(id),
+    });
   }
 }
 

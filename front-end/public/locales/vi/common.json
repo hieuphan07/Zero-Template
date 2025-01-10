@@ -34,7 +34,11 @@
   },
   "message": {
     "login-failed": "Đăng nhập thất bại",
-    "login-success": "Đăng nhập thành công"
+    "login-success": "Đăng nhập thành công",
+    "delete-confirmation": "Bạn có chắc chắn muốn xóa mục này không?",
+    "delete-success": "Xóa thành công",
+    "delete-failed": "Xóa thất bại",
+    "get-list-failed": "Không có dữ liệu"
   },
   "auth": {
     "login": "Đăng nhập",
@@ -55,6 +59,7 @@
       "profile": "Hồ sơ",
       "admin": "Quản lý",
       "adminUser": "Quản lý người dùng",
+      "adminUserDetail": "Chi tiết người dùng",
       "adminRoles": "Quản lý vai trò",
       "adminRolesPermissions": "Quản lý quyền của vai trò",
       "help": "Trợ giúp",

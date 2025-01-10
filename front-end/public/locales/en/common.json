@@ -34,7 +34,11 @@
   },
   "message": {
     "login-failed": "Login failed",
-    "login-success": "Login success"
+    "login-success": "Login success",
+    "delete-confirmation": "Are you sure you want to delete this data?",
+    "delete-success": "Delete successfully",
+    "delete-failed": "Delete failed",
+    "get-list-failed": "No Data"
   },
   "auth": {
     "login": "Login",
@@ -55,6 +59,7 @@
     "profile": "Profile",
     "admin": "Management",
     "adminUser": "User Management",
+    "adminUserDetail": "User Details",
     "adminRoles": "Roles Management",
     "adminRolesPermissions": "Roles' Permissions",
     "help": "Help",

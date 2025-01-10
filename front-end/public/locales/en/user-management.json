@@ -1,4 +1,8 @@
 {
+  "title": {
+    "user-management-title": "User Management",
+    "user-detail-title": "User Detail"
+  },
   "create-new-user": "Create New User",
   "tabs": {
     "userInfo": "User Information",

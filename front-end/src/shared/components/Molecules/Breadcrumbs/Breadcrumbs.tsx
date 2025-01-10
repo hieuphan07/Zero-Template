@@ -18,7 +18,14 @@ const Breadcrumbs = () => {
     for (let i = 1; i <= breadcrumbs.length; i++) {
       routes.push((routes[i - 1] == "/" ? routes[i - 1] : routes[i - 1] + "/") + breadcrumbs[i - 1]);
     }
-    return Object.values(AllPath).filter((route) => routes.includes(route.path));
+    return Object.values(AllPath).filter((route) => {
+      if (route.path.includes(":id")) {
+        const routePattern = route.path.replace(":id", "[^/]+");
+        const regex = new RegExp(`^${routePattern}$`);
+        return routes.some((r) => regex.test(r));
+      }
+      return routes.includes(route.path);
+    });
   })();
 
   return (
