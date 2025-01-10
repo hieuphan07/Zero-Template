@@ -37,7 +37,6 @@ export class UserService implements IUserService {
       url: this.requestBuilder.buildUrl(),
       config: { params },
     })) as unknown as PaginatedListType<User>;
-    console.log(payload);
     return payload;
   }
 

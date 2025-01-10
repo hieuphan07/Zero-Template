@@ -50,6 +50,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   const headers = TypeTransfer[props.typeString].headers;
   const [sort, setSort] = useState<SortProperty | null>(null);
   const repository = TypeTransfer[props.typeString].repository;
+  // dont delete this
   console.log(repository);
   const getListAPI = TypeTransfer[props.typeString].getListAPI;
   const detailPath = TypeTransfer[props.typeString].detailPath;
@@ -176,8 +177,6 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     if (isValid) {
       try {
         const response = await createAPI(createData);
-        console.log(1);
-        console.log(response);
         if (response) {
           showNotification({
             title: "user-management:notification.success",
@@ -191,7 +190,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
           if (props.items) {
             handleGivenList(sort || undefined, filter);
           } else {
-            handleGetList(page, sort || undefined, filter);
+            handleGetList(page, sort || undefined, filter, recordPerPage);
           }
 
           // Reset form after successful creation

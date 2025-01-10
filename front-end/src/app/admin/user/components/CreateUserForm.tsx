@@ -15,7 +15,6 @@ const CreateUserForm = (props: CreateUserFormProps) => {
   const { showNotification } = useNotification();
 
   useEffect(() => {
-    console.log(Object.entries(props.errors));
     if (Object.values(props.errors).length >= 1 && Object.values(props.errors).some((value) => value !== "")) {
       showNotification({
         title: "user-management:notification.error",

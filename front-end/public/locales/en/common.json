@@ -35,6 +35,7 @@
   "message": {
     "login-failed": "Login failed",
     "login-success": "Login success",
+    "welcome": "Welcome to Zero Template System!",
     "delete-confirmation": "Are you sure you want to delete this data?",
     "delete-success": "Delete successfully",
     "delete-failed": "Delete failed",
@@ -51,7 +52,8 @@
     "password-must-be-at-least-8-characters-long": "Password must be at least 8 characters long",
     "invalid-credentials": "Invalid username or password",
     "user-not-found": "User not found",
-    "this-field-is-required": "This field is required"
+    "this-field-is-required": "This field is required",
+    "username-invalid": "Username is invalid"
   },
   "path": {
     "home": "Home",
