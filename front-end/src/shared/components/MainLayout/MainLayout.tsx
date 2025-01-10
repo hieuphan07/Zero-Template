@@ -5,20 +5,20 @@ import Footer from "../Organisms/Footer/Footer";
 import SectionWrapper from "../Organisms/SectionWrapper/SectionWrapper";
 import { MainLayoutProps } from "@/shared/types/components-type/main-layout-type";
 import SideMenu from "../Organisms/SideMenu/SideMenu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { appWithTranslation } from "next-i18next";
 import { useTranslation } from "react-i18next";
 import { NotificationProvider } from "@/shared/hooks/useNotification";
-// import { authProvider } from "@/shared/utils/functions/middleware/auth-provider";
+import { authProvider } from "@/shared/utils/functions/middleware/auth-provider";
 import { LanguageProvider } from "@/shared/hooks/useLanguage";
 
 const MainLayout = (props: MainLayoutProps) => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const { i18n } = useTranslation();
 
-  // useEffect(() => {
-  //   authProvider.checkAuth();
-  // }, []);
+  useEffect(() => {
+    authProvider.checkAuth();
+  }, []);
 
   return (
     <>

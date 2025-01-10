@@ -30,12 +30,13 @@
     "error": "Error",
     "recordPerPage": "Record Per Page",
     "goToPage": "Go To Page",
-    "notification": "Notification"
+    "notification": "Notification",
+    "logout": "Logout"
   },
   "message": {
     "login-failed": "Login failed",
     "login-success": "Login success",
-    "welcome": "Welcome to Zero Template System!",
+    "logout-success": "Logout successfully",
     "delete-confirmation": "Are you sure you want to delete this data?",
     "delete-success": "Delete successfully",
     "delete-failed": "Delete failed",
@@ -52,8 +53,7 @@
     "password-must-be-at-least-8-characters-long": "Password must be at least 8 characters long",
     "invalid-credentials": "Invalid username or password",
     "user-not-found": "User not found",
-    "this-field-is-required": "This field is required",
-    "username-invalid": "Username is invalid"
+    "this-field-is-required": "This field is required"
   },
   "path": {
     "home": "Home",

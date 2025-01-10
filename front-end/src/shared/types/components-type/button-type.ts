@@ -18,3 +18,9 @@ export type ButtonProps = ComponentDefaultProps & {
   disabled?: boolean;
   rippleEffect?: boolean;
 };
+
+export type ButtonWithDropDownProps = ButtonProps & {
+  dropdownContent: React.ReactNode;
+  dropdownClassName?: string;
+  dropdownAlignment?: "left" | "right";
+};

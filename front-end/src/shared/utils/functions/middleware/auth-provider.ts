@@ -12,7 +12,7 @@ export const authProvider = {
     if (typeof window === "undefined") return;
     const token = localStorage.getItem("accessToken");
     if (!token) {
-      redirect("/login");
+      redirect("/auth");
     }
   },
 

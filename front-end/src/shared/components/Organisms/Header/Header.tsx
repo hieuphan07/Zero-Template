@@ -11,10 +11,12 @@ import { useNotification } from "@/shared/hooks/useNotification";
 import Breadcrumbs from "../../Molecules/Breadcrumbs/Breadcrumbs";
 import { HeaderProps } from "@/shared/types/components-type/header-type";
 import { useLanguage } from "@/shared/hooks/useLanguage";
+import { authProvider } from "@/shared/utils/functions/middleware/auth-provider";
+import { useRouter } from "next/navigation";
 
 const Header = (props: HeaderProps) => {
   const { changeLanguage } = useLanguage();
-
+  const router = useRouter();
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 
   useEffect(() => {
@@ -50,6 +52,32 @@ const Header = (props: HeaderProps) => {
           translate
           className={`${currentLanguage === "vi" ? "bg-primary" : "hover:bg-primary"} p-2 transition-all duration-300 rounded-b-md whitespace-nowrap`}
           onClick={() => changeLanguage("vi")}
+        />
+      </div>
+    );
+  };
+
+  const UserDropdown = () => {
+    return (
+      <div className="flex flex-col gap-0 rounded-lg">
+        <Label
+          text="common:text.logout"
+          inheritedClass={true}
+          translate
+          className={`p-2 transition-all duration-300 rounded-t-md rounded-none whitespace-nowrap`}
+          onClick={() => {
+            authProvider.setToken("");
+            showNotification({
+              title: "common:text.logout",
+              content: <Label text="common:message.logout-success" translate />,
+              position: "top-right",
+              color: "success",
+              enableOtherElements: true,
+            });
+            setTimeout(() => {
+              router.push("/auth");
+            }, 2000);
+          }}
         />
       </div>
     );
@@ -110,14 +138,16 @@ const Header = (props: HeaderProps) => {
           isTransparent={true}
           border={false}
         />
-        <Button
+        <ButtonWithDropDown
           action={() => {}}
           text=""
           mainColor="secondary"
           contextColor="primary"
           iconBefore={<UserIcon size={20} />}
+          dropdownContent={<UserDropdown />}
           isTransparent={true}
           border={false}
+          dropdownAlignment="right"
         />
       </div>
     </header>

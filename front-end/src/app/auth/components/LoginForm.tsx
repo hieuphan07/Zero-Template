@@ -101,7 +101,11 @@ const LoginForm = (props: LoginFormType) => {
           content: <Label text={t("common:message.login-success")} t={t} translate={true} />,
           enableOtherElements: true,
         });
-        router.push("/");
+        // eslint-disable-next-line
+        authProvider.setToken((response as any).accessToken);
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
       }
     } catch (error: unknown) {
       setIsError(true);
@@ -120,7 +124,7 @@ const LoginForm = (props: LoginFormType) => {
       isPopup={false}
       onSubmit={handleSubmit}
       onSubmitNoReload={true}
-      className="flex flex-col gap-4 border max-w-md rounded-lg shadow-sm py-4 w-full"
+      className="flex flex-col gap-4 border rounded-lg shadow-sm py-4 w-full"
       childrenClassName="flex flex-col gap-4"
       manualBelowButtons={true}
     >

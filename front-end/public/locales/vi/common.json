@@ -30,11 +30,13 @@
     "error": "Lỗi",
     "recordPerPage": "Số dữ liệu trên trang",
     "goToPage": "Đi đến trang",
-    "notification": "Thông báo"
+    "notification": "Thông báo",
+    "logout": "Đăng xuất"
   },
   "message": {
     "login-failed": "Đăng nhập thất bại",
     "login-success": "Đăng nhập thành công",
+    "logout-success": "Đăng xuất thành công",
     "welcome": "Chào mừng đến với hệ thống Zero Template!",
     "delete-confirmation": "Bạn có chắc chắn muốn xóa mục này không?",
     "delete-success": "Xóa thành công",
