@@ -17,8 +17,10 @@ import Checkbox from "../../Atoms/Checkbox/Checkbox";
 import Label from "../../Atoms/Label/Label";
 import Dropdown from "../../Atoms/Dropdown/Dropdown";
 import { DropdownOption } from "@/shared/types/components-type/drop-down-type";
+import { useNotification } from "@/shared/hooks/useNotification";
 
 const List = <T extends DefaultItemType>(props: ListProps<T>) => {
+  const { showNotification } = useNotification();
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [listItems, setListItems] = useState<T[]>(props.items ? props.items : []);
@@ -41,7 +43,8 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   const updateFormRef = useRef<HTMLFormElement>(null);
   const deleteFormRef = useRef<HTMLFormElement>(null);
 
-  const { t } = useTranslation("common");
+  const { t } = useTranslation(["common", "user-management"]);
+
   const headers = TypeTransfer[props.typeString].headers;
   const [sort, setSort] = useState<SortProperty | null>(null);
   const repository = TypeTransfer[props.typeString].repository;
@@ -138,14 +141,58 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     }
   };
 
-  const handleCreate = () => {
+  /**
+   * Editted by p-thanhhieu
+   */
+  const handleCreate = async () => {
     const formData = new FormData(createFormRef.current!);
     const createData = Object.fromEntries(formData.entries());
     const isValid = props.insertValidation ? props.insertValidation(createData) : true;
+
     if (isValid) {
-      createAPI(createData);
+      try {
+        const response = await createAPI(createData);
+        console.log(1);
+        console.log(response);
+        if (response) {
+          showNotification({
+            title: "user-management:notification.success",
+            content: <Label text="user-management:notification.createSuccess" translate t={t} />,
+            position: "top-right",
+            color: "success",
+            enableOtherElements: true,
+          });
+
+          // Refresh the list after successful creation
+          if (props.items) {
+            handleGivenList(sort || undefined, filter);
+          } else {
+            handleGetList(page, sort || undefined, filter);
+          }
+
+          // Reset form after successful creation
+          if (props.insertResetForm) {
+            props.insertResetForm();
+          }
+        }
+        // eslint-disable-next-line
+      } catch (error: any) {
+        showNotification({
+          title: "user-management:notification.error",
+          content: <Label text={error.message} translate t={t} />,
+          position: "top-right",
+          color: "danger",
+          enableOtherElements: true,
+        });
+      }
     } else {
-      console.log("create not valid");
+      showNotification({
+        title: "user-management:notification.error",
+        content: <Label text="user-management:notification.validationError" translate t={t} />,
+        position: "top-right",
+        color: "danger",
+        enableOtherElements: true,
+      });
     }
   };
 
@@ -297,25 +344,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
           ref={createFormRef}
           onSubmitNoReload
           className={props.insertFormClassName}
-          manualBelowButtons={true}
-          belowButtons={[
-            <Button
-              key={-1}
-              text="Cancel"
-              action={() => {}}
-              mainColor="secondary"
-              manualHover={true}
-              className="mr-4 !px-6 !py-3 !bg-[#E9E9E9] !text-[#676767]"
-            />,
-            <Button
-              key={-2}
-              text="Save"
-              action={() => {}}
-              mainColor="primary"
-              className="!px-6 !py-3 !bg-[#5E5F5F] !text-[#DCDCDC]"
-              iconBefore={<i className="fa fa-save" style={{ marginRight: "0.5rem" }} />}
-            />,
-          ]}
+          resetForm={props.insertResetForm}
         >
           {props.insertForm}
         </Form>

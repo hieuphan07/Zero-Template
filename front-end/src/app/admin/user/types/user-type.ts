@@ -13,28 +13,28 @@ export interface UserCreate {
   username: string;
   email: string;
   password: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   roles?: string[];
 }
 
 export const UserTableHeaders: TableHeaders = {
   username: {
-    label: "user-management:username",
+    label: "user-management:fields.username",
     sortable: true,
     hidden: false,
   },
   email: {
-    label: "user-management:email",
+    label: "user-management:fields.email",
     sortable: true,
     hidden: false,
   },
   phoneNumber: {
-    label: "user-management:phoneNumber",
+    label: "user-management:fields.phoneNumber",
     sortable: true,
     hidden: false,
   },
   lastLogin: {
-    label: "user-management:lastLogin",
+    label: "user-management:fields.lastLogin",
     sortable: true,
     hidden: false,
   },

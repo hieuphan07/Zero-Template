@@ -1,6 +1,67 @@
 {
-    "username": "Tên người dùng",
+  "create-new-user": "Tạo người dùng mới",
+  "tabs": {
+    "userInfo": "Thông tin người dùng",
+    "roles": "Vai trò"
+  },
+  "fields": {
+    "username": "Tên đăng nhập",
     "email": "Email",
+    "password": "Mật khẩu",
     "phoneNumber": "Số điện thoại",
     "lastLogin": "Lần đăng nhập cuối"
+  },
+  "placeholders": {
+    "username": "JohnDoe",
+    "email": "john.doe@gmail.com",
+    "password": "********",
+    "phoneNumber": "+6281234567890"
+  },
+  "roles": {
+    "admin": "Quản trị viên",
+    "user": "Người dùng"
+  },
+  "validation": {
+    "username": {
+      "required": "Tên đăng nhập là bắt buộc",
+      "minLength": "Tên đăng nhập phải có ít nhất 2 ký tự",
+      "invalid": "Tên đăng nhập chỉ có thể bao gồm chữ cái, số, dấu gạch dưới và dấu gạch ngang"
+    },
+    "email": {
+      "required": "Email là bắt buộc",
+      "invalid": "Vui lòng cung cấp địa chỉ email hợp lệ"
+    },
+    "password": {
+      "required": "Mật khẩu là bắt buộc",
+      "length": "Mật khẩu phải có độ dài từ 8 đến 32 ký tự",
+      "invalid": "Mật khẩu phải có ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt"
+    },
+    "phoneNumber": {
+      "required": "Số điện thoại là bắt buộc",
+      "length": "Số điện thoại phải có độ dài từ 10 đến 15 ký tự",
+      "invalid": "Vui lòng cung cấp số điện thoại hợp lệ"
+    }
+  },
+  "notification": {
+    "error": "Lỗi",
+    "success": "Thành công",
+    "createSuccess": "Người dùng được tạo thành công",
+    "createError": "Không thể tạo người dùng",
+    "validationError": "Vui lòng điền đầy đủ các trường bắt buộc"
+  },
+  "errors": {
+    "accessTokenExpired": "Phiên của bạn đã hết hạn. Vui lòng đăng nhập lại.",
+    "refreshTokenExpired": "Phiên của bạn đã hết hạn. Vui lòng đăng nhập lại.",
+    "unknownError": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.",
+    "validation": {
+      "username": {
+        "exists": "Tên đăng nhập này đã được sử dụng",
+        "invalid": "Định dạng tên đăng nhập không hợp lệ"
+      },
+      "email": {
+        "exists": "Email này đã được đăng ký",
+        "invalid": "Định dạng email không hợp lệ"
+      }
+    }
+  }
 }

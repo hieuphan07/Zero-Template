@@ -1,49 +1,49 @@
 {
-    "button": {
-        "sort": "Sort",
-        "create": "Create",
-        "update": "Update",
-        "delete": "Delete",
-        "cancel": "Cancel",
-        "save": "Save",
-        "search": "Search",
-        "reset": "Reset",
-        "filter": "Filter",
-        "clear": "Clear",
-        "close": "Close",
-        "add": "Add",
-        "edit": "Edit",
-        "view": "View",
-        "download": "Download",
-        "login": "Login",
-        "dont-have-account": "Don't have an account? Sign up"
-    },
-    "text": {
-        "actions": "Actions",
-        "no-data": "No data",
-        "admin": "Admin",
-        "user": "User",
-        "super-admin": "Super Admin",
-        "manager": "Manager",
-        "employee": "Employee",
-        "login": "Login",
-        "filter": "Filter",
-        "error": "Error"
-    },
-    "message": {
-        "login-failed": "Login failed",
-        "login-success": "Login success"
-    },
-    "auth": {
-        "login": "Login",
-        "username": "Username",
-        "password": "Password",
-        "remember-me": "Remember me",
-        "enter-your-username": "Enter your username",
-        "enter-your-password": "Enter your password",
-        "username-must-be-at-least-2-characters-long": "Username must be at least 2 characters long",
-        "password-must-be-at-least-8-characters-long": "Password must be at least 8 characters long",
-        "invalid-credentials": "Invalid username or password",
-        "user-not-found": "User not found"
-    }
+  "button": {
+    "sort": "Sort",
+    "create": "Create",
+    "update": "Update",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save",
+    "search": "Search",
+    "reset": "Reset",
+    "filter": "Filter",
+    "clear": "Clear",
+    "close": "Close",
+    "add": "Add",
+    "edit": "Edit",
+    "view": "View",
+    "download": "Download",
+    "login": "Login",
+    "dont-have-account": "Don't have an account? Sign up"
+  },
+  "text": {
+    "actions": "Actions",
+    "no-data": "No data",
+    "admin": "Admin",
+    "user": "User",
+    "super-admin": "Super Admin",
+    "manager": "Manager",
+    "employee": "Employee",
+    "filter": "Filter",
+    "error": "Error"
+  },
+  "message": {
+    "login-failed": "Login failed",
+    "login-success": "Login success"
+  },
+  "auth": {
+    "login": "Login",
+    "username": "Username",
+    "password": "Password",
+    "remember-me": "Remember me",
+    "enter-your-username": "Enter your username",
+    "enter-your-password": "Enter your password",
+    "username-must-be-at-least-2-characters-long": "Username must be at least 2 characters long",
+    "password-must-be-at-least-8-characters-long": "Password must be at least 8 characters long",
+    "invalid-credentials": "Invalid username or password",
+    "user-not-found": "User not found",
+    "this-field-is-required": "This field is required"
+  }
 }

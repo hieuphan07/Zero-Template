@@ -19,4 +19,5 @@ export type FormProps = ComponentDefaultProps & {
   childrenClassName?: string;
   belowButtons?: ReactNode[];
   belowButtonsClassName?: string;
+  resetForm?: () => void;
 };

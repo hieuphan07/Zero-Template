@@ -1,6 +1,67 @@
 {
+  "create-new-user": "Create New User",
+  "tabs": {
+    "userInfo": "User Information",
+    "roles": "Roles"
+  },
+  "fields": {
     "username": "Username",
     "email": "Email",
-    "phoneNumber": "Phone Number", 
+    "password": "Password",
+    "phoneNumber": "Phone Number",
     "lastLogin": "Last Login"
+  },
+  "placeholders": {
+    "username": "JohnDoe",
+    "email": "john.doe@gmail.com",
+    "password": "********",
+    "phoneNumber": "+6281234567890"
+  },
+  "roles": {
+    "admin": "Admin",
+    "user": "User"
+  },
+  "validation": {
+    "username": {
+      "required": "Username is required",
+      "minLength": "Username must be at least 2 characters",
+      "invalid": "Username can only contain letters, numbers, underscores and hyphens"
+    },
+    "email": {
+      "required": "Email is required",
+      "invalid": "Please provide a valid email address"
+    },
+    "password": {
+      "required": "Password is required",
+      "length": "Password must be between 8 and 32 characters",
+      "invalid": "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
+    },
+    "phoneNumber": {
+      "required": "Phone number is required",
+      "length": "Phone number must be between 10 and 15 characters",
+      "invalid": "Please provide a valid phone number"
+    }
+  },
+  "notification": {
+    "error": "Error",
+    "success": "Success",
+    "createSuccess": "User created successfully",
+    "createError": "Failed to create user",
+    "validationError": "Please fill in all required fields"
+  },
+  "errors": {
+    "accessTokenExpired": "Your session has expired. Please log in again.",
+    "refreshTokenExpired": "Your session has expired. Please log in again.",
+    "unknownError": "An unexpected error occurred. Please try again.",
+    "validation": {
+      "username": {
+        "exists": "This username is already taken",
+        "invalid": "Invalid username format"
+      },
+      "email": {
+        "exists": "This email is already registered",
+        "invalid": "Invalid email format"
+      }
+    }
+  }
 }

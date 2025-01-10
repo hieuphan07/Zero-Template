@@ -78,7 +78,7 @@ export default function AdminPage() {
           action={() => {
             showNotification({
               title: "Notification",
-              content: <div>This is a notification</div>,
+              content: "This is a notification",
               position: "bottom-right",
             });
           }}
@@ -113,7 +113,12 @@ export default function AdminPage() {
   const updateForm = (
     <>
       <Dropdown
-        options={[{label: "10", value: 10}, {label: "20", value: 20}, {label: "30", value: 30}, {label: "50", value: 50}]}
+        options={[
+          { label: "10", value: 10 },
+          { label: "20", value: 20 },
+          { label: "30", value: 30 },
+          { label: "50", value: 50 },
+        ]}
         placeholder="Search..."
         clickOpen={true}
         action={() => {}}
@@ -167,7 +172,12 @@ export default function AdminPage() {
   const deleteForm = (
     <>
       <Dropdown
-        options={[{label: "10", value: 10}, {label: "20", value: 20}, {label: "30", value: 30}, {label: "50", value: 50}]}
+        options={[
+          { label: "10", value: 10 },
+          { label: "20", value: 20 },
+          { label: "30", value: 30 },
+          { label: "50", value: 50 },
+        ]}
         placeholder="Search..."
         clickOpen={true}
         action={() => {}}

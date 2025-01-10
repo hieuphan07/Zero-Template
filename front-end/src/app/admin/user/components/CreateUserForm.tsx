@@ -1,52 +1,41 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import Input from "@/shared/components/Atoms/Input/Input";
-import { UserCreate } from "../types/user-type";
 import Label from "@/shared/components/Atoms/Label/Label";
 import Button from "@/shared/components/Atoms/Button/Button";
 import Checkbox from "@/shared/components/Atoms/Checkbox/Checkbox";
+import { useTranslation } from "react-i18next";
+import { CreateUserFormProps } from "@/shared/types/components-type/create-user-type";
+import { useEffect } from "react";
+import { useNotification } from "@/shared/hooks/useNotification";
 
-const CreateUserForm = () => {
+const CreateUserForm = (props: CreateUserFormProps) => {
+  const { t } = useTranslation(["common", "user-management"]);
   const [activeTab, setActiveTab] = useState("userInfo");
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [user, setUser] = useState<UserCreate>({
-    username: "",
-    email: "",
-    password: "",
-    phoneNumber: "",
-    roles: [],
-  });
+  const { showNotification } = useNotification();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const { name, value, type, checked } = e.target;
-    setErrors((prev) => ({ ...prev, [name]: "" })); // Clear error when user types
-
-    if (type === "checkbox") {
-      const roles = [...(user.roles || [])];
-      if (checked) {
-        roles.push(name);
-      } else {
-        const index = roles.indexOf(name);
-        if (index > -1) {
-          roles.splice(index, 1);
-        }
-      }
-      setUser((prev) => ({ ...prev, roles }));
-    } else {
-      setUser((prev) => ({ ...prev, [name]: value }));
+  useEffect(() => {
+    if (Object.keys(props.errors).length > 0) {
+      showNotification({
+        title: "user-management:notification.error",
+        content: (
+          <Fragment>
+            <Label text="common:notification.validationError" translate t={t} />
+            <ul>
+              {Object.entries(props.errors).map(([key, value]) => (
+                <Label key={key} text={value} translate t={t} />
+              ))}
+            </ul>
+          </Fragment>
+        ),
+        position: "top-right",
+        color: "danger",
+        enableOtherElements: true,
+      });
     }
-  };
-
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target;
-    if (!value && name !== "phoneNumber") {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "This field is required",
-      }));
-    }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.errors]);
 
   return (
     <div className="flex flex-col items-center w-full mt-5">
@@ -56,7 +45,7 @@ const CreateUserForm = () => {
             <Button
               action={() => setActiveTab("userInfo")}
               type="button"
-              text="User Information"
+              text="user-management:tabs.userInfo"
               mainColor="primary"
               contextColor="primary"
               className={`px-4 py-2 rounded-none ${activeTab === "userInfo" ? "border-b-2 border-primary text-primary" : "text-gray-500"}`}
@@ -67,7 +56,7 @@ const CreateUserForm = () => {
                 setActiveTab("roles");
               }}
               type="button"
-              text="Roles"
+              text="user-management:tabs.roles"
               mainColor="primary"
               contextColor="primary"
               className={`px-4 py-2 rounded-none ${activeTab === "roles" ? "border-b-2 border-primary text-primary" : "text-gray-500"}`}
@@ -78,56 +67,85 @@ const CreateUserForm = () => {
           {activeTab === "userInfo" && (
             <div className="flex flex-col gap-4 w-full mt-4">
               <div className="w-full">
-                <Label htmlFor="username" text="User Name" required className="text-base mb-1" />
+                <Label
+                  htmlFor="username"
+                  translate={true}
+                  t={t}
+                  text="user-management:fields.username"
+                  required
+                  className="text-base mb-1"
+                />
                 <Input
                   required
                   type="text"
                   id="username"
                   name="username"
                   placeholder="JohnDoe"
-                  value={user.username}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  value={props.user.username}
+                  onChange={props.handleChange}
+                  onBlur={props.handleBlur}
+                  isError={!!props.errors.username}
                 />
-                {errors.username && <span className="text-red-500 text-sm mt-1">{errors.username}</span>}
               </div>
               <div className="w-full">
-                <Label htmlFor="email" text="Email" required className="text-base mb-1" />
+                <Label
+                  htmlFor="email"
+                  translate={true}
+                  t={t}
+                  text="user-management:fields.email"
+                  required
+                  className="text-base mb-1"
+                />
                 <Input
                   required
                   type="email"
                   id="email"
                   name="email"
                   placeholder="john.doe@gmail.com"
-                  value={user.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  value={props.user.email}
+                  onChange={props.handleChange}
+                  onBlur={props.handleBlur}
+                  isError={!!props.errors.email}
                 />
-                {errors.email && <span className="text-red-500 text-sm mt-1">{errors.email}</span>}
               </div>
               <div className="w-full">
-                <Label htmlFor="password" text="Password" required className="text-base mb-1" />
+                <Label
+                  htmlFor="password"
+                  translate={true}
+                  t={t}
+                  text="user-management:fields.password"
+                  required
+                  className="text-base mb-1"
+                />
                 <Input
                   required
                   type="password"
                   id="password"
                   name="password"
                   placeholder="********"
-                  value={user.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  value={props.user.password}
+                  onChange={props.handleChange}
+                  onBlur={props.handleBlur}
+                  isError={!!props.errors.password}
                 />
-                {errors.password && <span className="text-red-500 text-sm mt-1">{errors.password}</span>}
               </div>
               <div className="w-full">
-                <Label htmlFor="phoneNumber" text="Phone Number" className="text-base mb-1" />
+                <Label
+                  htmlFor="phoneNumber"
+                  translate={true}
+                  t={t}
+                  text="user-management:fields.phoneNumber"
+                  className="text-base mb-1"
+                />
                 <Input
                   type="tel"
                   id="phoneNumber"
                   name="phoneNumber"
                   placeholder="+6281234567890"
-                  value={user.phoneNumber}
-                  onChange={handleChange}
+                  value={props.user.phoneNumber}
+                  onChange={props.handleChange}
+                  onBlur={props.handleBlur}
+                  isError={!!props.errors.phoneNumber}
                 />
               </div>
             </div>
@@ -139,21 +157,21 @@ const CreateUserForm = () => {
                 <Checkbox
                   name="admin"
                   id="admin"
-                  checked={user.roles?.includes("admin")}
-                  onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
+                  checked={props.user.roles?.includes("admin")}
+                  onChange={(e) => props.handleChange?.(e as React.ChangeEvent<HTMLInputElement>)}
                   className="w-4 h-4"
+                  label="user-management:roles.admin"
                 />
-                <Label text="Admin" htmlFor="admin" />
               </div>
               <div className="flex items-center gap-2">
                 <Checkbox
                   name="user"
                   id="user"
-                  checked={user.roles?.includes("user")}
-                  onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
+                  checked={props.user.roles?.includes("user")}
+                  onChange={(e) => props.handleChange?.(e as React.ChangeEvent<HTMLInputElement>)}
                   className="w-4 h-4"
+                  label="user-management:roles.user"
                 />
-                <Label text="User" htmlFor="user" />
               </div>
             </div>
           )}
