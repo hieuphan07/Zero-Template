@@ -24,13 +24,13 @@ export class RegisterUserUseCase {
     );
 
     if (existingUser.email) {
-      throw new ConflictException('Email already exists');
+      throw new ConflictException('common:auth.email-already-exists');
     }
     if (existingUser.username) {
-      throw new ConflictException('Username already exists');
+      throw new ConflictException('common:auth.username-already-exists');
     }
     if (existingUser.phoneNumber) {
-      throw new ConflictException('Phone number already exists');
+      throw new ConflictException('common:auth.phone-number-already-exists');
     }
 
     const hashedPassword = await this.passwordService.hash(registerDto.password);

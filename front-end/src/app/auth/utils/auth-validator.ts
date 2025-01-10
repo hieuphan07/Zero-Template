@@ -13,6 +13,12 @@ const authValidators = {
   password: (value: string): string | null => {
     return commonValidators.password(value);
   },
+
+  confirmPassword: (password: string, confirmPassword: string) => {
+    if (!confirmPassword) return "common:auth.confirm-password-required";
+    if (password !== confirmPassword) return "common:auth.passwords-do-not-match";
+    return null;
+  },
 };
 
 export default authValidators;

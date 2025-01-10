@@ -10,7 +10,7 @@ import ZeroLink from "@/shared/components/Atoms/Link/ZeroLink";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useNotification } from "@/shared/hooks/useNotification";
-import { loginService } from "../services/auth-services";
+import { autherizeService } from "../services/auth-services";
 import { LoginFormType } from "../types/auth-type";
 import { authProvider } from "@/shared/utils/functions/middleware/auth-provider";
 import authValidators from "../utils/auth-validator";
@@ -92,7 +92,7 @@ const LoginForm = (props: LoginFormType) => {
     }
 
     try {
-      const response = await loginService.login(username, password);
+      const response = await autherizeService.login(username, password);
       if (response) {
         showNotification({
           color: "success",

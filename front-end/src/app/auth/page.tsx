@@ -1,9 +1,9 @@
 "use client";
 
 import UnAuthLayout from "@/shared/components/MainLayout/UnAuthLayout";
-import LoginForm from "./components/LoginForm";
+import LoginForm from "@/app/auth/components/LoginForm";
 import { useState } from "react";
-import RegisterForm from "./components/Register";
+import RegisterForm from "@/app/auth/components/RegisterForm";
 
 export default function LoginPage() {
   const [isRegister, setIsRegister] = useState<boolean | null>(null);
