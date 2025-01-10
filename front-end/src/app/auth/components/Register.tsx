@@ -163,7 +163,7 @@ const RegisterForm = (props: LoginFormType) => {
         <ZeroLink
           href="#"
           action={() => {
-            props.setToRegister(true);
+            props.setToRegister(false);
           }}
           className="w-fit px-4 py-2 text-sm text-center font-medium text-blue-600 hover:text-blue-800 transition duration-200"
           color="info"
