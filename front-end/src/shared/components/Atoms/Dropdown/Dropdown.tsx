@@ -1,16 +1,16 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { DropdownProps } from "@/shared/types/components-type/drop-down-type";
+import { DropdownOption, DropdownProps } from "@/shared/types/components-type/drop-down-type";
 import { cn } from "@/lib/utils";
+import Label from "../Label/Label";
 
 const Dropdown = (props: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   // eslint-disable-next-line
   const [items, setItems] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const baseStyles = cn(
     "w-full px-4 py-2 rounded-md",
@@ -22,27 +22,18 @@ const Dropdown = (props: DropdownProps) => {
     "transition duration-300",
   );
 
-  const fetchData = async (search: string) => {
-    try {
-      setLoading(true);
-      const queryParam = search ? `?search=${encodeURIComponent(search)}` : "";
-      const response = await fetch(`${props.apiEndpoint}${queryParam}`);
-      const data = await response.json();
-      setItems(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setItems([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    if (searchTerm) {
-      fetchData(searchTerm);
+    setItems(props.options);
+  }, [props.options]);
+
+  const fetchData = (search: string): boolean => {
+    let items = props.options;
+    if (search) {
+      items = items.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()));
     }
-    // eslint-disable-next-line
-  }, [searchTerm]);
+    setItems(items);
+    return items.length > 0;
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -61,32 +52,42 @@ const Dropdown = (props: DropdownProps) => {
   }, [isOpen]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    const result = fetchData(e.target.value);
+    if (result == false) {
+      setTimeout(() => {
+        fetchData("");
+        if (inputRef.current) {
+          inputRef.current.value = "";
+        }
+      }, 2000);
+    }
     setIsOpen(true);
   };
 
-  // eslint-disable-next-line
-  const handleItemClick = (item: any) => {
-    props.action?.(item);
+  const handleItemClick = (item: DropdownOption) => {
+    if (inputRef.current) {
+      inputRef.current.value = item.label;
+    }
+    props.action?.(item.value);
     setIsOpen(false);
   };
 
   return (
     <div ref={dropdownRef} className={`relative ${props.className}`}>
       <input
+        ref={inputRef}
         type="text"
-        value={searchTerm}
         onChange={handleInputChange}
         onFocus={() => (props.clickOpen ? setIsOpen(true) : null)}
         placeholder={props.placeholder ? props.placeholder : "Search..."}
-        className={baseStyles}
+        className={cn(baseStyles, props.inputClassName)}
+        readOnly={props.allowSearch ? false : true}
+        defaultValue={props.defaultValue}
       />
 
       {isOpen && (
         <div className="absolute w-full max-w-[300px] mt-1 bg-white border rounded-md shadow-lg max-h-60 overflow-y-auto overflow-x-auto z-50">
-          {loading ? (
-            <div className="p-4 text-center text-gray-500">Loading...</div>
-          ) : items.length > 0 ? (
+          {items.length > 0 ? (
             // eslint-disable-next-line
             items.map((item: any, index: number) => (
               <div
@@ -94,7 +95,7 @@ const Dropdown = (props: DropdownProps) => {
                 className="px-4 py-2 cursor-pointer hover:bg-gray-100 whitespace-nowrap"
                 onClick={() => handleItemClick(item)}
               >
-                {item.name || item.title || JSON.stringify(item)}
+                <Label text={item.label} className="text-black font-bold text-lg text-center" />
               </div>
             ))
           ) : (

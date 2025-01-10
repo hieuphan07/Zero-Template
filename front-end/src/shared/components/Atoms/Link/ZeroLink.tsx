@@ -7,7 +7,10 @@ import { ZeroLinkProps } from "@/shared/types/components-type/link-type";
 const ZeroLink = (props: ZeroLinkProps) => {
   const { href, className, target, rel, children, color, title, action, ...rest } = props;
 
-  const baseStyles = cn(`text-${color && color !== "default" ? color : "primary"} relative group font-bold`, className);
+  const baseStyles = cn(
+    `text-${color && color !== "default" ? color : "primary"} relative group cursor-pointer font-bold`,
+    className,
+  );
 
   return (
     <Link href={href} className={baseStyles} target={target} rel={rel} title={title} onClick={action} {...rest}>

@@ -29,7 +29,7 @@ const MainLayout = (props: MainLayoutProps) => {
   return (
     <>
       <NotificationProvider>
-        <Header />
+        <Header breadcrumbs={true} isSideMenuOpen={isSideMenuOpen} />
         <SideMenu isOpen={isSideMenuOpen} onToggle={(open: boolean) => setIsSideMenuOpen(open)} />
         <SectionWrapper
           className={

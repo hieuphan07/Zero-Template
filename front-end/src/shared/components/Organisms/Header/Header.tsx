@@ -8,8 +8,10 @@ import ButtonWithDropDown from "../../Atoms/Button/ButtonWithDropDown";
 import Label from "../../Atoms/Label/Label";
 import { useState, useEffect } from "react";
 import { useNotification } from "@/shared/hooks/useNotification";
+import Breadcrumbs from "../../Molecules/Breadcrumbs/Breadcrumbs";
+import { HeaderProps } from "@/shared/types/components-type/header-type";
 
-const Header = () => {
+const Header = (props: HeaderProps) => {
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language);
   };
@@ -53,7 +55,11 @@ const Header = () => {
   };
   return (
     <header className="flex sticky right-0 top-0 justify-between w-full">
-      <div />
+      <div
+        className={`flex justify-start items-center transition-all duration-500 ${!props.isSideMenuOpen ? "ml-[10vw]" : "ml-[16.5vw]"}`}
+      >
+        {props.breadcrumbs && <Breadcrumbs />}
+      </div>
       <div className="flex justify-evenly w-fit h-fit mt-2 mr-5 gap-2">
         <Button
           action={() => {}}
