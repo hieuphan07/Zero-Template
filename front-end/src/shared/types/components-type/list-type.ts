@@ -20,6 +20,7 @@ export type ListProps<T> = ComponentDefaultProps & {
   insertFormClassName?: string;
   // eslint-disable-next-line
   insertValidation?: (createData: any) => boolean;
+  insertResetForm?: () => void;
   // Update
   updateForm?: ReactNode;
   updateFormTitle?: string;

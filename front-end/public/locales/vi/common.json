@@ -1,48 +1,49 @@
 {
-    "button": {
-        "sort": "Sắp xếp",
-        "create": "Tạo mới",
-        "update": "Cập nhật",
-        "delete": "Xóa",
-        "cancel": "Hủy",
-        "save": "Lưu",
-        "search": "Tìm kiếm",
-        "reset": "Đặt lại",
-        "filter": "Lọc",
-        "clear": "Xóa",
-        "close": "Đóng",
-        "add": "Thêm",
-        "edit": "Sửa",
-        "view": "Xem",
-        "download": "Tải xuống",
-        "login": "Đăng nhập",
-        "dont-have-account": "Không có tài khoản? Đăng ký"
-    },
-    "text": {
-        "actions": "Hành động",
-        "no-data": "Không có dữ liệu",
-        "admin": "Quản trị viên",
-        "user": "Người dùng",
-        "super-admin": "Quản trị viên cao cấp",
-        "manager": "Quản lý",
-        "employee": "Nhân viên",
-        "filter": "Lọc",
-        "error": "Lỗi"
-    },
-    "message": {
-        "login-failed": "Đăng nhập thất bại",
-        "login-success": "Đăng nhập thành công"
-    },
-    "auth": {
-        "login": "Đăng nhập",
-        "username": "Tên đăng nhập",
-        "password": "Mật khẩu",
-        "remember-me": "Ghi nhớ tôi",
-        "enter-your-username": "Nhập tên đăng nhập",
-        "enter-your-password": "Nhập mật khẩu",
-        "username-must-be-at-least-2-characters-long": "Tên đăng nhập phải có ít nhất 2 ký tự",
-        "password-must-be-at-least-8-characters-long": "Mật khẩu phải có ít nhất 8 ký tự",
-        "invalid-credentials": "Tên đăng nhập hoặc mật khẩu không đúng",
-        "user-not-found": "Tên đăng nhập không tồn tại"
-    }
+  "button": {
+    "sort": "Sắp xếp",
+    "create": "Tạo mới",
+    "update": "Cập nhật",
+    "delete": "Xóa",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "search": "Tìm kiếm",
+    "reset": "Đặt lại",
+    "filter": "Lọc",
+    "clear": "Xóa",
+    "close": "Đóng",
+    "add": "Thêm",
+    "edit": "Sửa",
+    "view": "Xem",
+    "download": "Tải xuống",
+    "login": "Đăng nhập",
+    "dont-have-account": "Không có tài khoản? Đăng ký"
+  },
+  "text": {
+    "actions": "Hành động",
+    "no-data": "Không có dữ liệu",
+    "admin": "Quản trị viên",
+    "user": "Người dùng",
+    "super-admin": "Quản trị viên cao cấp",
+    "manager": "Quản lý",
+    "employee": "Nhân viên",
+    "filter": "Lọc",
+    "error": "Lỗi"
+  },
+  "message": {
+    "login-failed": "Đăng nhập thất bại",
+    "login-success": "Đăng nhập thành công"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "remember-me": "Ghi nhớ tôi",
+    "enter-your-username": "Nhập tên đăng nhập",
+    "enter-your-password": "Nhập mật khẩu",
+    "username-must-be-at-least-2-characters-long": "Tên đăng nhập phải có ít nhất 2 ký tự",
+    "password-must-be-at-least-8-characters-long": "Mật khẩu phải có ít nhất 8 ký tự",
+    "invalid-credentials": "Tên đăng nhập hoặc mật khẩu không đúng",
+    "user-not-found": "Tên đăng nhập không tồn tại",
+    "this-field-is-required": "Trường này là bắt buộc"
+  }
 }

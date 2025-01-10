@@ -16,6 +16,9 @@ const Form = (props: FormProps) => {
   const handleToggle = () => {
     if (isOpen) {
       closeFormPopup();
+      if (props.resetForm) {
+        props.resetForm();
+      }
     } else {
       setIsOpen(true);
     }
@@ -33,6 +36,9 @@ const Form = (props: FormProps) => {
           if (!formRef.current.contains(event.target as Node)) {
             closeFormPopup();
           }
+        }
+        if (props.resetForm) {
+          props.resetForm();
         }
       }
     };
@@ -114,23 +120,26 @@ const Form = (props: FormProps) => {
           ) : (
             <div className="flex gap-4">
               <Button
+                key={-1}
+                text="common:button.cancel"
+                action={handleToggle}
+                mainColor={"primary"}
+                contextColor={"default"}
+                isTransparent={true}
+                border
+                className="mr-4 !px-6 !py-3 !bg-[#E9E9E9] !text-[#676767]"
+              />
+              <Button
                 key={-2}
-                text={"Submit"}
+                text="common:button.save"
                 action={() => {}}
                 mainColor={"primary"}
                 contextColor={"default"}
                 isTransparent={true}
                 border
                 type="submit"
-              />
-              <Button
-                key={-1}
-                text={"Cancel"}
-                action={handleToggle}
-                mainColor={"primary"}
-                contextColor={"default"}
-                isTransparent={true}
-                border
+                className="!px-6 !py-3 !bg-[#5E5F5F] !text-[#DCDCDC]"
+                iconBefore={<i className="fa fa-save" style={{ marginRight: "0.5rem" }} />}
               />
             </div>
           )}
@@ -209,22 +218,25 @@ const Form = (props: FormProps) => {
                 <div className="flex gap-4">
                   <Button
                     key={-1}
-                    text={"Cancel"}
+                    text="common:button.cancel"
                     action={handleToggle}
                     mainColor={"primary"}
                     contextColor={"default"}
                     isTransparent={true}
                     border
+                    className="mr-4 !px-6 !py-3 !bg-[#E9E9E9] !text-[#676767]"
                   />
                   <Button
                     key={-2}
-                    text={"Submit"}
+                    text="common:button.save"
                     action={() => {}}
                     mainColor={"primary"}
                     contextColor={"default"}
                     isTransparent={true}
                     border
                     type="submit"
+                    className="!px-6 !py-3 !bg-[#5E5F5F] !text-[#DCDCDC]"
+                    iconBefore={<i className="fa fa-save" style={{ marginRight: "0.5rem" }} />}
                   />
                 </div>
               )}

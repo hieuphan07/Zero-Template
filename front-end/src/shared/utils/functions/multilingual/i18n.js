@@ -14,7 +14,7 @@ const initI18n = async () => {
       fallbackLng: "en",
       supportedLngs: ["en", "vi"],
       lng: "en",
-      debug: process.env.NODE_ENV === "development",
+      debug: false,
       interpolation: {
         escapeValue: false,
       },

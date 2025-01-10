@@ -58,6 +58,7 @@ const Input = (props: InputProps) => {
         className={`${inputStyles} ${props.inputClassName}`}
         onChange={props.delayOnChange ? handleChange : props.onChange}
         onKeyDown={props.onKeyDown}
+        onBlur={props.onBlur}
         suppressHydrationWarning
       />
       {props.isError && (

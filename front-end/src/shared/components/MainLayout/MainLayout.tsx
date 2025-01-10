@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { appWithTranslation } from "next-i18next";
 import { useTranslation } from "react-i18next";
 import { NotificationProvider } from "@/shared/hooks/useNotification";
-import { authProvider } from "@/shared/utils/functions/middleware/auth-provider";
+// import { authProvider } from "@/shared/utils/functions/middleware/auth-provider";
 
 const MainLayout = (props: MainLayoutProps) => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
@@ -22,9 +22,9 @@ const MainLayout = (props: MainLayoutProps) => {
     }
   }, [i18n]);
 
-  useEffect(() => {
-    authProvider.checkAuth();
-  }, []);
+  // useEffect(() => {
+  //   authProvider.checkAuth();
+  // }, []);
 
   return (
     <>

@@ -28,10 +28,10 @@ const Header = (props: HeaderProps) => {
   const onNotiClick = () => {
     showNotification({
       title: "Notification",
-      content: <div>This is a notification</div>,
+      content: "This is a notification",
       position: "bottom-right",
       enableOtherElements: true,
-      color: "primary",
+      color: "warning",
     });
   };
 

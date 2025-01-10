@@ -1,4 +1,5 @@
 import { PaginationParamsType } from "./pagination-params-type";
+import { ApiSuccessResponse } from "./api-type";
 
 export type Color = "primary" | "secondary" | "warning" | "success" | "danger" | "info" | "light" | "dark" | "default";
 
@@ -36,7 +37,7 @@ export type TransferType = {
   // eslint-disable-next-line
   getAPI: any;
   // eslint-disable-next-line
-  createAPI: any;
+  createAPI: (params: any) => Promise<ApiSuccessResponse<any>>;
   // eslint-disable-next-line
   updateAPI: any;
   // eslint-disable-next-line
