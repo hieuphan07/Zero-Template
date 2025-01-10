@@ -35,6 +35,7 @@
   "message": {
     "login-failed": "Đăng nhập thất bại",
     "login-success": "Đăng nhập thành công",
+    "welcome": "Chào mừng đến với hệ thống Zero Template!",
     "delete-confirmation": "Bạn có chắc chắn muốn xóa mục này không?",
     "delete-success": "Xóa thành công",
     "delete-failed": "Xóa thất bại",
