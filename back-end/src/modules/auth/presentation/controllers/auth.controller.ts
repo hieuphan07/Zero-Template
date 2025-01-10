@@ -23,11 +23,11 @@ export class AuthController {
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
-    description: 'Invalid input',
+    description: 'common:auth.invalid-input',
   })
   @ApiResponse({
     status: HttpStatus.CONFLICT,
-    description: 'User already exists',
+    description: 'common:auth.user-already-exists',
   })
   async register(@Body() registerDto: RegisterDto): Promise<User> {
     try {

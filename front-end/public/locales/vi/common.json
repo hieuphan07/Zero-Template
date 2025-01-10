@@ -16,7 +16,10 @@
     "view": "Xem",
     "download": "Tải xuống",
     "login": "Đăng nhập",
-    "dont-have-account": "Không có tài khoản? Đăng ký"
+    "dont-have-account": "Không có tài khoản? Đăng ký",
+    "register": "Đăng ký",
+    "registering": "Đang đăng ký...",
+    "back-to-login": "Đã có tài khoản? Đăng nhập"
   },
   "text": {
     "actions": "Hành động",
@@ -37,6 +40,7 @@
     "login-failed": "Đăng nhập thất bại",
     "login-success": "Đăng nhập thành công",
     "logout-success": "Đăng xuất thành công",
+    "register-success": "Đăng ký thành công",
     "welcome": "Chào mừng đến với hệ thống Zero Template!",
     "delete-confirmation": "Bạn có chắc chắn muốn xóa mục này không?",
     "delete-success": "Xóa thành công",
@@ -54,7 +58,25 @@
     "password-must-be-at-least-8-characters-long": "Mật khẩu phải có ít nhất 8 ký tự",
     "invalid-credentials": "Tên đăng nhập hoặc mật khẩu không đúng",
     "user-not-found": "Tên đăng nhập không tồn tại",
-    "this-field-is-required": "Trường này là bắt buộc"
+    "this-field-is-required": "Trường này là bắt buộc",
+    "username-invalid": "Tên đăng nhập không hợp lệ",
+    "error": "Lỗi",
+    "register": "Đăng ký",
+    "email": "Địa chỉ Email",
+    "enter-your-email": "Nhập địa chỉ Email",
+    "phone-number": "Số điện thoại",
+    "enter-your-phone-number": "Nhập số điện thoại",
+    "validation-error": "Lỗi đăng ký",
+    "unknown-error": "Đã gặp lỗi không rõ nguyên nhân",
+    "email-already-exists": "Email đã tồn tại",
+    "username-already-exists": "Tên đăng nhập đã tồn tại",
+    "phone-number-already-exists": "Số điện thoại đã tồn tại",
+    "user-already-exists": "Tài khoản đã tồn tại",  
+    "invalid-input": "Dữ liệu không hợp lệ",
+    "confirm-password": "Xác nhận mật khẩu",
+    "confirm-your-password": "Xác nhận lại mật khẩu",
+    "passwords-do-not-match": "Mật khẩu không khớp",
+    "confirm-password-required": "Xác thực mật khẩu là bắt buộc"
   },
   "path": {
       "home": "Trang chủ",

@@ -16,7 +16,10 @@
     "view": "View",
     "download": "Download",
     "login": "Login",
-    "dont-have-account": "Don't have an account? Sign up"
+    "dont-have-account": "Don't have an account? Sign up",
+    "register": "Register",
+    "registering": "Registering...",
+    "back-to-login": "Already have an account? Log in"
   },
   "text": {
     "actions": "Actions",
@@ -37,6 +40,8 @@
     "login-failed": "Login failed",
     "login-success": "Login success",
     "logout-success": "Logout successfully",
+    "register-success": "Register success",
+    "welcome": "Welcome to Zero Template System!",
     "delete-confirmation": "Are you sure you want to delete this data?",
     "delete-success": "Delete successfully",
     "delete-failed": "Delete failed",
@@ -53,7 +58,25 @@
     "password-must-be-at-least-8-characters-long": "Password must be at least 8 characters long",
     "invalid-credentials": "Invalid username or password",
     "user-not-found": "User not found",
-    "this-field-is-required": "This field is required"
+    "this-field-is-required": "This field is required",
+    "username-invalid": "Username is invalid",
+    "error": "Error",
+    "register": "Register",
+    "email": "Email Address",
+    "enter-your-email": "Enter your email address",
+    "phone-number": "Phone Number",
+    "enter-your-phone-number": "Enter your phone Number",
+    "validation-error": "Validation Error",
+    "unknown-error": "An unknown error has occured",
+    "email-already-exists": "Email already exists",
+    "username-already-exists": "Username already exists",
+    "phone-number-already-exists": "Phone number already exists",
+    "user-already-exists'": "User already exists",
+    "invalid-input": "Invalid Input",
+    "confirm-password": "Confirm Password",
+    "confirm-your-password": "Confirm your password",
+    "passwords-do-not-match": "Passwords do not match",
+    "confirm-password-required": "Confirm Password is required"
   },
   "path": {
     "home": "Home",
