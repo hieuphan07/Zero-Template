@@ -6,11 +6,10 @@ import i18n from "@/shared/utils/functions/multilingual/i18n";
 import ButtonWithDropDown from "../../Atoms/Button/ButtonWithDropDown";
 import Label from "../../Atoms/Label/Label";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/shared/hooks/useLanguage";
 
 const Header = () => {
-  const changeLanguage = (language: string) => {
-    i18n.changeLanguage(language);
-  };
+  const { changeLanguage } = useLanguage();
 
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 

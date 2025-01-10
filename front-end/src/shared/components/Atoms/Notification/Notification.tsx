@@ -126,7 +126,12 @@ const Notification = (props: NotificationProps) => {
               className={`flex justify-center items-center gap-2 w-full text-2xl font-bold mb-4 underline underline-offset-1 text-${props.color || "primary"}-foreground500`}
             >
               {props.color && iconByColor[props.color]}
-              <Label text={props.title} className={""} inheritedClass />
+              <Label
+                text={props.title ? props.title : "common:text.notification"}
+                className={""}
+                inheritedClass
+                translate
+              />
               {props.color && iconByColor[props.color]}
             </div>
           )}

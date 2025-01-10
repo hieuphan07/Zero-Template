@@ -10,6 +10,7 @@ import { appWithTranslation } from "next-i18next";
 import { useTranslation } from "react-i18next";
 import { NotificationProvider } from "@/shared/hooks/useNotification";
 // import { authProvider } from "@/shared/utils/functions/middleware/auth-provider";
+import { LanguageProvider } from "@/shared/hooks/useLanguage";
 
 const MainLayout = (props: MainLayoutProps) => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
@@ -28,27 +29,29 @@ const MainLayout = (props: MainLayoutProps) => {
 
   return (
     <>
-      <NotificationProvider>
-        <Header breadcrumbs={true} isSideMenuOpen={isSideMenuOpen} />
-        <SideMenu isOpen={isSideMenuOpen} onToggle={(open: boolean) => setIsSideMenuOpen(open)} />
-        <SectionWrapper
-          className={
-            isSideMenuOpen
-              ? "max-w-[87.5vw] ml-[12.5vw] transition-all duration-500 mt-5"
-              : "max-w-[100vw] ml-[0vw] transition-all duration-500 mt-5"
-          }
-          maxWidthPercentage={
-            isSideMenuOpen && props.maxWidthPercentage
-              ? (props.maxWidthPercentage * 100) / 87.5
-              : props.maxWidthPercentage
-          }
-          title={props.title}
-          titleColor={props.titleColor}
-        >
-          {props.children}
-        </SectionWrapper>
-        <Footer />
-      </NotificationProvider>
+      <LanguageProvider>
+        <NotificationProvider>
+          <Header breadcrumbs={true} isSideMenuOpen={isSideMenuOpen} />
+          <SideMenu isOpen={isSideMenuOpen} onToggle={(open: boolean) => setIsSideMenuOpen(open)} />
+          <SectionWrapper
+            className={
+              isSideMenuOpen
+                ? "max-w-[87.5vw] ml-[12.5vw] transition-all duration-500 mt-5"
+                : "max-w-[100vw] ml-[0vw] transition-all duration-500 mt-5"
+            }
+            maxWidthPercentage={
+              isSideMenuOpen && props.maxWidthPercentage
+                ? (props.maxWidthPercentage * 100) / 87.5
+                : props.maxWidthPercentage
+            }
+            title={props.title}
+            titleColor={props.titleColor}
+          >
+            {props.children}
+          </SectionWrapper>
+          <Footer />
+        </NotificationProvider>
+      </LanguageProvider>
     </>
   );
 };

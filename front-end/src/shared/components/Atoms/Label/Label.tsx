@@ -1,10 +1,12 @@
 "use client";
 
 import { LabelProps } from "@/shared/types/components-type/label-type";
+import { useTranslation } from "react-i18next";
 
 const Label = (props: LabelProps) => {
+  const { t } = useTranslation();
   const truncateText = (text: string) => {
-    const translated = props.translate ? props.t?.(text) : text;
+    const translated = props.translate ? (props.t ? props.t(text) : t(text)) : text;
     if (!props.truncate) return translated;
     return translated ? (translated.length > 10 ? `${translated.slice(0, 10)}...` : translated) : text;
   };
@@ -28,7 +30,8 @@ const Label = (props: LabelProps) => {
           hidden
            ${
              props.truncate &&
-             ((props.translate && props.t && props.t(props.text).length > 10) ||
+             ((props.translate &&
+               ((props.t && props.t(props.text).length > 10) || (!props.t && t(props.text).length > 10))) ||
                (!props.translate && props.text.length > 10)) &&
              "label-extended-span"
            }
