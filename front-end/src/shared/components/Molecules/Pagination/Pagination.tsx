@@ -185,7 +185,7 @@ const Pagination = (props: PaginationProps) => {
         )}
       </div>
       <div className="flex flex-row gap-2 items-center">
-        <Label text="To Page:" className="text-black font-bold text-lg text-center" />
+        <Label text="common:text.goToPage" translate className="text-black font-bold text-lg text-center" />
         <Input
           type="number"
           value={pageInputValue}

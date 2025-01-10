@@ -10,11 +10,10 @@ import { useState, useEffect } from "react";
 import { useNotification } from "@/shared/hooks/useNotification";
 import Breadcrumbs from "../../Molecules/Breadcrumbs/Breadcrumbs";
 import { HeaderProps } from "@/shared/types/components-type/header-type";
+import { useLanguage } from "@/shared/hooks/useLanguage";
 
 const Header = (props: HeaderProps) => {
-  const changeLanguage = (language: string) => {
-    i18n.changeLanguage(language);
-  };
+  const { changeLanguage } = useLanguage();
 
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 
@@ -39,14 +38,16 @@ const Header = (props: HeaderProps) => {
     return (
       <div className="flex flex-col gap-0 rounded-lg">
         <Label
-          text="English"
+          text="common:language.en"
           inheritedClass={true}
+          translate
           className={`${currentLanguage === "en" ? "bg-primary" : "hover:bg-primary"} p-2 transition-all duration-300 rounded-t-md rounded-none whitespace-nowrap`}
           onClick={() => changeLanguage("en")}
         />
         <Label
-          text="Tiếng Việt"
+          text="common:language.vi"
           inheritedClass={true}
+          translate
           className={`${currentLanguage === "vi" ? "bg-primary" : "hover:bg-primary"} p-2 transition-all duration-300 rounded-b-md whitespace-nowrap`}
           onClick={() => changeLanguage("vi")}
         />

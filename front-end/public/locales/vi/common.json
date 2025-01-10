@@ -27,7 +27,10 @@
     "manager": "Quản lý",
     "employee": "Nhân viên",
     "filter": "Lọc",
-    "error": "Lỗi"
+    "error": "Lỗi",
+    "recordPerPage": "Số dữ liệu trên trang",
+    "goToPage": "Đi đến trang",
+    "notification": "Thông báo"
   },
   "message": {
     "login-failed": "Đăng nhập thất bại",
@@ -45,5 +48,20 @@
     "invalid-credentials": "Tên đăng nhập hoặc mật khẩu không đúng",
     "user-not-found": "Tên đăng nhập không tồn tại",
     "this-field-is-required": "Trường này là bắt buộc"
+  },
+  "path": {
+      "home": "Trang chủ",
+      "dashboard": "Bảng điều khiển",
+      "profile": "Hồ sơ",
+      "admin": "Quản lý",
+      "adminUser": "Quản lý người dùng",
+      "adminRoles": "Quản lý vai trò",
+      "adminRolesPermissions": "Quản lý quyền của vai trò",
+      "help": "Trợ giúp",
+      "about": "Giới thiệu"
+  },
+  "language": {
+      "en": "Tiếng Anh",
+      "vi": "Tiếng Việt"
   }
 }

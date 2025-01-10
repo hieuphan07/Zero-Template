@@ -21,12 +21,11 @@ const CreateUserForm = (props: CreateUserFormProps) => {
         title: "user-management:notification.error",
         content: (
           <Fragment>
-            <Label text="common:notification.validationError" translate t={t} />
-            <ul>
+            <div className="flex flex-col justify-start items-start text-start">
               {Object.entries(props.errors).map(([key, value]) => (
                 <Label key={key} text={value} translate t={t} />
               ))}
-            </ul>
+            </div>
           </Fragment>
         ),
         position: "top-right",

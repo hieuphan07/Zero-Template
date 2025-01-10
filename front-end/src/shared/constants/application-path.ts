@@ -1,13 +1,13 @@
 import { ApplicationPath } from "../types/common-type/shared-types";
 
 export const AllPath: { [key: string]: ApplicationPath } = {
-  home: { path: "/", name: "Home" },
-  dashboard: { path: "/dashboard", name: "Dashboard" },
-  profile: { path: "/profile", name: "Profile" },
-  admin: { path: "/admin", name: "Management" },
-  adminUser: { path: "/admin/user", name: "User Management" },
-  adminRoles: { path: "/admin/roles", name: "Roles Management" },
-  adminRolesPermissions: { path: "/admin/roles/permissions", name: "Roles' Permissions" },
-  help: { path: "/help", name: "Help" },
-  about: { path: "/about", name: "About" },
+  home: { path: "/", name: "common:path.home" },
+  dashboard: { path: "/dashboard", name: "common:path.dashboard" },
+  profile: { path: "/profile", name: "common:path.profile" },
+  admin: { path: "/admin", name: "common:path.admin" },
+  adminUser: { path: "/admin/user", name: "common:path.adminUser" },
+  adminRoles: { path: "/admin/roles", name: "common:path.adminRoles" },
+  adminRolesPermissions: { path: "/admin/roles/permissions", name: "common:path.adminRolesPermissions" },
+  help: { path: "/help", name: "common:path.help" },
+  about: { path: "/about", name: "common:path.about" },
 };

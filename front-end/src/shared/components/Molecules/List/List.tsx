@@ -54,7 +54,6 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   const deleteAPI = TypeTransfer[props.typeString].deleteAPI;
   const updateAPI = TypeTransfer[props.typeString].updateAPI;
   const createAPI = TypeTransfer[props.typeString].createAPI;
-  console.log(getListAPI);
 
   useEffect(() => {
     if (props.items) {
@@ -88,7 +87,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
       searchBy: filter?.[0]?.key,
       searchValue: filter?.[0]?.value,
     });
-    console.log(listItems);
+    console.log(listItems.data);
     setListItems(listItems?.data);
     setMeta(listItems?.meta);
   };
@@ -482,7 +481,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
         </div>
       </div>
       <div className="flex flex-row gap-2 items-center">
-        <Label text="Record Per Page:" className="text-black font-bold text-lg text-center" />
+        <Label text="common:text.recordPerPage" translate className="text-black font-bold text-lg text-center" />
         <Dropdown
           options={recordPerPageOptions}
           placeholder="Search..."
