@@ -1,13 +1,12 @@
 "use client";
 
-import React, { Fragment, useState } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import Input from "@/shared/components/Atoms/Input/Input";
 import Label from "@/shared/components/Atoms/Label/Label";
 import Button from "@/shared/components/Atoms/Button/Button";
 import Checkbox from "@/shared/components/Atoms/Checkbox/Checkbox";
 import { useTranslation } from "react-i18next";
 import { CreateUserFormProps } from "@/shared/types/components-type/create-user-type";
-import { useEffect } from "react";
 import { useNotification } from "@/shared/hooks/useNotification";
 
 const CreateUserForm = (props: CreateUserFormProps) => {
@@ -16,7 +15,8 @@ const CreateUserForm = (props: CreateUserFormProps) => {
   const { showNotification } = useNotification();
 
   useEffect(() => {
-    if (Object.keys(props.errors).length > 0) {
+    console.log(Object.entries(props.errors));
+    if (Object.values(props.errors).length >= 1 && Object.values(props.errors).some((value) => value !== "")) {
       showNotification({
         title: "user-management:notification.error",
         content: (
