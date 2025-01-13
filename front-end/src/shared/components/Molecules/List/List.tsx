@@ -1,7 +1,7 @@
 "use client";
 
 import { TypeTransfer } from "../../../constants/type-transfer";
-import { ArrowDown, ArrowUp, ArrowUpDown, EditIcon, FilterIcon, PlusIcon, TrashIcon } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, EditIcon, PlusIcon, TrashIcon } from "lucide-react";
 import Button from "../../Atoms/Button/Button";
 import Form from "../Form/Form";
 import SearchBar from "../SearchBar/SearchBar";
@@ -29,7 +29,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     page: 1,
     lastPage: 1,
   });
-  const [filter, setFilter] = useState<FilterProperty[]>([]);
+  const [filter, setFilter] = useState<FilterProperty>({ key: "", value: "" });
   const [recordPerPage, setRecordPerPage] = useState(10);
   const recordPerPageOptions = [
     { label: "10", value: 10 },
@@ -40,7 +40,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
 
   const notification = useNotification();
 
-  const filterFormRef = useRef<HTMLFormElement>(null);
+  // const filterFormRef = useRef<HTMLFormElement>(null);
   const createFormRef = useRef<HTMLFormElement>(null);
   const updateFormRef = useRef<HTMLFormElement>(null);
   const deleteFormRef = useRef<HTMLFormElement>(null);
@@ -76,20 +76,31 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     // eslint-disable-next-line
   }, [props.items, page, sort, filter, recordPerPage]);
 
-  const handleGetList = async (
-    page: number,
-    sort?: SortProperty,
-    filter?: FilterProperty[],
-    recordPerPage?: number,
-  ) => {
+  const getSearchableFields = (): DropdownOption[] => {
+    return (
+      Object.entries(headers)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .filter(([_, header]) => header.searchable)
+        .map(([key, header]) => ({
+          label: t(header.label),
+          value: key,
+        }))
+    );
+  };
+
+  const handleSearch = (searchTerm: string) => {
+    setFilter((prev) => ({ ...prev, value: searchTerm }));
+  };
+
+  const handleGetList = async (page: number, sort?: SortProperty, filter?: FilterProperty, recordPerPage?: number) => {
     try {
       const listItems = await getListAPI({
         page: page,
         limit: recordPerPage,
         sortBy: sort?.key,
         sortDirection: sort?.direction === "asc" ? "ASC" : "DESC",
-        searchBy: filter?.[0]?.key,
-        searchValue: filter?.[0]?.value,
+        searchBy: filter?.key,
+        searchValue: filter?.value,
       });
       setListItems(listItems?.data);
       setMeta(listItems?.meta);
@@ -118,7 +129,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     }
   };
 
-  const handleGivenList = (sort?: SortProperty, filter?: FilterProperty[]) => {
+  const handleGivenList = (sort?: SortProperty, filter?: FilterProperty) => {
     let listItemData = [...listItems];
     if (sort) {
       listItemData = listItemData.sort((a, b) => {
@@ -127,9 +138,9 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
         return sort.direction === "asc" ? (aValue > bValue ? 1 : -1) : bValue > aValue ? 1 : -1;
       });
     }
-    if (filter && filter.length > 0) {
+    if (filter) {
       listItemData = listItemData.filter((item) => {
-        return filter.every((e) => item[e.key as keyof T] == e.value);
+        return item[filter.key as keyof T] == filter.value;
       });
     }
     setListItems(listItemData);
@@ -142,29 +153,29 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     });
   };
 
-  const handleFilter = () => {
-    const formData = new FormData(filterFormRef.current!);
-    const filterData = Object.fromEntries(formData.entries());
-    const isValid = props.filterValidation ? props.filterValidation(filterData) : true;
-    if (isValid) {
-      const filterExist = [...filter];
-      if (filterData) {
-        Object.keys(filterData).forEach((key) => {
-          const filterExistByKey = filterExist.find((e) => e.key == key);
-          if (filterData[key]) {
-            if (filterExistByKey) {
-              filterExistByKey.value = filterData[key].toString();
-            } else {
-              filterExist.push({ key: key, value: filterData[key].toString() });
-            }
-          }
-        });
-      }
-      setFilter(filterExist);
-    } else {
-      alert("Validation failed");
-    }
-  };
+  // const handleFilter = () => {
+  //   const formData = new FormData(filterFormRef.current!);
+  //   const filterData = Object.fromEntries(formData.entries());
+  //   const isValid = props.filterValidation ? props.filterValidation(filterData) : true;
+  //   if (isValid) {
+  //     const filterExist = [...filter];
+  //     if (filterData) {
+  //       Object.keys(filterData).forEach((key) => {
+  //         const filterExistByKey = filterExist.find((e) => e.key == key);
+  //         if (filterData[key]) {
+  //           if (filterExistByKey) {
+  //             filterExistByKey.value = filterData[key].toString();
+  //           } else {
+  //             filterExist.push({ key: key, value: filterData[key].toString() });
+  //           }
+  //         }
+  //       });
+  //     }
+  //     setFilter(filterExist);
+  //   } else {
+  //     alert("Validation failed");
+  //   }
+  // };
 
   /**
    * Editted by p-thanhhieu
@@ -349,7 +360,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
       <div className="flex gap-4 items-center w-full justify-between">
         <div className="flex gap-4 w-[50%] justify-center items-center">
           <SearchBar
-            onSearch={() => {}}
+            onSearch={(searchTerm) => handleSearch(searchTerm)}
             placeholder={t("common:button.search") + "..."}
             className="w-full"
             inputMainColor="primary"
@@ -359,7 +370,19 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
             focusBorder
             focusBorderColor="primary"
           />
-          <Form
+
+          <Dropdown
+            options={getSearchableFields()}
+            placeholder={t("common:text.search-by")}
+            clickOpen={true}
+            action={(item) => {
+              setFilter((prev) => ({ ...prev, key: item.value }));
+            }}
+            inputClassName="text-center"
+            allowSearch={false}
+            defaultValue={filter.key}
+          />
+          {/* <Form
             formButton={
               <Button
                 action={() => {}}
@@ -380,7 +403,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
             onSubmitClosePopUp
           >
             {props.filterForm}
-          </Form>
+          </Form> */}
         </div>
 
         {/* Insert Form: customized by p-thanhhieu */}
