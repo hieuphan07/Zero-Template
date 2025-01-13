@@ -20,6 +20,7 @@ export type TableHeaders = {
 export type TableHeader = {
   label: string;
   sortable?: boolean;
+  searchable?: boolean;
   hidden?: boolean;
 };
 

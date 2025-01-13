@@ -29,23 +29,27 @@ const RegistrationForm = (props: LoginFormType) => {
     const errorMessages: string[] = [];
 
     const fields = [
-      {name: "username", validator: () => authValidators.username(formData.get("username") as string)},
-      {name: "email", validator: () => commonValidators.email(formData.get("email") as string)},
-      {name: "password", validator: () => commonValidators.password(formData.get("password") as string)},
-      {name: "confirmPassword", validator: () => authValidators.confirmPassword(formData.get("password") as string, formData.get("confirmPassword") as string)},
-    ]
+      { name: "username", validator: () => authValidators.username(formData.get("username") as string) },
+      { name: "email", validator: () => commonValidators.email(formData.get("email") as string) },
+      { name: "password", validator: () => commonValidators.password(formData.get("password") as string) },
+      {
+        name: "confirmPassword",
+        validator: () =>
+          authValidators.confirmPassword(formData.get("password") as string, formData.get("confirmPassword") as string),
+      },
+    ];
 
     const phoneNumber = formData.get("phoneNumber") as string;
     if (phoneNumber) {
       fields.push({
         name: "phoneNumber",
-        validator: () => commonValidators.phoneNumber(phoneNumber)
+        validator: () => commonValidators.phoneNumber(phoneNumber),
       });
     }
 
     for (const field of fields) {
       const error = field.validator();
-      if(error) {
+      if (error) {
         newErrors[field.name as keyof FormErrors] = true;
         errorMessages.push(error);
       }

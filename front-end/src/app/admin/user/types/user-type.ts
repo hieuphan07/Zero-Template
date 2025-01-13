@@ -21,16 +21,19 @@ export const UserTableHeaders: TableHeaders = {
   username: {
     label: "user-management:fields.username",
     sortable: true,
+    searchable: true,
     hidden: false,
   },
   email: {
     label: "user-management:fields.email",
     sortable: true,
+    searchable: true,
     hidden: false,
   },
   phoneNumber: {
     label: "user-management:fields.phoneNumber",
     sortable: true,
+    searchable: true,
     hidden: false,
   },
   lastLogin: {

@@ -34,7 +34,8 @@
     "recordPerPage": "Số dữ liệu trên trang",
     "goToPage": "Đi đến trang",
     "notification": "Thông báo",
-    "logout": "Đăng xuất"
+    "logout": "Đăng xuất",
+    "search-by": "Tìm kiếm theo"
   },
   "message": {
     "login-failed": "Đăng nhập thất bại",

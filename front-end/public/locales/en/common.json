@@ -34,7 +34,8 @@
     "recordPerPage": "Record Per Page",
     "goToPage": "Go To Page",
     "notification": "Notification",
-    "logout": "Logout"
+    "logout": "Logout",
+    "search-by": "Search by"
   },
   "message": {
     "login-failed": "Login failed",
