@@ -67,8 +67,8 @@ deploy_backend_development:
   stage: deploy
   script:
     - echo "Stop and remove current container"
-    - docker stop "${BE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
-    - docker rm "${BE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
+    - docker stop "${BE_CONTAINER_NAME}" || true
+    - docker rm "${BE_CONTAINER_NAME}" || true
     - echo "Run container"
     - docker compose -f docker-compose.yml up -d --remove-orphans
     - echo "Running deploy process..."
