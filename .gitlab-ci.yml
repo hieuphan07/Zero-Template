@@ -4,8 +4,8 @@ stages:
   - build
   - deploy
 include:
-  - local: '/front-end/fe.gitlab-ci.yml'
   - local: '/back-end/be.gitlab-ci.yml'
+  - local: '/front-end/fe.gitlab-ci.yml'
 
   # Backend lint check
 be-lint-check:

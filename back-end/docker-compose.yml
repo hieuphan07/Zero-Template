@@ -15,7 +15,7 @@ services:
 
   nest-zero-api:
     container_name: nest_zero_api
-    image: nest-zero-api-development
+    image: nest-zero-api:${CI_ENVIRONMENT_NAME}
     build:
       context: .
       dockerfile: Dockerfile.development

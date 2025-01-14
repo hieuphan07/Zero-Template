@@ -91,6 +91,7 @@ describe('AuthController', () => {
       const expectedResponse: LoginResponseDto = {
         payload: {
           accessToken: 'test-token',
+          refreshToken: 'test-refresh-token',
           user: {
             id: 'test-id',
             username: 'testuser',
@@ -103,7 +104,7 @@ describe('AuthController', () => {
       const result = await controller.login(loginDto);
 
       expect(result).toBe(expectedResponse);
-      expect(loginUseCase.execute).toHaveBeenCalledWith(loginDto);
+      expect(loginUseCase.execute).toHaveBeenCalledWith(loginDto, false);
     });
   });
 });

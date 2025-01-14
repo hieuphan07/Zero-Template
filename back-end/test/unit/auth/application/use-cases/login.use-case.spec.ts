@@ -22,6 +22,7 @@ describe('LoginUseCase', () => {
           provide: 'IAuthRepository',
           useValue: {
             login: jest.fn(),
+            saveRefreshToken: jest.fn(),
           },
         },
         {
@@ -58,12 +59,14 @@ describe('LoginUseCase', () => {
     it('should successfully login and return access token', async () => {
       authRepository.login.mockResolvedValue(mockUser);
       passwordService.compare.mockResolvedValue(true);
-      (jwtService.sign as jest.Mock).mockReturnValue('mock-jwt-token');
-      const result = await useCase.execute(loginDto);
+      (jwtService.sign as jest.Mock).mockReturnValueOnce('mock-access-token').mockReturnValueOnce('mock-refresh-token');
+      authRepository.saveRefreshToken.mockResolvedValue();
+      const result = await useCase.execute(loginDto, true);
 
       expect(result).toEqual({
         payload: {
-          accessToken: 'mock-jwt-token',
+          accessToken: 'mock-access-token',
+          refreshToken: 'mock-refresh-token',
           user: {
             id: '1',
             username: 'testuser',
@@ -72,23 +75,32 @@ describe('LoginUseCase', () => {
       });
       expect(authRepository.login).toHaveBeenCalledWith(loginDto.username);
       expect(passwordService.compare).toHaveBeenCalledWith(loginDto.password, mockUser.getPassword());
-      expect(jwtService.sign).toHaveBeenCalledWith({
-        username: mockUser.getUsername(),
-        sub: mockUser.getId(),
-      });
+      expect(jwtService.sign).toHaveBeenCalledWith(
+        { username: mockUser.getUsername(), sub: mockUser.getId() },
+        { expiresIn: '1d' },
+      );
+      expect(jwtService.sign).toHaveBeenCalledWith(
+        { username: mockUser.getUsername(), sub: mockUser.getId() },
+        { expiresIn: '7d' },
+      );
+      expect(authRepository.saveRefreshToken).toHaveBeenCalledWith(mockUser.getId().toString(), 'mock-refresh-token');
     });
 
     it('should throw UnauthorizedException when user is not found', async () => {
       authRepository.login.mockResolvedValue(null);
 
-      await expect(useCase.execute(loginDto)).rejects.toThrow(new UnauthorizedException('Invalid username'));
+      await expect(useCase.execute(loginDto, false)).rejects.toThrow(
+        new UnauthorizedException('common:auth.invalid-credentials'),
+      );
     });
 
     it('should throw UnauthorizedException when password is invalid', async () => {
       authRepository.login.mockResolvedValue(mockUser);
       passwordService.compare.mockResolvedValue(false);
 
-      await expect(useCase.execute(loginDto)).rejects.toThrow(new UnauthorizedException('Invalid password'));
+      await expect(useCase.execute(loginDto, false)).rejects.toThrow(
+        new UnauthorizedException('common:auth.invalid-credentials'),
+      );
     });
   });
 });

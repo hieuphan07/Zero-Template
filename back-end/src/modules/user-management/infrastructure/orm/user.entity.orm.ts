@@ -47,4 +47,7 @@ export class UserOrmEntity {
 
   @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
   deletedAt: Date;
+
+  @Column({ name: 'refresh_token', type: 'varchar', length: 255, nullable: true })
+  refreshToken: string;
 }

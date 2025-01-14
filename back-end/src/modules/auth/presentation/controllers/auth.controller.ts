@@ -1,12 +1,23 @@
-import { Controller, Post, Body, BadRequestException, ConflictException, HttpStatus, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  BadRequestException,
+  ConflictException,
+  HttpStatus,
+  HttpCode,
+  Query,
+} from '@nestjs/common';
 import { LoginUseCase } from '../../application/use-cases/login.use-case';
 import { LoginDto, LoginResponseDto } from '../dtos/login.dto';
 import { User } from 'src/modules/user-management/domain/entities/user.entity';
 import { RegisterDto } from '../dtos/register.dto';
 import { RegisterUserUseCase } from '../../application/use-cases/register-user.use-case';
-import { ApiResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { RefreshDto, RefreshResponseDto } from '../dtos/refresh.dto';
 
-@Controller('api/v1/auth')
+@ApiTags('Auth')
+@Controller({ path: 'auth', version: '1' })
 export class AuthController {
   constructor(
     private readonly loginUseCase: LoginUseCase,
@@ -49,14 +60,23 @@ export class AuthController {
     status: 400,
     description: 'common:auth.invalid-credentials',
   })
-  async login(@Body() loginDto: LoginDto): Promise<LoginResponseDto> {
+  async login(
+    @Body() loginDto: LoginDto,
+    @Query('rememberMe') rememberMe: string = 'false',
+  ): Promise<LoginResponseDto> {
     try {
-      return await this.loginUseCase.execute(loginDto);
+      const rememberMeBool = rememberMe === 'true';
+      return await this.loginUseCase.execute(loginDto, rememberMeBool);
     } catch (error) {
       if (error instanceof ConflictException) {
         throw error;
       }
       throw new BadRequestException(error.message);
     }
+  }
+
+  @Post('refresh-access-token')
+  async refreshAccessToken(@Body() refreshDto: RefreshDto): Promise<RefreshResponseDto> {
+    return await this.loginUseCase.refreshAccessToken(refreshDto.refreshToken);
   }
 }

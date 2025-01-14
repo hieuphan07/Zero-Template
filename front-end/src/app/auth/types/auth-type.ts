@@ -1,6 +1,7 @@
 export interface LoginRequest {
   username: string;
   password: string;
+  rememberMe: string;
 }
 
 export interface LoginFormType {
@@ -39,4 +40,8 @@ export interface FormErrors {
   password?: boolean;
   confirmPassword?: boolean;
   phoneNumber?: boolean;
+}
+
+export interface JwtPayload {
+  exp: number;
 }

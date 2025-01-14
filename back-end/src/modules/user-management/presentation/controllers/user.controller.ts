@@ -35,7 +35,7 @@ import { GetUserUseCase } from '../../application/use-cases/get-user.usecase';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 @ApiTags('Users')
-@Controller('api/v1/admin/users')
+@Controller({ path: 'admin/users', version: '1' })
 export class UserController {
   constructor(
     private readonly getUsersUseCase: GetUsersUseCase,
@@ -46,8 +46,8 @@ export class UserController {
   ) {}
 
   @Get()
-  // @ApiBearerAuth('access-token')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'List all users' })
   @ApiPaginatedRequest(UserOrmEntity)
   @ApiResponse({

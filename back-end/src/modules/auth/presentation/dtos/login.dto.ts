@@ -14,6 +14,7 @@ export class LoginDto {
 export class LoginResponseDto {
   payload: {
     accessToken: string;
+    refreshToken: string;
     user: {
       id: string;
       username: string;

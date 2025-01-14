@@ -253,7 +253,7 @@ const RegistrationForm = (props: LoginFormType) => {
             className="px-4 py-2 text-sm text-center font-medium text-blue-600 hover:text-blue-800 transition duration-200"
             color="info"
           >
-            {t("common:button.back-to-login")}
+            <Label text="common:button.back-to-login" t={t} translate={true} className="text-sm text-blue-700" />
           </ZeroLink>
         </div>
       </div>

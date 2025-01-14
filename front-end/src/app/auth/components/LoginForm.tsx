@@ -23,6 +23,7 @@ const LoginForm = (props: LoginFormType) => {
   const [passwordError, setPasswordError] = useState("");
   const [isError, setIsError] = useState(false);
   const router = useRouter();
+  const [rememberMe, setRememberMe] = useState("false");
 
   const { showNotification } = useNotification();
 
@@ -92,17 +93,22 @@ const LoginForm = (props: LoginFormType) => {
     }
 
     try {
-      const response = await autherizeService.login(username, password);
+      const response = await autherizeService.login({ username, password, rememberMe });
       if (response) {
         showNotification({
           color: "success",
           position: "top-right",
-          title: t("common:text.success"),
+          title: t("common:message.login-success"),
           content: <Label text={t("common:message.login-success")} t={t} translate={true} />,
           enableOtherElements: true,
         });
         // eslint-disable-next-line
         authProvider.setToken((response as any).accessToken);
+        // eslint-disable-next-line
+        if ((response as any).refreshToken) {
+        // eslint-disable-next-line
+          authProvider.setRefreshToken((response as any).refreshToken);
+        }
         setTimeout(() => {
           router.push("/");
         }, 2000);
@@ -119,6 +125,15 @@ const LoginForm = (props: LoginFormType) => {
       });
     }
   };
+
+  const handleRememberMeChange = (checked: boolean | React.ChangeEvent<HTMLInputElement>) => {
+    if (typeof checked === "boolean") {
+      setRememberMe(checked ? "true" : "false");
+    } else {
+      setRememberMe(checked.target.checked ? "true" : "false");
+    }
+  };
+
   return (
     <Form
       isPopup={false}
@@ -191,7 +206,15 @@ const LoginForm = (props: LoginFormType) => {
         </div>
       </div>
       <div className="flex items-center gap-2 px-6">
-        <Checkbox name="remember" label="" className="w-4 h-4" boxColor="primary" mainColor="primary" />
+        <Checkbox
+          name="remember"
+          label=""
+          className="w-4 h-4"
+          boxColor="primary"
+          mainColor="primary"
+          onChange={handleRememberMeChange}
+          checked={rememberMe === "true"}
+        />
         <Label
           text="common:auth.remember-me"
           t={t}
@@ -217,7 +240,7 @@ const LoginForm = (props: LoginFormType) => {
           className="w-fit px-4 py-2 text-sm text-center font-medium text-blue-600 hover:text-blue-800 transition duration-200"
           color="info"
         >
-          {t("common:button.dont-have-account")}
+          <Label text="common:button.dont-have-account" t={t} translate={true} className="text-sm text-blue-700" />
         </ZeroLink>
       </div>
     </Form>

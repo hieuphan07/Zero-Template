@@ -1,12 +1,30 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
+import { AllConfigType } from '@/shared/infrastructure/config/config.type';
+import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
+  const configService = app.get(ConfigService<AllConfigType>);
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.enableCors({
+    origin: configService.getOrThrow('app.frontendDomain', { infer: true }),
+    credentials: true,
+  });
+
+  app
+    .enableShutdownHooks()
+    .useGlobalPipes(new ValidationPipe())
+    .enableVersioning({
+      type: VersioningType.URI,
+    })
+    .setGlobalPrefix(configService.getOrThrow('app.apiPrefix', { infer: true }), {
+      exclude: ['/'],
+    });
 
   const config = new DocumentBuilder()
     .setTitle('API Documentation')
@@ -23,16 +41,9 @@ async function bootstrap() {
     )
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/v1', app, document);
+  SwaggerModule.setup('docs', app, document);
 
-  // Configure CORS
-  await app.enableCors({
-    origin: 'http://localhost:3000',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
-    credentials: true,
-  });
-
-  await app.listen(process.env.BE_PORT ?? 8003);
+  await app.listen(configService.getOrThrow('app.port', { infer: true }));
 }
-bootstrap();
+
+void bootstrap();
