@@ -27,6 +27,7 @@ require_variable "ENV_FILE_PATH"
 require_variable "BE_PORT"
 require_variable "FRONTEND_DOMAIN"
 require_variable "CI_ENVIRONMENT_NAME"
+require_variable "JWT_SECRET"
 require_variable "MYSQL_HOST"
 require_variable "MYSQL_DATABASE"
 require_variable "MYSQL_USER"
@@ -45,8 +46,9 @@ ENV_FILE="./$ENV_FILE_PATH"
 cat <<EOL > "$ENV_FILE"
 # Environment Variables for the application
 NODE_ENV=$CI_ENVIRONMENT_NAME
-PORT=$BE_PORT
+BE_PORT=$BE_PORT
 FRONTEND_DOMAIN=$FRONTEND_DOMAIN
+JWT_SECRET=$JWT_SECRET
 MYSQL_HOST=$MYSQL_HOST
 MYSQL_DATABASE=$MYSQL_DATABASE
 MYSQL_USER=$MYSQL_USER

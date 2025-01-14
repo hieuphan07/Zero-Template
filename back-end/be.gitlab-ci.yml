@@ -26,6 +26,8 @@ build_backend_development:
     - echo "Build docker image ${CI_ENVIRONMENT_NAME}"
     - docker compose --env-file .env -f docker-compose.yml build nest-zero-api
     - rm -f .env
+    - echo "Remove unused image"
+    - docker image prune -f --filter "dangling=true"
     - echo "Build completed successfully"
   only:
     - develop
@@ -49,7 +51,7 @@ build_backend_production:
     - echo "Push image to local registry"
     - docker push $CI_REGISTRY/$BE_IMAGE_NAME:$BE_VERSION-$CI_ENVIRONMENT_NAME
     - echo "Remove unused image"
-    - docker image prune -af
+    - docker image prune -f --filter "dangling=true"
     - echo "Build completed successfully"
   only:
     - main
@@ -85,7 +87,7 @@ deploy_backend_production:
     - docker container stop "${BE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
     - docker container rm "${BE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
     - echo "Remove unused image"
-    - docker image prune -af
+    - docker image prune -f --filter "dangling=true"
     - echo "Running deploy process..."
     - echo "Pull image from local registry"
     - docker pull $CI_REGISTRY/$BE_IMAGE_NAME:$BE_VERSION-$CI_ENVIRONMENT_NAME
