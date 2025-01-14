@@ -13,7 +13,7 @@ import { LoginDto, LoginResponseDto } from '../dtos/login.dto';
 import { User } from 'src/modules/user-management/domain/entities/user.entity';
 import { RegisterDto } from '../dtos/register.dto';
 import { RegisterUserUseCase } from '../../application/use-cases/register-user.use-case';
-import { ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiOperation, ApiTags, ApiQuery } from '@nestjs/swagger';
 import { RefreshDto, RefreshResponseDto } from '../dtos/refresh.dto';
 
 @ApiTags('Auth')
@@ -59,6 +59,11 @@ export class AuthController {
   @ApiResponse({
     status: 400,
     description: 'common:auth.invalid-credentials',
+  })
+  @ApiQuery({
+    name: 'rememberMe',
+    type: String,
+    example: 'false',
   })
   async login(
     @Body() loginDto: LoginDto,

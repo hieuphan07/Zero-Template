@@ -4,20 +4,35 @@ import { autherizeService } from "@/app/auth/services/auth-services";
 import { JwtPayload } from "@/app/auth/types/auth-type";
 
 export const authProvider = {
-  isAuthenticated: (): boolean => {
+  isAuthenticated: async (): Promise<boolean> => {
     if (typeof window === "undefined") return false;
-    const token = localStorage.getItem("accessToken");
+    const token = authProvider.getToken();
     if (!token) return false;
 
-    // Check if token is expired
     try {
       const payload = JSON.parse(atob(token.split(".")[1])) as JwtPayload;
       if (payload.exp * 1000 < Date.now()) {
-        // Token is expired, try to refresh
-        return !!localStorage.getItem("refreshToken");
+        const refreshToken = authProvider.getRefreshToken();
+        if (refreshToken) {
+          try {
+            const response = await autherizeService.refreshToken(refreshToken);
+            authProvider.setToken(response.accessToken);
+            if (response.refreshToken) {
+              authProvider.setRefreshToken(response.refreshToken);
+            }
+            return true;
+          } catch {
+            authProvider.clearTokens();
+            return false;
+          }
+        } else {
+          authProvider.clearTokens();
+          return false;
+        }
       }
       return true;
     } catch {
+      authProvider.clearTokens();
       return false;
     }
   },
@@ -25,7 +40,7 @@ export const authProvider = {
   checkAuth: async (): Promise<void> => {
     if (typeof window === "undefined") return;
 
-    const token = localStorage.getItem("accessToken");
+    const token = authProvider.getToken();
     if (!token) {
       redirect("/auth");
       return;
@@ -34,37 +49,29 @@ export const authProvider = {
     try {
       const payload = JSON.parse(atob(token.split(".")[1])) as JwtPayload;
       if (payload.exp * 1000 < Date.now()) {
-        // Token is expired, try to refresh
-        const refreshToken = localStorage.getItem("refreshToken");
+        const refreshToken = authProvider.getRefreshToken();
         if (refreshToken) {
           try {
             const response = await autherizeService.refreshToken(refreshToken);
-            // Update tokens
-            // eslint-disable-next-line
-            localStorage.setItem("accessToken", (response as any).accessToken);
-            // eslint-disable-next-line
-            if ((response as any).refreshToken) {
-              // eslint-disable-next-line
-              localStorage.setItem("refreshToken", (response as any).refreshToken);
+            authProvider.setToken(response.accessToken);
+            if (response.refreshToken) {
+              authProvider.setRefreshToken(response.refreshToken);
             }
           } catch {
-            // If refresh fails, redirect to login
             authProvider.clearTokens();
           }
         } else {
-          // No refresh token, redirect to login
           authProvider.clearTokens();
         }
       }
     } catch {
-      // Invalid token format
       authProvider.clearTokens();
     }
   },
 
   getAuthConfig: async (): Promise<AxiosRequestConfig> => {
-    await authProvider.checkAuth(); // Ensure token is valid
-    const token = typeof window === "undefined" ? "" : localStorage.getItem("accessToken") || "";
+    await authProvider.checkAuth();
+    const token = typeof window === "undefined" ? "" : (authProvider.getToken() ?? "");
     return {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -82,6 +89,11 @@ export const authProvider = {
     if (typeof window !== "undefined") {
       localStorage.setItem("refreshToken", token);
     }
+  },
+
+  getToken: (): string | null => {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem("accessToken");
   },
 
   getRefreshToken: (): string | null => {

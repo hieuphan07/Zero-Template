@@ -28,10 +28,14 @@ const LoginForm = (props: LoginFormType) => {
   const { showNotification } = useNotification();
 
   useEffect(() => {
-    const token = authProvider.isAuthenticated();
-    if (token) {
-      router.push("/");
-    }
+    const checkAuth = async () => {
+      const isAuth = await authProvider.isAuthenticated();
+      if (isAuth) {
+        router.push("/");
+      }
+    };
+
+    checkAuth();
   }, [router]);
 
   const validateField = (name: string, value: string): string | null => {

@@ -1,11 +1,12 @@
 import { IRequestBuilder, RequestBuilder } from "@/shared/utils/functions/api/request-builder";
 import { httpClient } from "@/shared/utils/functions/api";
-import { LoginRequest, RegisterFormData, RegisterResponse } from "@/app/auth/types/auth-type";
+import { LoginRequest, RefreshResponse, RegisterFormData, RegisterResponse } from "@/app/auth/types/auth-type";
 import { ApiSuccessResponse } from "@/shared/types/common-type/api-type";
 
 interface IAutherizeService {
   login(loginRequest: LoginRequest): Promise<unknown>;
   register(data: RegisterFormData): Promise<ApiSuccessResponse<RegisterResponse>>;
+  refreshToken(refreshToken: string): Promise<RefreshResponse>;
 }
 
 export class AutherizeService implements IAutherizeService {
@@ -38,11 +39,12 @@ export class AutherizeService implements IAutherizeService {
     });
   }
 
-  public async refreshToken(refreshToken: string): Promise<unknown> {
-    const response = await httpClient.post({
+  public async refreshToken(refreshToken: string): Promise<RefreshResponse> {
+    const response = await httpClient.post<RefreshResponse, { refreshToken: string }>({
       url: this.requestBuilder.buildUrl("refresh-access-token"),
       body: { refreshToken },
     });
+    console.log(response.payload);
     return response.payload;
   }
 }
