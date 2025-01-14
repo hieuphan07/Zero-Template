@@ -3,10 +3,11 @@ set -e
 set -x
 
 echo "Installing dependencies..."
-npm install --legacy-peer-deps
+npm install --production=true --legacy-peer-deps --force
 
 echo "Running migrations..."
 npx typeorm migration:run -d dist/shared/infrastructure/database/database.config.js
 
 echo "Starting the application..."
-node dist/main.js -p 8003 -h 0.0.0.0
+node dist/main.js
+

@@ -47,7 +47,7 @@ build_frontend_production:
     - echo "Push image to local registry"
     - docker push $CI_REGISTRY/$FE_IMAGE_NAME:$FE_VERSION-$CI_ENVIRONMENT_NAME
     - echo "Remove unused image"
-    - docker image prune -af
+    - docker image prune -f --filter "dangling=true"
     - echo "Build completed successfully"
   only:
     - main
@@ -68,7 +68,7 @@ deploy_frontend_development:
     - echo "Run container"
     - docker compose -f docker-compose.yml up -d --remove-orphans
     - echo "Remove unused image"
-    - docker image prune -af
+    - docker image prune -f --filter "dangling=true"
     - echo "Running deploy process..."
     - echo "Deploy ${CI_ENVIRONMENT_NAME} environment completed!"
   only:
@@ -85,7 +85,7 @@ deploy_frontend_production:
     - docker container stop "${FE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
     - docker container rm "${FE_CONTAINER_NAME}_${CI_ENVIRONMENT_NAME}" || true
     - echo "Remove unused image"
-    - docker image prune -af
+    - docker image prune -f --filter "dangling=true"
     - echo "Running deploy process..."
     - echo "Pull image from local registry"
     - docker pull $CI_REGISTRY/$FE_IMAGE_NAME:$FE_VERSION-$CI_ENVIRONMENT_NAME
