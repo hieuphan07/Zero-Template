@@ -106,7 +106,7 @@ const LoginForm = (props: LoginFormType) => {
         authProvider.setToken((response as any).accessToken);
         // eslint-disable-next-line
         if ((response as any).refreshToken) {
-        // eslint-disable-next-line
+          // eslint-disable-next-line
           authProvider.setRefreshToken((response as any).refreshToken);
         }
         setTimeout(() => {

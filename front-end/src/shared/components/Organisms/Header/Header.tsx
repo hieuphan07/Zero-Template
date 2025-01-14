@@ -83,7 +83,7 @@ const Header = (props: HeaderProps) => {
     );
   };
   return (
-    <header className="flex sticky right-0 top-0 justify-between w-full">
+    <header className="flex sticky right-0 top-0 justify-between w-full z-10 h-[5vh]">
       <div
         className={`flex justify-start items-center transition-all duration-500 ${!props.isSideMenuOpen ? "ml-[10vw]" : "ml-[16.5vw]"}`}
       >

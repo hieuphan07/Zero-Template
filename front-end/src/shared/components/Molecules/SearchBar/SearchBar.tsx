@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Input from "@/shared/components/Atoms/Input/Input";
 import Button from "@/shared/components/Atoms/Button/Button";
 import { SearchIcon } from "lucide-react";
@@ -9,13 +9,32 @@ import { SearchBarProps } from "@/shared/types/components-type/searchbar-type";
 
 const SearchBar = (props: SearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleSearch = () => {
-    props.onSearch(searchTerm);
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        setSearchTerm(e.target.value);
+        handleSearch(e.target.value);
+      }, props.delayOnChangeAutoSearch);
+    },
+    // eslint-disable-next-line
+    [],
+  );
+
+  const handleSearch = (searchValue?: string) => {
+    props.onSearch(searchValue || searchTerm);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
       handleSearch();
     }
   };
@@ -33,8 +52,7 @@ const SearchBar = (props: SearchBarProps) => {
       <Input
         name="search"
         type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={(e) => (props.delayOnChangeAutoSearch ? handleChange(e) : setSearchTerm(e.target.value))}
         onKeyDown={handleKeyPress}
         placeholder={props.placeholder}
         className={`flex-1 !focus:outline-none !ring-0 !focus:ring-0 ${props.attachToEachOther ? "rounded-none rounded-l-md" : ""}`}

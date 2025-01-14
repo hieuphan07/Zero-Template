@@ -12,4 +12,5 @@ export type SearchBarProps = ComponentDefaultProps & {
   attachToEachOther?: boolean;
   focusBorder?: boolean;
   focusBorderColor?: Color;
+  delayOnChangeAutoSearch?: number;
 };

@@ -7,12 +7,12 @@ export type DropdownProps = ComponentDefaultProps & {
   allowSearch?: boolean;
   backgroundColor?: Color;
   contextColor?: Color;
-  clickOpen?: boolean;
   placeholder?: string;
   // eslint-disable-next-line
   defaultValue?: any;
   // eslint-disable-next-line
   action?: (item: any) => void;
+  maximumRevealItems?: number;
 };
 
 export type DropdownOption = {

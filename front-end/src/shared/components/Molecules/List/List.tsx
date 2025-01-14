@@ -45,7 +45,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   const updateFormRef = useRef<HTMLFormElement>(null);
   const deleteFormRef = useRef<HTMLFormElement>(null);
 
-  const { t } = useTranslation(["common", "user-management"]);
+  const { t } = useTranslation(["common"]);
 
   const headers = TypeTransfer[props.typeString].headers;
   const [sort, setSort] = useState<SortProperty | null>(null);
@@ -138,9 +138,9 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
         return sort.direction === "asc" ? (aValue > bValue ? 1 : -1) : bValue > aValue ? 1 : -1;
       });
     }
-    if (filter) {
+    if (filter && filter.key) {
       listItemData = listItemData.filter((item) => {
-        return item[filter.key as keyof T] == filter.value;
+        return item[filter.key as keyof T]?.toString().includes(filter.value);
       });
     }
     setListItems(listItemData);
@@ -369,12 +369,12 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
             attachToEachOther={true}
             focusBorder
             focusBorderColor="primary"
+            delayOnChangeAutoSearch={1000}
           />
 
           <Dropdown
             options={getSearchableFields()}
             placeholder={t("common:text.search-by")}
-            clickOpen={true}
             action={(item) => {
               setFilter((prev) => ({ ...prev, key: item.value }));
             }}
@@ -432,7 +432,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
       <div className="w-full flex flex-row justify-center">
         {listItems.length === 0 ? (
           <div className="w-full text-center py-4">
-            <Label text="common:text.no-data" t={t} translate={true} className="text-lg" />
+            <Label text="common:message.no-record" t={t} translate={true} className="text-lg" />
           </div>
         ) : (
           <>
@@ -575,7 +575,6 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
         <Dropdown
           options={recordPerPageOptions}
           placeholder="Search..."
-          clickOpen={true}
           action={(item) => {
             setRecordPerPage(item.value);
           }}

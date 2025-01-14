@@ -10,11 +10,6 @@ export const onRequest = (config: AdaptAxiosRequestConfig): AdaptAxiosRequestCon
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken || ""}`;
   }
-
-  const element = document.getElementById("block-screen");
-  if (element && element?.style?.display) {
-    element.style.display = "flex";
-  }
   return config;
 };
 
@@ -23,19 +18,10 @@ export const onRequestError = (error: AxiosError): Promise<AxiosError> => {
 };
 
 export const onResponse = (response: AxiosResponse): AxiosResponse => {
-  const element = document.getElementById("block-screen");
-  if (element && element?.style?.display) {
-    element.style.display = "none";
-  }
   return response;
 };
 
 export const onResponseError = (error: AxiosError<ApiFailureResponse>) => {
-  const element = document.getElementById("block-screen");
-  if (element && element?.style?.display) {
-    element.style.display = "none";
-  }
-
   const errorData: ApiFailureResponse | undefined = error?.response?.data;
 
   if (errorData && errorData.errorType === "ACCESS_TOKEN_EXPIRED") {

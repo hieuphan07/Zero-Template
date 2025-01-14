@@ -15,7 +15,7 @@ export class AutherizeService implements IAutherizeService {
   constructor(requestBuilder: IRequestBuilder) {
     this.requestBuilder = requestBuilder;
   }
-  
+
   public static getInstance(requestBuilder: IRequestBuilder): AutherizeService {
     if (!AutherizeService.instance) {
       AutherizeService.instance = new AutherizeService(requestBuilder);

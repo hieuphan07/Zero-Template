@@ -78,19 +78,23 @@ class HttpClient implements IHttpClient {
       /* eslint-disable  @typescript-eslint/no-explicit-any */
       return error.flatMap((error: any) => (error?.errors?.field ? error?.errors : error));
     }
-    return "Unknown error";
+    return "common:message.unknown-error";
   }
 
   private handleError(error: unknown) {
     if (isAxiosError(error)) {
       const errorData = error.response?.data;
-      const errorMessage =
-        typeof errorData.message === "string"
-          ? ErrorMessages.get(errorData.message) || errorData.message
-          : this.extractErrorMessages(errorData.message);
-      return errorMessage || "Network error!";
+      if (errorData) {
+        const errorMessage =
+          typeof errorData.message === "string"
+            ? ErrorMessages.get(errorData.message) || errorData.message
+            : this.extractErrorMessages(errorData.message);
+        return errorMessage || "common:message.network-error";
+      } else {
+        return "common:message.network-error";
+      }
     }
-    return "Network error!";
+    return "common:message.network-error";
   }
 
   private async request<T, U>(params: ApiRequestProps<U>): Promise<ApiSuccessResponse<T>> {

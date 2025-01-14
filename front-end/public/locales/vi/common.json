@@ -46,7 +46,10 @@
     "delete-confirmation": "Bạn có chắc chắn muốn xóa mục này không?",
     "delete-success": "Xóa thành công",
     "delete-failed": "Xóa thất bại",
-    "get-list-failed": "Không có dữ liệu"
+    "get-list-failed": "Không có dữ liệu",
+    "unknown-error": "Đã gặp lỗi không rõ nguyên nhân",
+    "network-error": "Không thể kết nối đến máy chủ!",
+    "no-record": "Không có dữ liệu nào được tìm thấy!"
   },
   "auth": {
     "login": "Đăng nhập",
@@ -68,7 +71,6 @@
     "phone-number": "Số điện thoại",
     "enter-your-phone-number": "Nhập số điện thoại",
     "validation-error": "Lỗi đăng ký",
-    "unknown-error": "Đã gặp lỗi không rõ nguyên nhân",
     "email-already-exists": "Email đã tồn tại",
     "username-already-exists": "Tên đăng nhập đã tồn tại",
     "phone-number-already-exists": "Số điện thoại đã tồn tại",
@@ -84,10 +86,10 @@
       "dashboard": "Bảng điều khiển",
       "profile": "Hồ sơ",
       "admin": "Quản lý",
-      "adminUser": "Quản lý người dùng",
-      "adminUserDetail": "Chi tiết người dùng",
-      "adminRoles": "Quản lý vai trò",
-      "adminRolesPermissions": "Quản lý quyền của vai trò",
+      "admin-user": "Quản lý người dùng",
+      "admin-user-detail": "Chi tiết người dùng",
+      "admin-roles": "Quản lý vai trò",
+      "admin-roles-permissions": "Quản lý quyền của vai trò",
       "help": "Trợ giúp",
       "about": "Giới thiệu"
   },

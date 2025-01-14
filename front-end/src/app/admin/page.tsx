@@ -120,7 +120,6 @@ export default function AdminPage() {
           { label: "50", value: 50 },
         ]}
         placeholder="Search..."
-        clickOpen={true}
         action={() => {}}
         className="mt-10 w-[20%] ml-[20%]"
       />
@@ -179,7 +178,6 @@ export default function AdminPage() {
           { label: "50", value: 50 },
         ]}
         placeholder="Search..."
-        clickOpen={true}
         action={() => {}}
         className="mt-10 w-[20%] ml-[20%]"
       />

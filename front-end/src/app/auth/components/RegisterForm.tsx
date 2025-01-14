@@ -105,7 +105,7 @@ const RegistrationForm = (props: LoginFormType) => {
         content: (err as ApiError).message ? (
           <Label text={(err as ApiError).message} t={t} translate={true} />
         ) : (
-          <Label text={t("common:auth.unknown-error")} t={t} translate={true} />
+          <Label text={t("common:message.unknown-error")} t={t} translate={true} />
         ),
         position: "top-right",
       });

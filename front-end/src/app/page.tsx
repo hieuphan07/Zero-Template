@@ -28,7 +28,26 @@ export default function Home() {
       createdAt: "2023-02-15",
       updatedAt: "2023-02-15",
       deletedAt: "2024-01-15",
-      username: "",
+      username: "Jane Smith",
+      phoneNumber: "",
+      lastLogin: new Date("2024-01-15"),
+    },
+    {
+      id: "3",
+      email: "john.doe@example.com",
+      lastLogin: new Date("2024-01-10"),
+      phoneNumber: "123-456-7890",
+      createdAt: "2023-01-01",
+      updatedAt: "2023-01-01",
+      username: "John Doe2",
+    },
+    {
+      id: "4",
+      email: "jane.smith@example.com",
+      createdAt: "2023-02-15",
+      updatedAt: "2023-02-15",
+      deletedAt: "2024-01-15",
+      username: "Jane Smith2",
       phoneNumber: "",
       lastLogin: new Date("2024-01-15"),
     },
@@ -102,7 +121,6 @@ export default function Home() {
           { label: "50", value: 50 },
         ]}
         placeholder="Search..."
-        clickOpen={true}
         action={() => {}}
         className="mt-10 w-[20%] ml-[20%]"
       />
@@ -161,7 +179,6 @@ export default function Home() {
           { label: "50", value: 50 },
         ]}
         placeholder="Search..."
-        clickOpen={true}
         action={() => {}}
         className="mt-10 w-[20%] ml-[20%]"
       />

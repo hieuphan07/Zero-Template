@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 const Form = (props: FormProps) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(!props.isPopup);
+  const [allowClick, setAllowClick] = useState(true);
   const formRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
@@ -20,12 +21,13 @@ const Form = (props: FormProps) => {
         props.resetForm();
       }
     } else {
-      setIsOpen(true);
+      openFormPopup();
     }
   };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      if (!allowClick) return;
       if (props.isPopup) {
         if (formRef.current && event.target) {
           const formZIndex = window.getComputedStyle(formRef.current).zIndex;
@@ -51,7 +53,7 @@ const Form = (props: FormProps) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+  }, [isOpen, allowClick]);
 
   useEffect(() => {
     if (!props.isPopup) return;
@@ -68,10 +70,19 @@ const Form = (props: FormProps) => {
     };
   }, [isOpen, props.isPopup]);
 
+  const openFormPopup = () => {
+    setAllowClick(false);
+    setIsOpen(true);
+    setTimeout(() => {
+      setAllowClick(true);
+    }, 500);
+  };
+
   const closeFormPopup = () => {
     if (!props.isPopup) {
       return;
     }
+    setAllowClick(false);
     if (formRef.current) {
       formRef.current.classList.add("animate-slideUpOut");
     }
@@ -80,30 +91,31 @@ const Form = (props: FormProps) => {
         formRef.current.classList.remove("animate-slideUpOut");
       }
       setIsOpen(false);
+      setAllowClick(true);
     }, 500);
+  };
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (props.onSubmitNoReload) {
+      e.preventDefault();
+      props.onSubmit();
+      if (props.onSubmitClosePopUp) {
+        handleToggle();
+      }
+    } else {
+      props.onSubmit();
+      if (props.onSubmitClosePopUp) {
+        handleToggle();
+      }
+    }
   };
 
   if (!props.isPopup) {
     return (
       <form
         name={props.formName}
-        className={`w-full ${props.className}`}
-        onSubmit={
-          props.onSubmitNoReload
-            ? (event) => {
-                event.preventDefault();
-                props.onSubmit();
-                if (props.onSubmitClosePopUp) {
-                  handleToggle();
-                }
-              }
-            : () => {
-                props.onSubmit();
-                if (props.onSubmitClosePopUp) {
-                  handleToggle();
-                }
-              }
-        }
+        className={`w-full relative ${props.className}`}
+        onSubmit={handleFormSubmit}
         ref={props.ref}
       >
         <Label
@@ -152,11 +164,11 @@ const Form = (props: FormProps) => {
     <>
       <div className="">
         {props.formButton ? (
-          <div onClick={handleToggle}>{props.formButton}</div>
+          <div onClick={() => allowClick && handleToggle()}>{props.formButton}</div>
         ) : (
           <Button
             text={props.popUpButtonText ?? "Open Form"}
-            action={handleToggle}
+            action={() => allowClick && handleToggle()}
             mainColor={props.popUpButtonMainColor ?? "primary"}
             contextColor={props.popUpButtonContextColor}
           />
@@ -174,22 +186,7 @@ const Form = (props: FormProps) => {
           <form
             name={props.formName}
             className={`h-full relative overflow-hidden w-full`}
-            onSubmit={
-              props.onSubmitNoReload
-                ? (event) => {
-                    event.preventDefault();
-                    props.onSubmit();
-                    if (props.onSubmitClosePopUp) {
-                      handleToggle();
-                    }
-                  }
-                : () => {
-                    props.onSubmit();
-                    if (props.onSubmitClosePopUp) {
-                      handleToggle();
-                    }
-                  }
-            }
+            onSubmit={handleFormSubmit}
             ref={props.ref}
           >
             <Label

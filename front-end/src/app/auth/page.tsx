@@ -13,7 +13,7 @@ export default function LoginPage() {
       containerClassName="w-full flex justify-center items-center"
       maxWidthPercentage={100}
     >
-      <div className="relative w-full h-full flex self-center justify-center items-center">
+      <div className="relative w-full h-full flex self-center justify-center items-center z-0">
         <div
           className={`bg-white absolute ${isRegister == true ? "move-left-to-hide" : isRegister == false ? "move-right-to-show" : "default-above-position"}`}
         >

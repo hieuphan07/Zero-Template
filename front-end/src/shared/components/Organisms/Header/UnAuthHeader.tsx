@@ -24,20 +24,20 @@ const Header = () => {
         <Label
           text="English"
           inheritedClass={true}
-          className={`${currentLanguage === "en" ? "bg-primary" : "hover:bg-primary"} p-2 transition-all duration-300 rounded-t-md rounded-none whitespace-nowrap`}
+          className={`${currentLanguage === "en" ? "bg-primary" : "hover:bg-primary"} p-2 z-[51] transition-all duration-300 rounded-t-md rounded-none whitespace-nowrap`}
           onClick={() => changeLanguage("en")}
         />
         <Label
           text="Tiếng Việt"
           inheritedClass={true}
-          className={`${currentLanguage === "vi" ? "bg-primary" : "hover:bg-primary"} p-2 transition-all duration-300 rounded-b-md whitespace-nowrap`}
+          className={`${currentLanguage === "vi" ? "bg-primary" : "hover:bg-primary"} p-2 z-[51] transition-all duration-300 rounded-b-md whitespace-nowrap`}
           onClick={() => changeLanguage("vi")}
         />
       </div>
     );
   };
   return (
-    <header className="flex sticky right-0 top-0 justify-between w-full">
+    <header className="flex sticky right-0 top-0 justify-between w-full z-10">
       <div />
       <div className="flex justify-evenly w-fit h-fit mt-2 mr-5 gap-2">
         <ButtonWithDropDown

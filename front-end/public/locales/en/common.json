@@ -46,7 +46,10 @@
     "delete-confirmation": "Are you sure you want to delete this data?",
     "delete-success": "Delete successfully",
     "delete-failed": "Delete failed",
-    "get-list-failed": "No Data"
+    "get-list-failed": "No Data",
+    "unknown-error": "An unknown error has occured",
+    "network-error": "Cannot connect to the server!",
+    "no-record": "No record was found!"
   },
   "auth": {
     "login": "Login",
@@ -68,7 +71,6 @@
     "phone-number": "Phone Number",
     "enter-your-phone-number": "Enter your phone Number",
     "validation-error": "Validation Error",
-    "unknown-error": "An unknown error has occured",
     "email-already-exists": "Email already exists",
     "username-already-exists": "Username already exists",
     "phone-number-already-exists": "Phone number already exists",
@@ -84,10 +86,10 @@
     "dashboard": "Dashboard",
     "profile": "Profile",
     "admin": "Management",
-    "adminUser": "User Management",
-    "adminUserDetail": "User Details",
-    "adminRoles": "Roles Management",
-    "adminRolesPermissions": "Roles' Permissions",
+    "admin-user": "User Management",
+    "admin-user-detail": "User Details",
+    "admin-roles": "Roles Management",
+    "admin-roles-permissions": "Roles' Permissions",
     "help": "Help",
     "about": "About"
   },
