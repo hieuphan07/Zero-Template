@@ -45,3 +45,8 @@ export interface FormErrors {
 export interface JwtPayload {
   exp: number;
 }
+
+export interface RefreshResponse {
+  accessToken: string;
+  refreshToken?: string;
+}
