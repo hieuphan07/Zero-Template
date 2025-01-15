@@ -1,7 +1,7 @@
 "use client";
 
 import { TypeTransfer } from "../../../constants/type-transfer";
-import { ArrowDown, ArrowUp, ArrowUpDown, EditIcon, PlusIcon, TrashIcon } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, EditIcon, FilterIcon, PlusIcon, TrashIcon, X } from "lucide-react";
 import Button from "../../Atoms/Button/Button";
 import Form from "../Form/Form";
 import SearchBar from "../SearchBar/SearchBar";
@@ -30,6 +30,8 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     lastPage: 1,
   });
   const [filter, setFilter] = useState<FilterProperty>({ key: "", value: "" });
+  const [selectedFilterFields, setSelectedFilterFields] = useState<string[]>([]);
+
   const [recordPerPage, setRecordPerPage] = useState(10);
   const recordPerPageOptions = [
     { label: "10", value: 10 },
@@ -40,7 +42,7 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
 
   const notification = useNotification();
 
-  // const filterFormRef = useRef<HTMLFormElement>(null);
+  const filterFormRef = useRef<HTMLFormElement>(null);
   const createFormRef = useRef<HTMLFormElement>(null);
   const updateFormRef = useRef<HTMLFormElement>(null);
   const deleteFormRef = useRef<HTMLFormElement>(null);
@@ -73,18 +75,6 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     // eslint-disable-next-line
   }, [props.items, page, sort, filter, recordPerPage]);
 
-  const getSearchableFields = (): DropdownOption[] => {
-    return (
-      Object.entries(headers)
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .filter(([_, header]) => header.searchable)
-        .map(([key, header]) => ({
-          label: t(header.label),
-          value: key,
-        }))
-    );
-  };
-
   const handleSearch = (searchTerm: string) => {
     setFilter((prev) => ({ ...prev, value: searchTerm }));
   };
@@ -94,10 +84,10 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
       const listItems = await getListAPI({
         page: page,
         limit: recordPerPage,
+        searchFields: filter?.key,
+        searchValue: filter?.value,
         sortBy: sort?.key,
         sortDirection: sort?.direction === "asc" ? "ASC" : "DESC",
-        searchBy: filter?.key,
-        searchValue: filter?.value,
       });
       setListItems(listItems?.data);
       setMeta(listItems?.meta);
@@ -150,29 +140,47 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     });
   };
 
-  // const handleFilter = () => {
-  //   const formData = new FormData(filterFormRef.current!);
-  //   const filterData = Object.fromEntries(formData.entries());
-  //   const isValid = props.filterValidation ? props.filterValidation(filterData) : true;
-  //   if (isValid) {
-  //     const filterExist = [...filter];
-  //     if (filterData) {
-  //       Object.keys(filterData).forEach((key) => {
-  //         const filterExistByKey = filterExist.find((e) => e.key == key);
-  //         if (filterData[key]) {
-  //           if (filterExistByKey) {
-  //             filterExistByKey.value = filterData[key].toString();
-  //           } else {
-  //             filterExist.push({ key: key, value: filterData[key].toString() });
-  //           }
-  //         }
-  //       });
-  //     }
-  //     setFilter(filterExist);
-  //   } else {
-  //     alert("Validation failed");
-  //   }
-  // };
+  // Add handleCheckboxChange function
+  const handleFilterCheckboxChange = (checked: boolean, fieldKey: string) => {
+    setSelectedFilterFields((prev) => {
+      if (checked) {
+        return [...prev, fieldKey];
+      }
+      return prev.filter((key) => key !== fieldKey);
+    });
+  };
+
+  // Remove tag
+  const handleRemoveTag = (field: string) => {
+    // Update selected fields
+    setSelectedFilterFields((prev) => prev.filter((f) => f !== field));
+    // Update filter state
+    setFilter((prev) => ({
+      ...prev,
+      key: selectedFilterFields.filter((f) => f !== field).join(","),
+    }));
+  };
+
+  const handleFilter = () => {
+    if (selectedFilterFields.length > 0) {
+      setFilter((prev) => ({
+        ...prev,
+        key: selectedFilterFields.join(","),
+      }));
+      showNotification({
+        title: "common:text.apply-filter-success",
+        content: <Label text="common:text.apply-filter-success" translate t={t} />,
+        position: "top-right",
+        color: "success",
+        enableOtherElements: true,
+      });
+    } else {
+      setFilter((prev) => ({
+        ...prev,
+        key: "",
+      }));
+    }
+  };
 
   /**
    * Editted by p-thanhhieu
@@ -354,77 +362,126 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
 
   return (
     <div className={`w-full flex flex-col gap-4 ${props.className}`}>
-      <div className="flex gap-4 items-center w-full justify-between">
-        <div className="flex gap-4 w-[50%] justify-center items-center">
-          <SearchBar
-            onSearch={(searchTerm) => handleSearch(searchTerm)}
-            placeholder={t("common:button.search") + "..."}
-            className="w-full"
-            inputMainColor="primary"
-            buttonMainColor="primary"
-            buttonContextColor="default"
-            attachToEachOther={true}
-            focusBorder
-            focusBorderColor="primary"
-            delayOnChangeAutoSearch={1000}
-          />
+      <div className="flex flex-col gap-2 w-full">
+        <div className="flex gap-4 items-center w-full justify-between">
+          <div className="flex gap-4 w-[50%] justify-center items-center">
+            <SearchBar
+              onSearch={(searchTerm) => handleSearch(searchTerm)}
+              placeholder={t("common:button.search") + "..."}
+              className="w-full"
+              inputMainColor="primary"
+              buttonMainColor="primary"
+              buttonContextColor="default"
+              attachToEachOther={true}
+              focusBorder
+              focusBorderColor="primary"
+            />
+            <Form
+              formButton={
+                <Button
+                  action={() => {}}
+                  text="common:button.filter"
+                  mainColor="primary"
+                  iconAfter={<FilterIcon size={20} />}
+                  contextColor="default"
+                  className="flex gap-4"
+                  border
+                />
+              }
+              formTitle={props.filterFormTitle || "common:text.filter"}
+              onSubmit={handleFilter}
+              isPopup={true}
+              className={`${props.filterFormClassName} !w-1/2 !h-1/2 !overflow-y-auto`}
+              ref={filterFormRef}
+              onSubmitNoReload
+              onSubmitClosePopUp
+            >
+              <>
+                <div className="flex flex-col gap-4 p-4">
+                  <Label
+                    text="common:text.select-fields-to-filter"
+                    t={t}
+                    translate={true}
+                    className="font-bold text-lg"
+                  />
+                  {Object.entries(headers).map(
+                    ([key, header]) =>
+                      !header.hidden &&
+                      header.searchable && (
+                        <Checkbox
+                          key={key}
+                          name={key}
+                          label={t(header.label)}
+                          className="w-6 h-6"
+                          boxColor="primary"
+                          mainColor="default"
+                          textClassName="font-medium text-sm"
+                          checked={selectedFilterFields.includes(key)}
+                          onChange={(checked) =>
+                            handleFilterCheckboxChange(
+                              checked instanceof Event
+                                ? (checked as React.ChangeEvent<HTMLInputElement>).target.checked
+                                : (checked as boolean),
+                              key,
+                            )
+                          }
+                        />
+                      ),
+                  )}
+                </div>
+              </>
+            </Form>
+          </div>
 
-          <Dropdown
-            options={getSearchableFields()}
-            placeholder={t("common:text.search-by")}
-            action={(item) => {
-              setFilter((prev) => ({ ...prev, key: item.value }));
-            }}
-            inputClassName="text-center"
-            allowSearch={false}
-            defaultValue={filter.key}
-          />
-          {/* <Form
+          {/* Insert Form: customized by p-thanhhieu */}
+          <Form
             formButton={
               <Button
                 action={() => {}}
-                text="common:button.filter"
+                text=""
+                iconBefore={<PlusIcon size={20} />}
                 mainColor="primary"
-                iconAfter={<FilterIcon size={20} />}
                 contextColor="default"
-                className="flex gap-4"
                 border
               />
             }
-            formTitle={props.filterFormTitle || "common:text.filter"}
-            onSubmit={handleFilter}
             isPopup={true}
-            className={props.filterFormClassName}
-            ref={filterFormRef}
+            formTitle={props.insertFormTitle || "common:button.create"}
+            onSubmit={handleCreate}
+            ref={createFormRef}
             onSubmitNoReload
-            onSubmitClosePopUp
+            className={props.insertFormClassName}
+            resetForm={props.insertResetForm}
           >
-            {props.filterForm}
-          </Form> */}
+            {props.insertForm}
+          </Form>
         </div>
-
-        {/* Insert Form: customized by p-thanhhieu */}
-        <Form
-          formButton={
-            <Button
-              action={() => {}}
-              text=""
-              iconBefore={<PlusIcon size={20} />}
-              mainColor="primary"
-              contextColor="default"
-              border
-            />
-          }
-          isPopup={true}
-          formTitle={props.insertFormTitle || "common:button.create"}
-          onSubmit={handleCreate}
-          ref={createFormRef}
-          onSubmitNoReload
-          className={props.insertFormClassName}
-          resetForm={props.insertResetForm}
-        >
-          {props.insertForm}
-        </Form>
+        {selectedFilterFields.length > 0 && (
+          <div className="flex gap-2 items-center flex-wrap">
+            {selectedFilterFields.map((field) => (
+              <div
+                key={field}
+                className="flex items-center gap-1 bg-primary/10 text-primary px-2 py-1 rounded border border-primary"
+              >
+                <Label
+                  text={headers[field]?.label ? headers[field].label : field}
+                  t={t}
+                  translate={true}
+                  className="text-sm text-black"
+                />
+                <Button
+                  action={() => {
+                    handleRemoveTag(field);
+                  }}
+                  iconAfter={<X size={14} className="!text-primary" />}
+                  text=""
+                  mainColor="default"
+                  className="!p-1"
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div className="w-full flex flex-row justify-center">
         {listItems.length === 0 ? (

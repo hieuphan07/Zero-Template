@@ -41,4 +41,14 @@ export const UserTableHeaders: TableHeaders = {
     sortable: true,
     hidden: false,
   },
+  createdAt: {
+    label: "user-management:fields.createdAt",
+    sortable: true,
+    hidden: false,
+  },
+  updatedAt: {
+    label: "user-management:fields.updatedAt",
+    sortable: true,
+    hidden: false,
+  },
 };

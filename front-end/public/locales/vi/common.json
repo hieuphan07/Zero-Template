@@ -36,7 +36,9 @@
     "notification": "Thông báo",
     "logout": "Đăng xuất",
     "search-by": "Tìm kiếm theo",
-    "language-change": "Thay đổi ngôn ngữ"
+    "language-change": "Thay đổi ngôn ngữ",
+    "select-fields-to-filter": "Chọn các trường để lọc",
+    "apply-filter-success": "Áp dụng lọc thành công"
   },
   "message": {
     "login-failed": "Đăng nhập thất bại",

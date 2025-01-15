@@ -1,6 +1,6 @@
 import { User } from '../entities/user.entity';
-import { PaginationQueryDto } from 'src/shared/dtos/pagination-query.dto';
 import { PaginatedResult } from 'src/shared/types/paginated-result.interface';
+import { SearchOptions } from 'src/shared/types/search-options';
 
 export interface IUserRepository {
   create(user: User): Promise<User>;
@@ -9,7 +9,7 @@ export interface IUserRepository {
   delete(id: number): Promise<void>;
   softDelete(id: number): Promise<void>;
   restore(id: number): Promise<void>;
-  findAll(query: PaginationQueryDto): Promise<PaginatedResult<User>>;
+  findAll(query: SearchOptions): Promise<PaginatedResult<User>>;
   findByEmail(email: string): Promise<User>;
   findByUsername(username: string): Promise<User>;
   exists(

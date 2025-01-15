@@ -11,6 +11,7 @@ import { CreateUserDto } from 'src/modules/user-management/presentation/dto/crea
 import { UpdateUserUseCase } from 'src/modules/user-management/application/use-cases/update-user.use-case';
 import { UpdateUserDto } from 'src/modules/user-management/presentation/dto/update-user.dto';
 import { UserMapper } from 'src/modules/user-management/application/mapper/user.mapper';
+import { SortDirection } from 'src/shared/enum/sort-direction';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -132,22 +133,153 @@ describe('UserController', () => {
   });
 
   describe('getUsers', () => {
+    const defaultSearchDto = {
+      page: 1,
+      limit: 10,
+      searchFields: '',
+      searchValue: '',
+      sortBy: 'createdAt',
+      sortDirection: SortDirection.DESC,
+    };
+
     it('should return paginated users', async () => {
+      const searchOptions = {
+        ...defaultSearchDto,
+        searchFields: [],
+      };
+
       jest.spyOn(getUsersUseCase, 'execute').mockResolvedValue(mockPaginatedResult);
 
-      const result = await controller.getUsers({ page: 1, limit: 10 });
+      const result = await controller.getUsers(defaultSearchDto);
 
       expect(result).toEqual(mockPaginatedDto);
-      expect(getUsersUseCase.execute).toHaveBeenCalledWith({ page: 1, limit: 10 });
+      expect(getUsersUseCase.execute).toHaveBeenCalledWith(searchOptions);
     });
 
-    it('should throw NotFoundException when no users found', async () => {
-      jest.spyOn(getUsersUseCase, 'execute').mockResolvedValue({
-        data: [],
-        meta: { total: 0, page: 1, lastPage: 1 },
-      });
+    it('should handle search with comma-separated fields', async () => {
+      const searchDto = {
+        ...defaultSearchDto,
+        searchFields: 'username,email',
+        searchValue: 'test',
+      };
 
-      await expect(controller.getUsers({ page: 1, limit: 10 })).rejects.toThrow(NotFoundException);
+      const expectedOptions = {
+        ...searchDto,
+        searchFields: ['username', 'email'],
+      };
+
+      jest.spyOn(getUsersUseCase, 'execute').mockResolvedValue(mockPaginatedResult);
+
+      const result = await controller.getUsers(searchDto);
+
+      expect(result).toEqual(mockPaginatedDto);
+      expect(getUsersUseCase.execute).toHaveBeenCalledWith(expectedOptions);
+    });
+
+    it('should handle empty search fields', async () => {
+      const searchDto = {
+        ...defaultSearchDto,
+        searchFields: '',
+        searchValue: 'test',
+      };
+
+      const expectedOptions = {
+        ...searchDto,
+        searchFields: [],
+      };
+
+      jest.spyOn(getUsersUseCase, 'execute').mockResolvedValue(mockPaginatedResult);
+
+      const result = await controller.getUsers(searchDto);
+
+      expect(result).toEqual(mockPaginatedDto);
+      expect(getUsersUseCase.execute).toHaveBeenCalledWith(expectedOptions);
+    });
+
+    it('should use default sort parameters when not provided', async () => {
+      const searchDto = {
+        page: 1,
+        limit: 10,
+        searchFields: '',
+        searchValue: '',
+      };
+
+      const expectedOptions = {
+        ...searchDto,
+        searchFields: [],
+        sortBy: 'createdAt',
+        sortDirection: 'DESC',
+      };
+
+      jest.spyOn(getUsersUseCase, 'execute').mockResolvedValue(mockPaginatedResult);
+
+      const result = await controller.getUsers(searchDto);
+
+      expect(result).toEqual(mockPaginatedDto);
+      expect(getUsersUseCase.execute).toHaveBeenCalledWith(expectedOptions);
+    });
+
+    it('should propagate NotFoundException from use case', async () => {
+      jest.spyOn(getUsersUseCase, 'execute').mockRejectedValue(new NotFoundException('No users found'));
+
+      await expect(controller.getUsers(defaultSearchDto)).rejects.toThrow(NotFoundException);
+    });
+
+    it('should propagate BadRequestException from use case', async () => {
+      jest.spyOn(getUsersUseCase, 'execute').mockRejectedValue(new BadRequestException('Invalid search field'));
+
+      await expect(controller.getUsers(defaultSearchDto)).rejects.toThrow(BadRequestException);
+    });
+
+    it('should handle custom pagination values', async () => {
+      const searchDto = {
+        ...defaultSearchDto,
+        page: 2,
+        limit: 5,
+      };
+
+      const expectedOptions = {
+        ...searchDto,
+        searchFields: [],
+      };
+
+      const customPaginatedResult = {
+        data: [mockUser],
+        meta: {
+          total: 7,
+          page: 2,
+          lastPage: 2,
+        },
+      };
+
+      const customPaginatedDto = UserMapper.toPaginatedDTO(customPaginatedResult);
+
+      jest.spyOn(getUsersUseCase, 'execute').mockResolvedValue(customPaginatedResult);
+
+      const result = await controller.getUsers(searchDto);
+
+      expect(result).toEqual(customPaginatedDto);
+      expect(getUsersUseCase.execute).toHaveBeenCalledWith(expectedOptions);
+    });
+
+    it('should handle custom sorting parameters', async () => {
+      const searchDto = {
+        ...defaultSearchDto,
+        sortBy: 'username',
+        sortDirection: SortDirection.ASC,
+      };
+
+      const expectedOptions = {
+        ...searchDto,
+        searchFields: [],
+      };
+
+      jest.spyOn(getUsersUseCase, 'execute').mockResolvedValue(mockPaginatedResult);
+
+      const result = await controller.getUsers(searchDto);
+
+      expect(result).toEqual(mockPaginatedDto);
+      expect(getUsersUseCase.execute).toHaveBeenCalledWith(expectedOptions);
     });
   });
 
