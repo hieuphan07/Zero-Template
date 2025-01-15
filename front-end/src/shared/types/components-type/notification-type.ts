@@ -11,4 +11,10 @@ export type NotificationProps = ComponentDefaultProps & {
   enableOtherElements?: boolean;
   contentClassName?: string;
   closeOnClick?: boolean;
+  appearAt?: string;
+};
+
+export type NotificationAdditionalTimeoutTriggerType = {
+  time: number;
+  check: boolean;
 };

@@ -105,7 +105,6 @@ const Dropdown = (props: DropdownProps) => {
         .slice(0, itemsToShow)
         .map((child) => child.getBoundingClientRect().height);
       const calculatedHeight = itemHeights.reduce((acc, height) => acc + height, 0);
-      console.log(calculatedHeight);
       setMaxHeight(calculatedHeight);
     }
   }, [items, props.maximumRevealItems, allowClick]);

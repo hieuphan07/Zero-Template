@@ -2,11 +2,12 @@
 
 import { cn } from "@/lib/utils";
 import { InputProps } from "@/shared/types/components-type/input-type";
-import { TriangleAlertIcon } from "lucide-react";
-import { useCallback, useRef } from "react";
+import { EyeIcon, EyeOffIcon, TriangleAlertIcon } from "lucide-react";
+import { useCallback, useRef, useState } from "react";
 
 const Input = (props: InputProps) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isPasswordShown, setIsPasswordShown] = useState(false);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,14 +42,18 @@ const Input = (props: InputProps) => {
     "transition duration-300",
   );
 
-  const inputStyles = cn("w-full px-4 py-2 rounded-l-md bg-transparent", "focus:outline-none focus:ring-none");
+  const inputStyles = cn(
+    "w-full px-4 py-2 rounded-md bg-transparent",
+    "focus:outline-none focus:ring-none",
+    props.disabled && "cursor-not-allowed opacity-50 bg-gray-100",
+  );
 
   return (
     <div
-      className={`flex justify-center items-center rounded-md ${baseStyles} ${props.className} ${props.isError ? "pr-2 border-2 border-red-500" : ""} `}
+      className={`flex justify-center items-center relative rounded-md ${baseStyles} ${props.className} ${props.isError ? "border-2 border-red-500" : ""} `}
     >
       <input
-        type={props.type ? props.type : "text"}
+        type={props.type === "password" ? (isPasswordShown ? "text" : "password") : props.type ? props.type : "text"}
         name={props.name}
         defaultValue={props.defaultValue}
         value={props.value}
@@ -61,11 +66,20 @@ const Input = (props: InputProps) => {
         onBlur={props.onBlur}
         suppressHydrationWarning
       />
-      {props.isError && (
-        <span className="text-red-500 text-sm">
-          <TriangleAlertIcon />
-        </span>
+      {props.type === "password" && (
+        <button
+          type="button"
+          className={`absolute transition-all duration-300 ${props.isError ? "right-10" : "right-2"}`}
+          onClick={() => setIsPasswordShown(!isPasswordShown)}
+        >
+          {isPasswordShown ? <EyeIcon /> : <EyeOffIcon />}
+        </button>
       )}
+      <span
+        className={`text-red-500 text-sm absolute right-2 transition-all duration-500 ${props.isError ? "scale-100" : "scale-0"}`}
+      >
+        <TriangleAlertIcon />
+      </span>
     </div>
   );
 };

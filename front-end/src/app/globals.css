@@ -136,7 +136,7 @@ body {
   }
 
   .animate-slideLeftOut {
-    animation: slideLeftOut 0.5s ease-out;
+    animation: slideLeftOut 0.5s ease-out forwards;
   }
 
   @keyframes slideLeftOut {
@@ -154,7 +154,7 @@ body {
   }
 
   .animate-slideRightOut {
-    animation: slideRightOut 0.5s ease-out;
+    animation: slideRightOut 0.5s ease-out forwards;
   }
 
   @keyframes slideRightOut {
