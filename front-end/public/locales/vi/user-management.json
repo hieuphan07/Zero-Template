@@ -13,7 +13,9 @@
     "email": "Email",
     "password": "Mật khẩu",
     "phoneNumber": "Số điện thoại",
-    "lastLogin": "Lần đăng nhập cuối"
+    "lastLogin": "Lần đăng nhập cuối",
+    "createdAt": "Ngày tạo",
+    "updatedAt": "Ngày cập nhật"
   },
   "placeholders": {
     "username": "JohnDoe",

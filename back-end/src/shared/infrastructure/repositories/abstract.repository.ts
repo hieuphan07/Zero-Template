@@ -1,7 +1,39 @@
-import { Repository, SelectQueryBuilder } from 'typeorm';
+import { BadRequestException } from '@nestjs/common';
+import { FindOptionsWhere, Like, Repository, SelectQueryBuilder } from 'typeorm';
 
 export abstract class AbstractRepository<T> {
-  constructor(protected readonly repository: Repository<T>) {}
+  constructor(
+    protected readonly repository: Repository<T>,
+    protected readonly options: {
+      searchableFields: string[];
+      sortableFields: string[];
+    },
+  ) {}
+
+  protected validateSearchFields(fields: string[]): void {
+    const invalidFields = fields.filter((field) => !this.options.searchableFields.includes(field));
+    if (invalidFields.length > 0) {
+      throw new BadRequestException(`Invalid search fields: ${invalidFields.join(', ')}`);
+    }
+  }
+
+  protected validateSortFields(field: string): void {
+    if (!this.options.sortableFields.includes(field)) {
+      throw new BadRequestException(`Invalid sort field: ${field}`);
+    }
+  }
+
+  protected buildWhereConditions(searchFields: string[], searchValue: string): FindOptionsWhere<T>[] {
+    const where: FindOptionsWhere<T>[] = [];
+
+    const fieldsToSearch = searchFields.length > 0 ? searchFields : this.options.searchableFields;
+    fieldsToSearch.forEach((field) => {
+      const condition = {};
+      condition[field] = Like(`%${searchValue}%`);
+      where.push(condition);
+    });
+    return where;
+  }
 
   public camelToSnakeCase(str: string): string {
     return str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);

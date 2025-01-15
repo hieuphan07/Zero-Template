@@ -13,6 +13,7 @@ import {
   InternalServerErrorException,
   UseGuards,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '../../domain/entities/user.entity';
@@ -25,14 +26,12 @@ import { JwtAuthGuard } from 'src/modules/auth/presentation/guards/jwt-auth.guar
 import { RolesGuard } from 'src/modules/auth/presentation/guards/roles.guard';
 import { PaginatedResponseDto } from 'src/shared/dtos/paginated-response.dto';
 import { UserResponseDto } from '../dto/user-response.dto';
-import { PaginationQueryDto } from 'src/shared/dtos/pagination-query.dto';
 import { UserMapper } from '../../application/mapper/user.mapper';
-import { ApiPaginatedRequest } from 'src/shared/decorator/api-paginate-request.decorator';
-import { UserOrmEntity } from '../../infrastructure/orm/user.entity.orm';
-import { PaginationParams } from 'src/shared/decorator/pagination-params.decorator';
 import { GetUsersUseCase } from '../../application/use-cases/get-users.usecase';
 import { GetUserUseCase } from '../../application/use-cases/get-user.usecase';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { SearchDto } from 'src/shared/dtos/search-dto';
+import { SortDirection } from 'src/shared/enum/sort-direction';
 
 @ApiTags('Users')
 @Controller({ path: 'admin/users', version: '1' })
@@ -49,7 +48,6 @@ export class UserController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'List all users' })
-  @ApiPaginatedRequest(UserOrmEntity)
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List of users',
@@ -63,22 +61,26 @@ export class UserController {
     status: HttpStatus.BAD_REQUEST,
     description: 'Bad request, invalid parameters',
   })
-  async getUsers(
-    @PaginationParams(UserOrmEntity) query: PaginationQueryDto,
-  ): Promise<PaginatedResponseDto<UserResponseDto>> {
-    try {
-      const result = await this.getUsersUseCase.execute(query);
-      if (!result || result.data.length === 0) {
-        throw new NotFoundException('Users not found');
-      }
-      return UserMapper.toPaginatedDTO(result);
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException('Users not found');
-      } else {
-        throw new InternalServerErrorException('Internal server error');
-      }
-    }
+  async getUsers(@Query() searchDto: SearchDto): Promise<PaginatedResponseDto<UserResponseDto>> {
+    const {
+      searchFields,
+      searchValue,
+      page,
+      limit,
+      sortBy = 'createdAt',
+      sortDirection = SortDirection.DESC,
+    } = searchDto;
+
+    const searchFieldsArray = searchFields ? searchFields.split(',').map((field) => field.trim()) : [];
+    const result = await this.getUsersUseCase.execute({
+      searchFields: searchFieldsArray,
+      searchValue,
+      page,
+      limit,
+      sortBy,
+      sortDirection: sortDirection as SortDirection,
+    });
+    return UserMapper.toPaginatedDTO(result);
   }
 
   @Post()

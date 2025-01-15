@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CheckboxProps } from "@/shared/types/components-type/checkbox-type";
 import Label from "../Label/Label";
 import { useTranslation } from "next-i18next";
@@ -9,6 +9,10 @@ import { useTranslation } from "next-i18next";
 const Checkbox = (props: CheckboxProps) => {
   const { t } = useTranslation();
   const [isChecked, setIsChecked] = useState(props.checked || false);
+
+  useEffect(() => {
+    setIsChecked(props.checked || false);
+  }, [props.checked]);
 
   const handleClick = () => {
     if (!props.disabled) {

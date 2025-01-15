@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, SortDirection } from 'typeorm';
 import { UserOrmEntity } from '../orm/user.entity.orm';
 import { User } from '../../domain/entities/user.entity';
 import { IUserRepository } from '../../domain/repositories/user-repository.interface';
 import { UserMapper } from '../../application/mapper/user.mapper';
 import { PaginatedResult } from 'src/shared/types/paginated-result.interface';
 import { AbstractRepository } from 'src/shared/infrastructure/repositories/abstract.repository';
-import { PaginationQueryDto } from 'src/shared/dtos/pagination-query.dto';
+import { SearchOptions } from 'src/shared/types/search-options';
 
 @Injectable()
 export class UserRepository extends AbstractRepository<UserOrmEntity> implements IUserRepository {
@@ -15,7 +15,10 @@ export class UserRepository extends AbstractRepository<UserOrmEntity> implements
     @InjectRepository(UserOrmEntity)
     repository: Repository<UserOrmEntity>,
   ) {
-    super(repository);
+    super(repository, {
+      searchableFields: ['username', 'email', 'phoneNumber'],
+      sortableFields: ['createdAt', 'updatedAt', 'id', 'username', 'email', 'phoneNumber', 'lastLogin'],
+    });
   }
 
   async create(user: User): Promise<User> {
@@ -77,25 +80,30 @@ export class UserRepository extends AbstractRepository<UserOrmEntity> implements
     }
   }
 
-  async findAll(query: PaginationQueryDto): Promise<PaginatedResult<User>> {
-    const { page, limit, searchParams, sortParams } = query;
-    const queryBuilder = this.repository.createQueryBuilder('user');
-    if (searchParams) {
-      this.applySearchParams(queryBuilder, searchParams);
+  async findAll(query: SearchOptions): Promise<PaginatedResult<User>> {
+    const { searchFields, searchValue, page, limit, sortBy, sortDirection } = query;
+    if (searchFields.length > 0) {
+      this.validateSearchFields(searchFields);
     }
-    if (sortParams) {
-      this.applySortParams(queryBuilder, sortParams);
+    if (sortBy) {
+      this.validateSortFields(sortBy);
     }
-    const [users, total] = await queryBuilder
-      .skip((page - 1) * limit)
-      .take(limit)
-      .getManyAndCount();
+    const skip = (page - 1) * limit;
+    const where = searchValue ? this.buildWhereConditions(searchFields, searchValue) : {};
+    const [users, total] = await this.repository.findAndCount({
+      where,
+      skip,
+      take: limit,
+      order: { [sortBy]: sortDirection as unknown as SortDirection },
+    });
+
+    const lastPage = Math.ceil(total / limit);
     return {
       data: UserMapper.toDomainList(users),
       meta: {
         total,
         page,
-        lastPage: Math.ceil(total / limit),
+        lastPage,
       },
     };
   }

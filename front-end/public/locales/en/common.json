@@ -36,7 +36,9 @@
     "notification": "Notification",
     "logout": "Logout",
     "search-by": "Search by",
-    "language-change": "Language Change"
+    "language-change": "Language Change",
+    "select-fields-to-filter": "Select Fields to Filter",
+    "apply-filter-success": "Apply filter successfully"
   },
   "message": {
     "login-failed": "Login failed",
