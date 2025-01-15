@@ -35,7 +35,8 @@
     "goToPage": "Go To Page",
     "notification": "Notification",
     "logout": "Logout",
-    "search-by": "Search by"
+    "search-by": "Search by",
+    "language-change": "Language Change"
   },
   "message": {
     "login-failed": "Login failed",
@@ -49,7 +50,11 @@
     "get-list-failed": "No Data",
     "unknown-error": "An unknown error has occured",
     "network-error": "Cannot connect to the server!",
-    "no-record": "No record was found!"
+    "no-record": "No record was found!",
+    "session-expired": "Your session has expired. Please login again.",
+    "login-required": "You must be logged in to access this page.",
+    "language-change-success": "Language changed successfully.",
+    "already-login": "You are already logged in. Please logout to continue."
   },
   "auth": {
     "login": "Login",

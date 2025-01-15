@@ -35,7 +35,8 @@
     "goToPage": "Đi đến trang",
     "notification": "Thông báo",
     "logout": "Đăng xuất",
-    "search-by": "Tìm kiếm theo"
+    "search-by": "Tìm kiếm theo",
+    "language-change": "Thay đổi ngôn ngữ"
   },
   "message": {
     "login-failed": "Đăng nhập thất bại",
@@ -49,7 +50,11 @@
     "get-list-failed": "Không có dữ liệu",
     "unknown-error": "Đã gặp lỗi không rõ nguyên nhân",
     "network-error": "Không thể kết nối đến máy chủ!",
-    "no-record": "Không có dữ liệu nào được tìm thấy!"
+    "no-record": "Không có dữ liệu nào được tìm thấy!",
+    "session-expired": "Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
+    "login-required": "Bạn phải đăng nhập để truy cập trang này.",
+    "language-change-success": "Thay đổi ngôn ngữ thành công.",
+    "already-login": "Bạn vẫn đang trong phiên đăng nhập. Vui lòng đăng xuất để tiếp tục thao tác."
   },
   "auth": {
     "login": "Đăng nhập",

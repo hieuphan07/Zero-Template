@@ -28,14 +28,21 @@ const LoginForm = (props: LoginFormType) => {
   const { showNotification } = useNotification();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const isAuth = await authProvider.isAuthenticated();
-      if (isAuth) {
-        router.push("/");
+    const checkAuthen = async () => {
+      const isAuth = await authProvider.checkAuth();
+      if (isAuth.path && isAuth.path === "/") {
+        showNotification({
+          color: "info",
+          position: "bottom-right",
+          title: "common:text.error",
+          content: <Label text={isAuth.message} translate />,
+          enableOtherElements: true,
+        });
+        router.push(isAuth.path);
       }
     };
-
-    checkAuth();
+    checkAuthen();
+    // eslint-disable-next-line
   }, [router]);
 
   const validateField = (name: string, value: string): string | null => {
@@ -101,8 +108,8 @@ const LoginForm = (props: LoginFormType) => {
       if (response) {
         showNotification({
           color: "success",
-          position: "top-right",
-          title: t("common:message.login-success"),
+          position: "bottom-right",
+          title: "common:message.login-success",
           content: <Label text={t("common:message.login-success")} t={t} translate={true} />,
           enableOtherElements: true,
         });

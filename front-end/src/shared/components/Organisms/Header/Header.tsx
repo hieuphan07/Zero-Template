@@ -44,14 +44,32 @@ const Header = (props: HeaderProps) => {
           inheritedClass={true}
           translate
           className={`${currentLanguage === "en" ? "bg-primary" : "hover:bg-primary"} p-2 transition-all duration-300 rounded-t-md rounded-none whitespace-nowrap`}
-          onClick={() => changeLanguage("en")}
+          onClick={() => {
+            changeLanguage("en");
+            showNotification({
+              title: "common:text.language-change",
+              content: <Label text="common:message.language-change-success" translate />,
+              position: "bottom-right",
+              color: "success",
+              enableOtherElements: true,
+            });
+          }}
         />
         <Label
           text="common:language.vi"
           inheritedClass={true}
           translate
           className={`${currentLanguage === "vi" ? "bg-primary" : "hover:bg-primary"} p-2 transition-all duration-300 rounded-b-md whitespace-nowrap`}
-          onClick={() => changeLanguage("vi")}
+          onClick={() => {
+            changeLanguage("vi");
+            showNotification({
+              title: "common:text.language-change",
+              content: <Label text="common:message.language-change-success" translate />,
+              position: "bottom-right",
+              color: "success",
+              enableOtherElements: true,
+            });
+          }}
         />
       </div>
     );

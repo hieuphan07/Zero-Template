@@ -3,6 +3,8 @@ import { ApiSuccessResponse } from "./api-type";
 
 export type Color = "primary" | "secondary" | "warning" | "success" | "danger" | "info" | "light" | "dark" | "default";
 
+export type NotificationPosition = "center" | "top-right" | "top-left" | "bottom-right" | "bottom-left";
+
 export type SortProperty = {
   key: string;
   direction: "asc" | "desc" | "default";
@@ -46,4 +48,9 @@ export type TransferType = {
   deleteAPI: (id: string) => Promise<any>;
   listPath: string;
   detailPath: string;
+};
+
+export type AuthResponse = {
+  path: string;
+  message: string;
 };

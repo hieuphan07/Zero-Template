@@ -49,9 +49,6 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
 
   const headers = TypeTransfer[props.typeString].headers;
   const [sort, setSort] = useState<SortProperty | null>(null);
-  const repository = TypeTransfer[props.typeString].repository;
-  // dont delete this
-  console.log(repository);
   const getListAPI = TypeTransfer[props.typeString].getListAPI;
   const detailPath = TypeTransfer[props.typeString].detailPath;
   const deleteAPI = TypeTransfer[props.typeString].deleteAPI;
