@@ -56,7 +56,13 @@
     "success": "Success",
     "createSuccess": "User created successfully",
     "createError": "Failed to create user",
-    "validationError": "Please fill in all required fields"
+    "updateSuccess": "User updated successfully",
+    "updateError": "Failed to update user",
+    "validationError": "Please fill in all required fields",
+    "deleteSuccess": "User deleted successfully",
+    "deleteError": "Failed to delete user",
+    "getError": "Failed to get user",
+    "getSuccess": "User fetched successfully"
   },
   "errors": {
     "accessTokenExpired": "Your session has expired. Please log in again.",

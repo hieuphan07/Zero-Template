@@ -1,6 +1,7 @@
 {
   "button": {
     "sort": "Sort",
+    "back": "Back",
     "create": "Create",
     "update": "Update",
     "delete": "Delete",

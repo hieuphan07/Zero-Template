@@ -19,4 +19,5 @@ export type InputProps = ComponentDefaultProps & {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
+  onFocus?: (e: FocusEvent<HTMLInputElement>) => void;
 };

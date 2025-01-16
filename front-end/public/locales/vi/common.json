@@ -1,6 +1,7 @@
 {
   "button": {
     "sort": "Sắp xếp",
+    "back": "Trở về",
     "create": "Tạo mới",
     "update": "Cập nhật",
     "delete": "Xóa",
@@ -81,7 +82,7 @@
     "email-already-exists": "Email đã tồn tại",
     "username-already-exists": "Tên đăng nhập đã tồn tại",
     "phone-number-already-exists": "Số điện thoại đã tồn tại",
-    "user-already-exists": "Tài khoản đã tồn tại",  
+    "user-already-exists": "Tài khoản đã tồn tại",
     "invalid-input": "Dữ liệu không hợp lệ",
     "confirm-password": "Xác nhận mật khẩu",
     "confirm-your-password": "Xác nhận lại mật khẩu",
@@ -89,19 +90,20 @@
     "confirm-password-required": "Xác thực mật khẩu là bắt buộc"
   },
   "path": {
-      "home": "Trang chủ",
-      "dashboard": "Bảng điều khiển",
-      "profile": "Hồ sơ",
-      "admin": "Quản lý",
-      "admin-user": "Quản lý người dùng",
-      "admin-user-detail": "Chi tiết người dùng",
-      "admin-roles": "Quản lý vai trò",
-      "admin-roles-permissions": "Quản lý quyền của vai trò",
-      "help": "Trợ giúp",
-      "about": "Giới thiệu"
+    "home": "Trang chủ",
+    "dashboard": "Bảng điều khiển",
+    "profile": "Hồ sơ",
+    "admin": "Quản lý",
+    "admin-user": "Quản lý người dùng",
+    "admin-user-detail": "Chi tiết người dùng",
+    "admin-roles": "Quản lý vai trò",
+    "admin-roles-permissions": "Quản lý quyền của vai trò",
+    "help": "Trợ giúp",
+    "about": "Giới thiệu"
   },
   "language": {
-      "en": "Tiếng Anh",
-      "vi": "Tiếng Việt"
+    "en": "Tiếng Anh",
+    "vi": "Tiếng Việt"
   }
 }
+

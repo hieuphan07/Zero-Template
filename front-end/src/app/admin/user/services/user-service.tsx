@@ -12,7 +12,7 @@ interface IUserService {
   getUsers(params?: any): Promise<PaginatedListType<User>>;
   getUser(id: string): Promise<User>;
   createUser(user: UserCreate): Promise<ApiSuccessResponse<User>>;
-  updateUser(id: string, user: User): Promise<User>;
+  updateUser(id: string, user: User): Promise<ApiSuccessResponse<User>>;
   deleteUser(id: string): Promise<void>;
 }
 
@@ -54,9 +54,11 @@ export class UserService implements IUserService {
     });
   }
 
-  // eslint-disable-next-line
-  public async updateUser(id: string, user: User): Promise<User> {
-    throw new Error("Method not implemented.");
+  public async updateUser(id: string, user: User): Promise<ApiSuccessResponse<User>> {
+    return httpClient.put<User, User>({
+      url: this.requestBuilder.buildUrl(id),
+      body: user,
+    });
   }
 
   public async deleteUser(id: string): Promise<void> {

@@ -15,6 +15,7 @@ export type ButtonProps = ComponentDefaultProps & {
   manualHover?: boolean;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  onMouseDown?: () => void;
   disabled?: boolean;
   rippleEffect?: boolean;
 };
