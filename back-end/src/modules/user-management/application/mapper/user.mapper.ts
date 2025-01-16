@@ -33,6 +33,8 @@ export class UserMapper {
     ormUser.password = user.getPassword();
     ormUser.phoneNumber = user.getPhoneNumber();
     ormUser.lastLogin = user.getLastLogin();
+    ormUser.createdAt = user.getCreatedAt();
+    ormUser.updatedAt = user.getUpdatedAt();
     return ormUser;
   }
 
@@ -42,6 +44,8 @@ export class UserMapper {
     user.setId(ormUser.id);
     user.setUuid(ormUser.uuid);
     user.setLastLogin(ormUser.lastLogin);
+    user.setCreatedAt(ormUser.createdAt);
+    user.setUpdatedAt(ormUser.updatedAt);
     return user;
   }
 
