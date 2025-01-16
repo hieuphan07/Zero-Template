@@ -2,16 +2,19 @@ import { IRequestBuilder, RequestBuilder } from "@/shared/utils/functions/api/re
 import { httpClient } from "@/shared/utils/functions/api";
 import { LoginRequest, RefreshResponse, RegisterFormData, RegisterResponse } from "@/app/auth/types/auth-type";
 import { ApiSuccessResponse } from "@/shared/types/common-type/api-type";
+import { User } from "@/app/admin/user/types/user-type";
 
 interface IAutherizeService {
   login(loginRequest: LoginRequest): Promise<unknown>;
   register(data: RegisterFormData): Promise<ApiSuccessResponse<RegisterResponse>>;
   refreshToken(refreshToken: string): Promise<RefreshResponse>;
+  getCurrentUser(id: string): Promise<User>;
 }
 
 export class AutherizeService implements IAutherizeService {
-  private requestBuilder: IRequestBuilder;
+  private readonly requestBuilder: IRequestBuilder;
   private static instance: AutherizeService;
+  private currentUser: User | null = null;
 
   constructor(requestBuilder: IRequestBuilder) {
     this.requestBuilder = requestBuilder;
@@ -46,6 +49,22 @@ export class AutherizeService implements IAutherizeService {
     });
     console.log(response.payload);
     return response.payload;
+  }
+
+  public async getCurrentUser(): Promise<User> {
+    try {
+      if (this.currentUser) {
+        return this.currentUser;
+      }
+      const response = await httpClient.get<User>({
+        url: this.requestBuilder.buildUrl("current-user"),
+      });
+      this.currentUser = response.payload;
+      return response.payload;
+    } catch (error) {
+      console.error("Error getting current user:", error);
+      throw error;
+    }
   }
 }
 

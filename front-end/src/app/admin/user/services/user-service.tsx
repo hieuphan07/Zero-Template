@@ -5,6 +5,7 @@ import { PaginationParamsType } from "@/shared/types/common-type/pagination-para
 import { PaginatedListType } from "@/shared/types/common-type/paginated-list-type";
 import { UserCreate } from "../types/user-type";
 import { ApiSuccessResponse } from "@/shared/types/common-type/api-type";
+import { autherizeService } from "@/app/auth/services/auth-services";
 
 interface IUserService {
   // change later
@@ -17,7 +18,7 @@ interface IUserService {
 }
 
 export class UserService implements IUserService {
-  private requestBuilder: IRequestBuilder;
+  private readonly requestBuilder: IRequestBuilder;
   private static instance: UserService;
 
   constructor(requestBuilder: IRequestBuilder) {
@@ -62,9 +63,21 @@ export class UserService implements IUserService {
   }
 
   public async deleteUser(id: string): Promise<void> {
-    await httpClient.delete({
-      url: this.requestBuilder.buildUrl(id),
-    });
+    try {
+      const currentUser = await autherizeService.getCurrentUser();
+      await httpClient.delete({
+        url: this.requestBuilder.buildUrl(id),
+      });
+
+      if (currentUser.id === id) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        window.location.href = "/auth";
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      throw error;
+    }
   }
 }
 

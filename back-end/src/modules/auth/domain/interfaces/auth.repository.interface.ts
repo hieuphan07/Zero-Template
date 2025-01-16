@@ -5,4 +5,5 @@ export interface IAuthRepository {
   login(username: string): Promise<User>;
   saveRefreshToken(userId: string, refreshToken: string): Promise<void>;
   refreshAccessToken(refreshToken: string): Promise<string | null>;
+  findUserById(userId: string): Promise<User>;
 }

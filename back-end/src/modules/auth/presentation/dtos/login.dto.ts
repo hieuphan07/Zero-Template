@@ -21,3 +21,10 @@ export class LoginResponseDto {
     };
   };
 }
+
+export class CurrentUserResponseDto {
+  payload: {
+    id: string;
+    username: string;
+  };
+}

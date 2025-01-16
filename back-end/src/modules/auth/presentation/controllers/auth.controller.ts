@@ -7,14 +7,18 @@ import {
   HttpStatus,
   HttpCode,
   Query,
+  UseGuards,
+  Get,
 } from '@nestjs/common';
 import { LoginUseCase } from '../../application/use-cases/login.use-case';
-import { LoginDto, LoginResponseDto } from '../dtos/login.dto';
+import { CurrentUserResponseDto, LoginDto, LoginResponseDto } from '../dtos/login.dto';
 import { User } from 'src/modules/user-management/domain/entities/user.entity';
 import { RegisterDto } from '../dtos/register.dto';
 import { RegisterUserUseCase } from '../../application/use-cases/register-user.use-case';
-import { ApiResponse, ApiOperation, ApiTags, ApiQuery } from '@nestjs/swagger';
+import { ApiResponse, ApiOperation, ApiTags, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { RefreshDto, RefreshResponseDto } from '../dtos/refresh.dto';
+import { CurrentUser } from '@/shared/decorator/current-user.decorator';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 @ApiTags('Auth')
 @Controller({ path: 'auth', version: '1' })
@@ -83,5 +87,12 @@ export class AuthController {
   @Post('refresh-access-token')
   async refreshAccessToken(@Body() refreshDto: RefreshDto): Promise<RefreshResponseDto> {
     return await this.loginUseCase.refreshAccessToken(refreshDto.refreshToken);
+  }
+
+  @Get('current-user')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  async getCurrentUser(@CurrentUser() user: CurrentUserResponseDto): Promise<CurrentUserResponseDto> {
+    return user;
   }
 }
