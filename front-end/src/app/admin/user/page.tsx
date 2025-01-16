@@ -111,8 +111,8 @@ export default function UserPage() {
         insertFormClassName="!w-1/3"
         insertFormTitle="user-management:create-new-user"
         insertResetForm={resetForm}
-        deleteForm={<DeleteUserForm />}
-        deleteFormClassName="!w-1/4 !h-1/4"
+        deleteForm={(id, listRefetch) => <DeleteUserForm id={id} listRefetch={listRefetch} />}
+        deleteFormClassName="!w-1/3 !h-fit"
       />
     </MainLayout>
   );

@@ -111,121 +111,127 @@ export default function Home() {
     </>
   );
 
-  const updateForm = (
-    <>
-      <Dropdown
-        options={[
-          { label: "10", value: 10 },
-          { label: "20", value: 20 },
-          { label: "30", value: 30 },
-          { label: "50", value: 50 },
-        ]}
-        placeholder="Search..."
-        action={() => {}}
-        className="mt-10 w-[20%] ml-[20%]"
-      />
-      <SearchBar
-        onSearch={() => {}}
-        placeholder="Search..."
-        className="mt-10 w-[20%] ml-[20%]"
-        inputMainColor="warning"
-        buttonMainColor="warning"
-        attachToEachOther={true}
-        focusBorder={true}
-        focusBorderColor="danger"
-      />
-      <Input
-        type="text"
-        name="search"
-        placeholder="Search..."
-        className="mt-10 !w-[20%] ml-[20%]"
-        contextColor="warning"
-      />
-      <RadioButton
-        name="radio"
-        value="radio"
-        label="Radio"
-        className=""
-        contextColor="danger"
-        textClassName="font-bold"
-      />
-      <RadioButton
-        name="radio"
-        value="radio2"
-        label="Radio2"
-        className=""
-        contextColor="warning"
-        textClassName="font-bold"
-      />
-      <Checkbox
-        name="checkbox"
-        label="Checkbox"
-        className=""
-        boxColor="warning"
-        mainColor="danger"
-        textClassName="font-bold"
-      />
-      <Button text="Button" action={() => {}} mainColor="warning" contextColor="danger" />
-    </>
-  );
+  const UpdateForm = ({ id }: { id: string }) => {
+    console.log(id);
+    return (
+      <>
+        <Dropdown
+          options={[
+            { label: "10", value: 10 },
+            { label: "20", value: 20 },
+            { label: "30", value: 30 },
+            { label: "50", value: 50 },
+          ]}
+          placeholder="Search..."
+          action={() => {}}
+          className="mt-10 w-[20%] ml-[20%]"
+        />
+        <SearchBar
+          onSearch={() => {}}
+          placeholder="Search..."
+          className="mt-10 w-[20%] ml-[20%]"
+          inputMainColor="warning"
+          buttonMainColor="warning"
+          attachToEachOther={true}
+          focusBorder={true}
+          focusBorderColor="danger"
+        />
+        <Input
+          type="text"
+          name="search"
+          placeholder="Search..."
+          className="mt-10 !w-[20%] ml-[20%]"
+          contextColor="warning"
+        />
+        <RadioButton
+          name="radio"
+          value="radio"
+          label="Radio"
+          className=""
+          contextColor="danger"
+          textClassName="font-bold"
+        />
+        <RadioButton
+          name="radio"
+          value="radio2"
+          label="Radio2"
+          className=""
+          contextColor="warning"
+          textClassName="font-bold"
+        />
+        <Checkbox
+          name="checkbox"
+          label="Checkbox"
+          className=""
+          boxColor="warning"
+          mainColor="danger"
+          textClassName="font-bold"
+        />
+        <Button text="Button" action={() => {}} mainColor="warning" contextColor="danger" />
+      </>
+    );
+  };
 
-  const deleteForm = (
-    <>
-      <Dropdown
-        options={[
-          { label: "10", value: 10 },
-          { label: "20", value: 20 },
-          { label: "30", value: 30 },
-          { label: "50", value: 50 },
-        ]}
-        placeholder="Search..."
-        action={() => {}}
-        className="mt-10 w-[20%] ml-[20%]"
-      />
-      <SearchBar
-        onSearch={() => {}}
-        placeholder="Search..."
-        className="mt-10 w-[20%] ml-[20%]"
-        inputMainColor="warning"
-        buttonMainColor="warning"
-        attachToEachOther={true}
-        focusBorder={true}
-        focusBorderColor="danger"
-      />
-      <Input
-        type="text"
-        name="search"
-        placeholder="Search..."
-        className="mt-10 !w-[20%] ml-[20%]"
-        contextColor="warning"
-      />
-      <RadioButton
-        name="radio"
-        value="radio"
-        label="Radio"
-        className=""
-        contextColor="danger"
-        textClassName="font-bold"
-      />
-      <RadioButton
-        name="radio"
-        value="radio2"
-        label="Radio2"
-        className=""
-        contextColor="warning"
-        textClassName="font-bold"
-      />
-      <Checkbox
-        name="checkbox"
-        label="Checkbox"
-        className=""
-        boxColor="warning"
-        mainColor="danger"
-        textClassName="font-bold"
-      />
-      <Button text="Button" action={() => {}} mainColor="warning" contextColor="danger" />
-    </>
-  );
+  const DeleteForm = ({ id }: { id: string }) => {
+    console.log(id);
+    return (
+      <>
+        <Dropdown
+          options={[
+            { label: "10", value: 10 },
+            { label: "20", value: 20 },
+            { label: "30", value: 30 },
+            { label: "50", value: 50 },
+          ]}
+          placeholder="Search..."
+          action={() => {}}
+          className="mt-10 w-[20%] ml-[20%]"
+        />
+        <SearchBar
+          onSearch={() => {}}
+          placeholder="Search..."
+          className="mt-10 w-[20%] ml-[20%]"
+          inputMainColor="warning"
+          buttonMainColor="warning"
+          attachToEachOther={true}
+          focusBorder={true}
+          focusBorderColor="danger"
+        />
+        <Input
+          type="text"
+          name="search"
+          placeholder="Search..."
+          className="mt-10 !w-[20%] ml-[20%]"
+          contextColor="warning"
+        />
+        <RadioButton
+          name="radio"
+          value="radio"
+          label="Radio"
+          className=""
+          contextColor="danger"
+          textClassName="font-bold"
+        />
+        <RadioButton
+          name="radio"
+          value="radio2"
+          label="Radio2"
+          className=""
+          contextColor="warning"
+          textClassName="font-bold"
+        />
+        <Checkbox
+          name="checkbox"
+          label="Checkbox"
+          className=""
+          boxColor="warning"
+          mainColor="danger"
+          textClassName="font-bold"
+        />
+        <Button text="Button" action={() => {}} mainColor="warning" contextColor="danger" />
+      </>
+    );
+  };
 
   return (
     <MainLayout title="Template Form" maxWidthPercentage={80}>
@@ -234,8 +240,8 @@ export default function Home() {
         typeString="User"
         insertForm={templateForm}
         filterForm={filterForm}
-        updateForm={updateForm}
-        deleteForm={deleteForm}
+        updateForm={(id) => <UpdateForm id={id} />}
+        deleteForm={(id) => <DeleteForm id={id} />}
       />
     </MainLayout>
   );

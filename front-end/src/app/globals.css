@@ -84,7 +84,7 @@ body {
   }
 
   .animate-slideUpOut {
-    animation: slideUpOut 0.5s ease-out;
+    animation: slideUpOut 0.5s ease-out forwards;
   }
 
   @keyframes slideUpOut {

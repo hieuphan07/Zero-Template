@@ -22,13 +22,13 @@ export type ListProps<T> = ComponentDefaultProps & {
   insertValidation?: (createData: any) => boolean;
   insertResetForm?: () => void;
   // Update
-  updateForm?: ReactNode;
+  updateForm?: (id: string, listRefetch: () => void) => ReactNode;
   updateFormTitle?: string;
   updateFormClassName?: string;
   // eslint-disable-next-line
   updateValidation?: (updateData: any) => boolean;
   // Delete
-  deleteForm?: ReactNode;
+  deleteForm?: (id: string, listRefetch: () => void) => ReactNode;
   deleteFormTitle?: string;
   deleteFormClassName?: string;
   // eslint-disable-next-line
