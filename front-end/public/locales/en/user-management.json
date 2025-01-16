@@ -68,6 +68,7 @@
     "accessTokenExpired": "Your session has expired. Please log in again.",
     "refreshTokenExpired": "Your session has expired. Please log in again.",
     "unknownError": "An unexpected error occurred. Please try again.",
+    "get-user-failed": "Failed to get user's data",
     "validation": {
       "username": {
         "exists": "This username is already taken",

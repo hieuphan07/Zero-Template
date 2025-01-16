@@ -82,6 +82,7 @@ const Form = (props: FormProps) => {
     if (!props.isPopup) {
       return;
     }
+    props.onFormClose?.();
     setAllowClick(false);
     if (formRef.current) {
       formRef.current.classList.add("animate-slideUpOut");
@@ -94,6 +95,12 @@ const Form = (props: FormProps) => {
       setAllowClick(true);
     }, 500);
   };
+
+  useEffect(() => {
+    if (props.externalOpenFormPopup) {
+      openFormPopup();
+    }
+  }, [props.externalOpenFormPopup]);
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (props.onSubmitNoReload) {
@@ -114,7 +121,7 @@ const Form = (props: FormProps) => {
     return (
       <form
         name={props.formName}
-        className={`w-full relative ${props.className}`}
+        className={`w-full relative flex flex-col gap-4 ${props.className}`}
         onSubmit={handleFormSubmit}
         ref={props.ref}
       >
@@ -125,8 +132,8 @@ const Form = (props: FormProps) => {
           className={`flex justify-center w-full text-4xl font-bold ${props.formTextClassName}`}
           inheritedClass
         />
-        <div className={`h-[85%] overflow-y-auto ${props.childrenClassName}`}>{props.children}</div>
-        <div className={`absolute bottom-0 w-full z-10 bg-background flex justify-end ${props.belowButtonsClassName}`}>
+        <div className={`h-full ${props.childrenClassName}`}>{props.children}</div>
+        <div className={`w-full z-10 bg-background flex justify-end ${props.belowButtonsClassName}`}>
           {props.manualBelowButtons ? (
             props.belowButtons?.map((button, index) => <Fragment key={index}>{button}</Fragment>)
           ) : (
@@ -163,16 +170,7 @@ const Form = (props: FormProps) => {
   return (
     <>
       <div className="">
-        {props.formButton ? (
-          <div onClick={() => allowClick && handleToggle()}>{props.formButton}</div>
-        ) : (
-          <Button
-            text={props.popUpButtonText ?? "Open Form"}
-            action={() => allowClick && handleToggle()}
-            mainColor={props.popUpButtonMainColor ?? "primary"}
-            contextColor={props.popUpButtonContextColor}
-          />
-        )}
+        {props.formButton && <div onClick={() => allowClick && handleToggle()}>{props.formButton}</div>}
       </div>
 
       <div
@@ -185,7 +183,7 @@ const Form = (props: FormProps) => {
         >
           <form
             name={props.formName}
-            className={`h-full relative overflow-hidden w-full`}
+            className={`h-full relative overflow-hidden w-full flex flex-col gap-4`}
             onSubmit={handleFormSubmit}
             ref={props.ref}
           >
@@ -205,10 +203,8 @@ const Form = (props: FormProps) => {
               className="!w-auto absolute top-0 right-0"
               isTransparent={true}
             />
-            <div className={`h-[85%] overflow-y-auto ${props.childrenClassName}`}>{props.children}</div>
-            <div
-              className={`absolute bottom-0 w-full z-10 bg-background flex justify-end ${props.belowButtonsClassName}`}
-            >
+            <div className={`h-full ${props.childrenClassName}`}>{props.children}</div>
+            <div className={`w-full z-10 bg-background flex justify-end ${props.belowButtonsClassName}`}>
               {props.manualBelowButtons ? (
                 props.belowButtons?.map((button, index) => <Fragment key={index}>{button}</Fragment>)
               ) : (
@@ -221,7 +217,7 @@ const Form = (props: FormProps) => {
                     contextColor={"default"}
                     isTransparent={true}
                     border
-                    className="mr-4 !px-6 !py-3 !bg-[#E9E9E9] !text-[#676767]"
+                    className="mr-4 !px-6 !py-3 bg-[#E9E9E9] text-[#676767]"
                   />
                   <Button
                     key={-2}
@@ -232,7 +228,7 @@ const Form = (props: FormProps) => {
                     isTransparent={true}
                     border
                     type="submit"
-                    className="!px-6 !py-3 !bg-[#5E5F5F] !text-[#DCDCDC]"
+                    className="!px-6 !py-3 bg-[#5E5F5F] text-[#DCDCDC]"
                     iconBefore={<i className="fa fa-save" style={{ marginRight: "0.5rem" }} />}
                   />
                 </div>

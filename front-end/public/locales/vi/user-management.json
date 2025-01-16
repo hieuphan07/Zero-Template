@@ -65,6 +65,7 @@
     "accessTokenExpired": "Phiên của bạn đã hết hạn. Vui lòng đăng nhập lại.",
     "refreshTokenExpired": "Phiên của bạn đã hết hạn. Vui lòng đăng nhập lại.",
     "unknownError": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.",
+    "get-user-failed": "Không thể lấy dữ liệu người dùng",
     "validation": {
       "username": {
         "exists": "Tên đăng nhập này đã được sử dụng",

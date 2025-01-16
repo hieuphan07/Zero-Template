@@ -19,5 +19,7 @@ export type FormProps = ComponentDefaultProps & {
   childrenClassName?: string;
   belowButtons?: ReactNode[];
   belowButtonsClassName?: string;
+  externalOpenFormPopup?: boolean;
+  onFormClose?: () => void;
   resetForm?: () => void;
 };

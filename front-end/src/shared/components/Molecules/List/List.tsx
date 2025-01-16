@@ -31,7 +31,6 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   });
   const [filter, setFilter] = useState<FilterProperty>({ key: "", value: "" });
   const [selectedFilterFields, setSelectedFilterFields] = useState<string[]>([]);
-
   const [recordPerPage, setRecordPerPage] = useState(10);
   const recordPerPageOptions = [
     { label: "10", value: 10 },
@@ -39,6 +38,10 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     { label: "30", value: 30 },
     { label: "50", value: 50 },
   ] as DropdownOption[];
+  const [updateFormData, setUpdateFormData] = useState<string>("");
+  const [updateFormOpen, setUpdateFormOpen] = useState(false);
+  const [deleteFormData, setDeleteFormData] = useState<string>("");
+  const [deleteFormOpen, setDeleteFormOpen] = useState(false);
 
   const notification = useNotification();
 
@@ -77,6 +80,10 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
 
   const handleSearch = (searchTerm: string) => {
     setFilter((prev) => ({ ...prev, value: searchTerm }));
+  };
+
+  const listRefetch = () => {
+    handleGetList(page, sort || undefined, filter, recordPerPage);
   };
 
   const handleGetList = async (page: number, sort?: SortProperty, filter?: FilterProperty, recordPerPage?: number) => {
@@ -235,6 +242,26 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     }
   };
 
+  const handleOpenUpdateForm = (id: string) => {
+    if (id) {
+      setUpdateFormData(id);
+      setUpdateFormOpen(true);
+    } else {
+      showNotification({
+        title: "common:text.error",
+        content: <Label text="common:message.unknow-error" translate />,
+        position: "top-right",
+        color: "danger",
+        enableOtherElements: true,
+      });
+    }
+  };
+
+  const handleCloseUpdateForm = () => {
+    setUpdateFormOpen(false);
+    setUpdateFormData("");
+  };
+
   const handleUpdate = () => {
     const formData = new FormData(updateFormRef.current!);
     const updateData = Object.fromEntries(formData.entries());
@@ -244,6 +271,26 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     } else {
       console.log("update not valid");
     }
+  };
+
+  const handleOpenDeleteForm = (id: string) => {
+    if (id) {
+      setDeleteFormData(id);
+      setDeleteFormOpen(true);
+    } else {
+      showNotification({
+        title: "common:text.error",
+        content: <Label text="common:message.unknow-error" translate />,
+        position: "top-right",
+        color: "danger",
+        enableOtherElements: true,
+      });
+    }
+  };
+
+  const handleCloseDeleteForm = () => {
+    setDeleteFormOpen(false);
+    setDeleteFormData("");
   };
 
   const handleDelete = async (id: string) => {
@@ -575,55 +622,59 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
                   onMouseOver={() => hoverRow(rowIndex)}
                   onMouseLeave={() => unhoverRow(rowIndex)}
                 >
-                  <Form
-                    formButton={
-                      <Button
-                        action={() => {}}
-                        text=""
-                        mainColor="primary"
-                        contextColor="default"
-                        iconBefore={<EditIcon size={20} />}
-                        className="!p-2"
-                        border
-                      />
-                    }
-                    isPopup={true}
-                    formTitle={props.updateFormTitle || "common:button.update"}
-                    onSubmit={handleUpdate}
-                    ref={updateFormRef}
-                    onSubmitNoReload
-                    className={props.updateFormClassName}
-                  >
-                    {props.updateForm}
-                  </Form>
-                  <Form
-                    formButton={
-                      <Button
-                        action={() => {}}
-                        text=""
-                        mainColor="danger"
-                        contextColor="danger"
-                        iconBefore={<TrashIcon size={20} />}
-                        className="!p-2"
-                        border
-                      />
-                    }
-                    isPopup={true}
-                    formTitle={props.deleteFormTitle || "common:button.delete"}
-                    onSubmit={() => handleDelete(item.id)}
-                    ref={deleteFormRef}
-                    onSubmitNoReload
-                    onSubmitClosePopUp
-                    className={props.deleteFormClassName}
-                  >
-                    {props.deleteForm}
-                  </Form>
+                  <Button
+                    action={() => {
+                      handleOpenUpdateForm(item.id);
+                    }}
+                    text=""
+                    mainColor="primary"
+                    contextColor="default"
+                    iconBefore={<EditIcon size={20} />}
+                    className="!p-2"
+                    border
+                  />
+                  <Button
+                    action={() => {
+                      handleOpenDeleteForm(item.id);
+                    }}
+                    text=""
+                    mainColor="danger"
+                    contextColor="danger"
+                    iconBefore={<TrashIcon size={20} />}
+                    className="!p-2"
+                    border
+                  />
                 </div>
               ))}
             </div>
           </>
         )}
       </div>
+      <Form
+        isPopup={true}
+        formTitle={props.updateFormTitle || "common:button.update"}
+        onSubmit={handleUpdate}
+        ref={updateFormRef}
+        onSubmitNoReload
+        className={props.updateFormClassName}
+        onFormClose={handleCloseUpdateForm}
+        externalOpenFormPopup={updateFormOpen}
+      >
+        {props.updateForm ? props.updateForm(updateFormData, listRefetch) : null}
+      </Form>
+      <Form
+        isPopup={true}
+        formTitle={props.deleteFormTitle || "common:button.delete"}
+        onSubmit={() => handleDelete(deleteFormData)}
+        ref={deleteFormRef}
+        onSubmitNoReload
+        onSubmitClosePopUp
+        externalOpenFormPopup={deleteFormOpen}
+        className={props.deleteFormClassName}
+        onFormClose={handleCloseDeleteForm}
+      >
+        {props.deleteForm ? props.deleteForm(deleteFormData, listRefetch) : null}
+      </Form>
       <div className="flex flex-row gap-2 items-center">
         <Label text="common:text.recordPerPage" translate className="text-black font-bold text-lg text-center" />
         <Dropdown
