@@ -57,4 +57,14 @@ export class AuthRepository implements IAuthRepository {
       return null;
     }
   }
+
+  async findUserById(userId: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id: Number(userId) } });
+    if (!user) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      throw new UnauthorizedException('common:auth.invalid-credentials');
+    }
+    return UserMapper.toDomain(user);
+  }
 }

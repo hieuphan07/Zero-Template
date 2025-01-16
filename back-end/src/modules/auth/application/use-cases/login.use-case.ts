@@ -27,7 +27,9 @@ export class LoginUseCase {
       throw new UnauthorizedException('common:auth.invalid-credentials');
     }
     const payload = { username: user.getUsername(), sub: user.getId() };
-    const accessToken = this.jwtService.sign(payload, { expiresIn: rememberMe ? process.env.ACCESS_TOKEN_EXPIRATION_TIME_2 : process.env.ACCESS_TOKEN_EXPIRATION_TIME_1 });
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: rememberMe ? process.env.ACCESS_TOKEN_EXPIRATION_TIME_2 : process.env.ACCESS_TOKEN_EXPIRATION_TIME_1,
+    });
 
     let refreshToken = null;
     if (rememberMe) {
@@ -56,7 +58,10 @@ export class LoginUseCase {
     return {
       payload: {
         refreshToken,
-        accessToken: this.jwtService.sign({ username: user, sub: user }, { expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME_2 }),
+        accessToken: this.jwtService.sign(
+          { username: user, sub: user },
+          { expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME_2 },
+        ),
       },
     };
   }
