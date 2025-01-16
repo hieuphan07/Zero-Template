@@ -3,17 +3,23 @@ stages:
   - testing
   - build
   - deploy
+
 include:
   - local: '/back-end/be.gitlab-ci.yml'
   - local: '/front-end/fe.gitlab-ci.yml'
 
-  # Backend lint check
-be-lint-check:
-  stage: lint
-  before_script:
-    - echo "This is a before script that runs before job."
-    - cd $BE_WORKDIR
-    - npm install --legacy-peer-deps
+variables:
+  CACHE_KEY: "$CI_PROJECT_NAME-$CI_COMMIT_BRANCH"
+
+# Caching Node Modules
+cache:
+  key: $CACHE_KEY
+  paths:
+    - back-end/node_modules
+    - front-end/node_modules
+
+# Anchors for Common Scripts
+.lint-script: &lint-script
   script:
     - echo "Running ESLint..."
     - npm run lint:check
@@ -24,9 +30,20 @@ be-lint-check:
     - echo "Running TypeScript checking..."
     - npm run type:check
     - echo "TypeScript checking completed successfully"
+
+.build-script: &build-script
+  script:
     - echo "Running build process..."
     - npm run build
     - echo "Build completed successfully"
+
+# Backend Lint Check
+be-lint-check:
+  stage: lint
+  before_script:
+    - cd $BE_WORKDIR
+    - npm install --legacy-peer-deps
+  <<: *lint-script
   rules:
     - if: '$CI_COMMIT_BRANCH != "main" && $CI_COMMIT_BRANCH != "develop"'
       changes:
@@ -34,26 +51,13 @@ be-lint-check:
   tags:
     - zero-runner
 
-# Frontend lint check
+# Frontend Lint Check
 fe-lint-check:
   stage: lint
   before_script:
-    - echo "This is a before script that runs before job."
     - cd $FE_WORKDIR
     - npm install --legacy-peer-deps
-  script:
-    - echo "Running ESLint..."
-    - npm run lint:check
-    - echo "ESLint check completed successfully"
-    - echo "Running code formatting check..."
-    - npm run format:check
-    - echo "Code formatting check completed successfully"
-    - echo "Running TypeScript checking..."
-    - npm run type:check
-    - echo "TypeScript checking completed successfully"
-    - echo "Running build process..."
-    - npm run build
-    - echo "Build completed successfully"
+  <<: *lint-script
   rules:
     - if: '$CI_COMMIT_BRANCH != "main" && $CI_COMMIT_BRANCH != "develop"'
       changes:
@@ -61,11 +65,13 @@ fe-lint-check:
   tags:
     - zero-runner
 
+# Backend Testing
 be-test:
   stage: testing
+  before_script:
+    - cd $BE_WORKDIR
   script:
-    - echo "Running unit test..."
-    - echo "Unit test completed successfully"
+    - echo "Running backend unit tests..."
   rules:
     - if: '$CI_COMMIT_BRANCH != "main" && $CI_COMMIT_BRANCH != "develop"'
       changes:
@@ -73,11 +79,39 @@ be-test:
   tags:
     - zero-runner
 
+# Frontend Testing
 fe-test:
   stage: testing
+  before_script:
+    - cd $FE_WORKDIR
   script:
-    - echo "Running unit test..."
-    - echo "Unit test completed successfully"
+    - echo "Running frontend unit tests..."
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "main" && $CI_COMMIT_BRANCH != "develop"'
+      changes:
+        - 'front-end/src/**/*'
+  tags:
+    - zero-runner
+
+# Backend Build
+be-build:
+  stage: build
+  before_script:
+    - cd $BE_WORKDIR
+  <<: *build-script
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "main" && $CI_COMMIT_BRANCH != "develop"'
+      changes:
+        - 'back-end/src/**/*'
+  tags:
+    - zero-runner
+
+# Frontend Build
+fe-build:
+  stage: build
+  before_script:
+    - cd $FE_WORKDIR
+  <<: *build-script
   rules:
     - if: '$CI_COMMIT_BRANCH != "main" && $CI_COMMIT_BRANCH != "develop"'
       changes:
