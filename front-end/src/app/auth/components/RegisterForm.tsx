@@ -24,6 +24,13 @@ const RegistrationForm = (props: LoginFormType) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<FormErrors>>({});
 
+  const clearForm = () => {
+    if (formRef.current) {
+      formRef.current.reset();
+      setErrors({});
+    }
+  };
+
   const validateForm = (formData: FormData) => {
     const newErrors: FormErrors = {};
     const errorMessages: string[] = [];
@@ -97,6 +104,9 @@ const RegistrationForm = (props: LoginFormType) => {
           enableOtherElements: true,
         });
         props.setToRegister(false);
+        setTimeout(() => {
+          clearForm();
+        }, 1000);
       }
     } catch (err: unknown) {
       showNotification({
@@ -249,6 +259,9 @@ const RegistrationForm = (props: LoginFormType) => {
             href="#"
             action={() => {
               props.setToRegister(false);
+              setTimeout(() => {
+                clearForm();
+              }, 1000);
             }}
             className="px-4 py-2 text-sm text-center font-medium text-blue-600 hover:text-blue-800 transition duration-200"
             color="info"

@@ -4,6 +4,7 @@ import { ComponentDefaultProps } from "./component-default-type";
 
 export type InputProps = ComponentDefaultProps & {
   type?: string;
+  autoFill?: boolean;
   isError?: boolean;
   backgroundColor?: Color;
   contextColor?: Color;
