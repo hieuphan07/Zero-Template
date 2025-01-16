@@ -8,7 +8,7 @@ export class User {
   private password: string;
   private phoneNumber: string;
   private lastLogin: Date;
-  private readonly createdAt: Date;
+  private createdAt: Date;
   private updatedAt: Date;
   private deletedAt: Date;
 
@@ -96,6 +96,10 @@ export class User {
   setLastLogin(value: Date): void {
     this.lastLogin = value;
     this.updateTimestamp();
+  }
+
+  setCreatedAt(value: Date): void {
+    this.createdAt = value;
   }
 
   setUpdatedAt(value: Date): void {
