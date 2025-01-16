@@ -7,7 +7,7 @@ import Input from "@/shared/components/Atoms/Input/Input";
 import Button from "@/shared/components/Atoms/Button/Button";
 import Checkbox from "@/shared/components/Atoms/Checkbox/Checkbox";
 import ZeroLink from "@/shared/components/Atoms/Link/ZeroLink";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useNotification } from "@/shared/hooks/useNotification";
 import { autherizeService } from "../services/auth-services";
@@ -17,8 +17,7 @@ import authValidators from "../utils/auth-validator";
 
 const LoginForm = (props: LoginFormType) => {
   const { t } = useTranslation("common");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isError, setIsError] = useState(false);
@@ -58,7 +57,6 @@ const LoginForm = (props: LoginFormType) => {
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setUsername(value);
     const error = validateField("username", value);
     if (error) {
       setUsernameError(t(error));
@@ -69,7 +67,6 @@ const LoginForm = (props: LoginFormType) => {
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setPassword(value);
     const error = validateField("password", value);
     if (error) {
       setPasswordError(t(error));
@@ -79,6 +76,12 @@ const LoginForm = (props: LoginFormType) => {
   };
 
   const handleSubmit = async () => {
+    if (!formRef.current) return;
+
+    const formData = new FormData(formRef.current);
+    const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
+
     const usernameError = validateField("username", username);
     if (usernameError) {
       showNotification({
@@ -104,7 +107,12 @@ const LoginForm = (props: LoginFormType) => {
     }
 
     try {
-      const response = await autherizeService.login({ username, password, rememberMe });
+      const response = await autherizeService.login({
+        username,
+        password,
+        rememberMe,
+      });
+
       if (response) {
         showNotification({
           color: "success",
@@ -153,6 +161,7 @@ const LoginForm = (props: LoginFormType) => {
       className="flex flex-col gap-4 border rounded-lg shadow-sm py-4 w-full"
       childrenClassName="flex flex-col gap-4"
       manualBelowButtons={true}
+      ref={formRef}
     >
       <div className="flex flex-col gap-4 items-center">
         <Label
@@ -186,7 +195,7 @@ const LoginForm = (props: LoginFormType) => {
           className=""
           placeholder={t("common:auth.enter-your-username")}
           name="username"
-          value={username}
+          delayOnChange={1000}
           onChange={handleUsernameChange}
           required
           isError={usernameError !== "" || isError}
@@ -208,7 +217,7 @@ const LoginForm = (props: LoginFormType) => {
             name="password"
             className=""
             placeholder={t("common:auth.enter-your-password")}
-            value={password}
+            delayOnChange={1000}
             onChange={handlePasswordChange}
             required
             isError={passwordError !== "" || isError}
