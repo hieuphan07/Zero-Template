@@ -44,6 +44,15 @@ const LoginForm = (props: LoginFormType) => {
     // eslint-disable-next-line
   }, [router]);
 
+  const clearForm = () => {
+    if (formRef.current) {
+      formRef.current.reset();
+      setUsernameError("");
+      setPasswordError("");
+      setIsError(false);
+    }
+  };
+
   const validateField = (name: string, value: string): string | null => {
     switch (name) {
       case "username":
@@ -84,6 +93,8 @@ const LoginForm = (props: LoginFormType) => {
 
     const usernameError = validateField("username", username);
     if (usernameError) {
+      setIsError(false);
+      setUsernameError(usernameError as string);
       showNotification({
         color: "danger",
         position: "top-right",
@@ -92,10 +103,14 @@ const LoginForm = (props: LoginFormType) => {
         enableOtherElements: true,
       });
       return;
+    } else {
+      setUsernameError("");
     }
 
     const passwordError = validateField("password", password);
     if (passwordError) {
+      setIsError(false);
+      setPasswordError(passwordError as string);
       showNotification({
         color: "danger",
         position: "top-right",
@@ -104,6 +119,8 @@ const LoginForm = (props: LoginFormType) => {
         enableOtherElements: true,
       });
       return;
+    } else {
+      setPasswordError("");
     }
 
     try {
@@ -128,9 +145,7 @@ const LoginForm = (props: LoginFormType) => {
           // eslint-disable-next-line
           authProvider.setRefreshToken((response as any).refreshToken);
         }
-        setTimeout(() => {
-          router.push("/");
-        }, 2000);
+        router.push("/");
       }
     } catch (error: unknown) {
       setIsError(true);
@@ -150,6 +165,14 @@ const LoginForm = (props: LoginFormType) => {
       setRememberMe(checked ? "true" : "false");
     } else {
       setRememberMe(checked.target.checked ? "true" : "false");
+    }
+  };
+
+  const resetErrorForInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "username") {
+      setUsernameError("");
+    } else if (e.target.name === "password") {
+      setPasswordError("");
     }
   };
 
@@ -198,8 +221,10 @@ const LoginForm = (props: LoginFormType) => {
           delayOnChange={1000}
           onChange={handleUsernameChange}
           required
+          autoFill
           isError={usernameError !== "" || isError}
           border={true}
+          onFocus={resetErrorForInput}
         />
       </div>
       <div className="flex flex-col gap-1 px-6">
@@ -222,6 +247,8 @@ const LoginForm = (props: LoginFormType) => {
             required
             isError={passwordError !== "" || isError}
             border={true}
+            autoFill
+            onFocus={resetErrorForInput}
           />
         </div>
       </div>
@@ -256,6 +283,9 @@ const LoginForm = (props: LoginFormType) => {
           href="#"
           action={() => {
             props.setToRegister(true);
+            setTimeout(() => {
+              clearForm();
+            }, 1000);
           }}
           className="w-fit px-4 py-2 text-sm text-center font-medium text-blue-600 hover:text-blue-800 transition duration-200"
           color="info"
