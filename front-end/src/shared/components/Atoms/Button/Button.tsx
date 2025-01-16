@@ -92,6 +92,7 @@ const Button = (props: ButtonProps) => {
       type={props.type ? props.type : "button"}
       onMouseEnter={props.onMouseEnter}
       onMouseLeave={props.onMouseLeave}
+      onMouseDown={props.onMouseDown}
       suppressHydrationWarning
     >
       {props.iconBefore && <span className="">{props.iconBefore}</span>}

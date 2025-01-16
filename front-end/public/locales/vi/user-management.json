@@ -53,7 +53,13 @@
     "success": "Thành công",
     "createSuccess": "Người dùng được tạo thành công",
     "createError": "Không thể tạo người dùng",
-    "validationError": "Vui lòng điền đầy đủ các trường bắt buộc"
+    "updateSuccess": "Người dùng được cập nhật thành công",
+    "updateError": "Không thể cập nhật người dùng",
+    "validationError": "Vui lòng điền đầy đủ các trường bắt buộc",
+    "deleteSuccess": "Người dùng được xóa thành công",
+    "deleteError": "Không thể xóa người dùng",
+    "getError": "Không thể lấy người dùng",
+    "getSuccess": "Người dùng được lấy thành công"
   },
   "errors": {
     "accessTokenExpired": "Phiên của bạn đã hết hạn. Vui lòng đăng nhập lại.",

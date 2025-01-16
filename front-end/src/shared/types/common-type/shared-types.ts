@@ -26,6 +26,15 @@ export type TableHeader = {
   hidden?: boolean;
 };
 
+export type DetailFields = {
+  [key: string]: DetailField;
+};
+
+export type DetailField = {
+  label: string;
+  changable?: boolean;
+};
+
 export type ApplicationPath = {
   path: string;
   name: string;
@@ -34,6 +43,7 @@ export type ApplicationPath = {
 
 export type TransferType = {
   headers: TableHeaders;
+  detailFields: DetailFields;
   // eslint-disable-next-line
   repository: any;
   // eslint-disable-next-line

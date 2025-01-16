@@ -64,6 +64,7 @@ const Input = (props: InputProps) => {
         onChange={props.delayOnChange ? handleChange : props.onChange}
         onKeyDown={props.onKeyDown}
         onBlur={props.onBlur}
+        onFocus={props.onFocus}
         suppressHydrationWarning
       />
       {props.type === "password" && (

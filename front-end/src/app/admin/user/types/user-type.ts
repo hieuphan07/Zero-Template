@@ -1,5 +1,5 @@
 // Template only, change later using the actual user type
-import { TableHeaders } from "../../../../shared/types/common-type/shared-types";
+import { DetailFields, TableHeaders } from "../../../../shared/types/common-type/shared-types";
 import { DefaultItemType } from "@/shared/types/common-type/default-item-type";
 
 export interface User extends DefaultItemType {
@@ -50,5 +50,36 @@ export const UserTableHeaders: TableHeaders = {
     label: "user-management:fields.updatedAt",
     sortable: true,
     hidden: false,
+  },
+};
+
+export const UserDetailFields: DetailFields = {
+  username: {
+    label: "user-management:fields.username",
+    changable: true,
+  },
+  email: {
+    label: "user-management:fields.email",
+    changable: true,
+  },
+  phoneNumber: {
+    label: "user-management:fields.phoneNumber",
+    changable: true,
+  },
+  password: {
+    label: "user-management:fields.password",
+    changable: true,
+  },
+  lastLogin: {
+    label: "user-management:fields.lastLogin",
+    changable: false,
+  },
+  createdAt: {
+    label: "user-management:fields.createdAt",
+    changable: false,
+  },
+  updatedAt: {
+    label: "user-management:fields.updatedAt",
+    changable: false,
   },
 };
