@@ -1,5 +1,6 @@
-import { User, UserCreate, UserDetailFields, UserTableHeaders } from "@/app/admin/user/types/user-type";
+import { UserDetailFields, UserTableHeaders } from "@/app/admin/user/types/user-type";
 import { DetailFields, TableHeaders, TransferType } from "../types/common-type/shared-types";
+import { TUser } from "@/app/admin/user/types/user-type";
 import { userService } from "@/app/admin/user/services/user-service";
 import { PaginationParamsType } from "../types/common-type/pagination-params-type";
 
@@ -18,8 +19,8 @@ const createUserTypeTransferEntry = (
     repository,
     getListAPI: (params: PaginationParamsType) => repository.getUsers(params), // Dynamically bind the API method
     getAPI: (id: string) => repository.getUser(id),
-    createAPI: (user: UserCreate) => repository.createUser(user),
-    updateAPI: (id: string, user: User) => repository.updateUser(id, user),
+    createAPI: (user: TUser) => repository.createUser(user),
+    updateAPI: (id: string, user: Partial<TUser>) => repository.updateUser(id, user),
     deleteAPI: (id: string) => repository.deleteUser(id),
     listPath,
     detailPath,

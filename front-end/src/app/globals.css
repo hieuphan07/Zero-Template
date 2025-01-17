@@ -66,6 +66,12 @@ body {
     @apply bg-background text-foreground;
   }
 
+	.input-tel::-webkit-outer-spin-button,
+	.input-tel::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
   .animate-slideDown {
     animation: slideDown 0.5s ease-out;
   }
@@ -264,7 +270,7 @@ body {
   .label-extended-span {
     display: none; /* Initially hidden */
   }
-  
+
   .custom-label:hover .label-extended-span {
     display: block; /* Shown on hover */
   }

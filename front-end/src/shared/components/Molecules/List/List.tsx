@@ -7,7 +7,7 @@ import Form from "../Form/Form";
 import SearchBar from "../SearchBar/SearchBar";
 import { ListProps } from "@/shared/types/components-type/list-type";
 import Pagination from "../Pagination/Pagination";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "next-i18next";
 import { DefaultItemType } from "@/shared/types/common-type/default-item-type";
@@ -42,13 +42,21 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   const [updateFormOpen, setUpdateFormOpen] = useState(false);
   const [deleteFormData, setDeleteFormData] = useState<string>("");
   const [deleteFormOpen, setDeleteFormOpen] = useState(false);
+  const [updateItemData, setUpdateItemData] = useState<T | null>(null);
 
   const notification = useNotification();
 
   const filterFormRef = useRef<HTMLFormElement>(null);
   const createFormRef = useRef<HTMLFormElement>(null);
-  const updateFormRef = useRef<HTMLFormElement>(null);
+  const updateFormRefs = useRef<Map<string, React.RefObject<HTMLFormElement | null>>>(new Map());
   const deleteFormRef = useRef<HTMLFormElement>(null);
+
+  const getUpdateFormRef = useCallback((userId: string) => {
+    if (!updateFormRefs.current.has(userId)) {
+      updateFormRefs.current.set(userId, React.createRef<HTMLFormElement>());
+    }
+    return updateFormRefs.current.get(userId)!;
+  }, []);
 
   const { t } = useTranslation(["common"]);
 
@@ -59,6 +67,9 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
   const deleteAPI = TypeTransfer[props.typeString].deleteAPI;
   const updateAPI = TypeTransfer[props.typeString].updateAPI;
   const createAPI = TypeTransfer[props.typeString].createAPI;
+  const getAPI = TypeTransfer[props.typeString].getAPI;
+
+  
 
   useEffect(() => {
     if (props.items) {
@@ -189,9 +200,6 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
     }
   };
 
-  /**
-   * Editted by p-thanhhieu
-   */
   const handleCreate = async () => {
     const formData = new FormData(createFormRef.current!);
     const createData = Object.fromEntries(formData.entries());
@@ -202,8 +210,8 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
         const response = await createAPI(createData);
         if (response) {
           showNotification({
-            title: "user-management:notification.success",
-            content: <Label text="user-management:notification.createSuccess" translate t={t} />,
+            title: "common:notification.success",
+            content: <Label text="common:message.create-success" translate t={t} />,
             position: "top-right",
             color: "success",
             enableOtherElements: true,
@@ -215,61 +223,102 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
           } else {
             handleGetList(page, sort || undefined, filter, recordPerPage);
           }
-
-          // Reset form after successful creation
-          if (props.insertResetForm) {
-            props.insertResetForm();
+          createFormRef.current?.reset();
+          if(props.resetErrors) {
+            props.resetErrors();
           }
         }
         // eslint-disable-next-line
       } catch (error: any) {
         showNotification({
-          title: "user-management:notification.error",
+          title: "common:notification.error",
           content: <Label text={error.message} translate t={t} />,
           position: "top-right",
           color: "danger",
           enableOtherElements: true,
         });
       }
-    } else {
-      showNotification({
-        title: "user-management:notification.error",
-        content: <Label text="user-management:notification.validationError" translate t={t} />,
-        position: "top-right",
-        color: "danger",
-        enableOtherElements: true,
-      });
     }
   };
 
-  const handleOpenUpdateForm = (id: string) => {
+  const handleOpenUpdateForm = async (id: string) => {
     if (id) {
-      setUpdateFormData(id);
-      setUpdateFormOpen(true);
-    } else {
-      showNotification({
-        title: "common:text.error",
-        content: <Label text="common:message.unknow-error" translate />,
-        position: "top-right",
-        color: "danger",
-        enableOtherElements: true,
-      });
+      try {
+        const response = await getAPI(id);
+        if (response) {
+          setUpdateFormData(id);
+          setUpdateFormOpen(true);
+          setUpdateItemData(response);
+          if (props.resetErrors) {
+            props.resetErrors();
+          }
+          updateFormRefs.current.set(id, React.createRef<HTMLFormElement>());
+        }
+        // eslint-disable-next-line
+      } catch (error) {
+        showNotification({
+          title: "common:notification.error",
+          content: <Label text="common:message.get-error" translate />, 
+          position: "top-right",
+          color: "danger",
+          enableOtherElements: true,
+        });
+      }
     }
   };
 
   const handleCloseUpdateForm = () => {
     setUpdateFormOpen(false);
     setUpdateFormData("");
+    if (props.resetErrors) {
+      props.resetErrors();
+    }
+    updateFormRefs.current.forEach((ref) => {
+      if (ref.current) {
+        ref.current.reset();
+      }
+    });
   };
 
-  const handleUpdate = () => {
-    const formData = new FormData(updateFormRef.current!);
+  const handleUpdate = async () => {
+    const currentForm = updateFormRefs.current.get(updateFormData)?.current;
+    if (!currentForm) return;
+
+    const formData = new FormData(currentForm);
     const updateData = Object.fromEntries(formData.entries());
+    if (updateData.password === '') {
+      delete updateData.password;
+    }
     const isValid = props.updateValidation ? props.updateValidation(updateData) : true;
     if (isValid) {
-      updateAPI(updateData);
-    } else {
-      console.log("update not valid");
+      try {
+        const response = await updateAPI(updateData.id as string, updateData);
+        if (response) {
+          showNotification({
+            title: "common:notification.success",
+            content: <Label text="common:message.update-success" translate t={t} />,
+            position: "top-right",
+            color: "success",
+            enableOtherElements: true,
+          });
+
+          // Refresh the list after successful update
+          if (props.items) {
+            handleGivenList(sort || undefined, filter);
+          } else {
+            handleGetList(page, sort || undefined, filter, recordPerPage);
+          }
+        }
+        // eslint-disable-next-line
+      } catch (error: any) {
+        showNotification({
+          title: "common:notification.error",
+          content: <Label text={error.message} translate t={t} />,
+          position: "top-right",
+          color: "danger",
+          enableOtherElements: true,
+        });
+      }
     }
   };
 
@@ -479,12 +528,15 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
               </>
             </Form>
           </div>
-
-          {/* Insert Form: customized by p-thanhhieu */}
           <Form
             formButton={
               <Button
-                action={() => {}}
+                action={() => {
+                  createFormRef.current?.reset();
+                  if (props.resetErrors) {
+                    props.resetErrors();
+                  }
+                }}
                 text=""
                 iconBefore={<PlusIcon size={20} />}
                 mainColor="primary"
@@ -654,13 +706,13 @@ const List = <T extends DefaultItemType>(props: ListProps<T>) => {
         isPopup={true}
         formTitle={props.updateFormTitle || "common:button.update"}
         onSubmit={handleUpdate}
-        ref={updateFormRef}
+        ref={updateFormData ? getUpdateFormRef(updateFormData) : undefined}
         onSubmitNoReload
         className={props.updateFormClassName}
         onFormClose={handleCloseUpdateForm}
         externalOpenFormPopup={updateFormOpen}
       >
-        {props.updateForm ? props.updateForm(updateFormData, listRefetch) : null}
+        {props.updateForm ? props.updateForm(updateFormData, listRefetch, updateItemData) : null}
       </Form>
       <Form
         isPopup={true}

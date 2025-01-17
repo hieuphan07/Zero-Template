@@ -23,10 +23,10 @@ const commonValidators = {
   phoneNumber: (value: string): string | null => {
     if (!value) return null; // Phone number is optional
     if (value.length < 10 || value.length > 15) {
-      return "user-management:validation.phoneNumber.length";
+      return "user-management:validation.phone-number.length";
     }
     if (!REGEXP.PHONE_NUMBER.test(value)) {
-      return "user-management:validation.phoneNumber.invalid";
+      return "user-management:validation.phone-number.invalid";
     }
     return null;
   },

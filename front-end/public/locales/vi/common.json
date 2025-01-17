@@ -41,16 +41,26 @@
     "select-fields-to-filter": "Chọn các trường để lọc",
     "apply-filter-success": "Áp dụng lọc thành công"
   },
+  "notification": {
+    "error": "Lỗi",
+    "success": "Thành công"
+  },
   "message": {
     "login-failed": "Đăng nhập thất bại",
     "login-success": "Đăng nhập thành công",
     "logout-success": "Đăng xuất thành công",
     "register-success": "Đăng ký thành công",
     "welcome": "Chào mừng đến với hệ thống Zero Template!",
+    "create-success": "Tạo mới thành công",
+    "create-error": "Không thể tạo mới",
+    "validation-error": "Vui lòng điền đầy đủ các trường bắt buộc",
+    "update-success": "Cập nhật thành công",
+    "update-error": "Không thể cập nhật",
     "delete-confirmation": "Bạn có chắc chắn muốn xóa mục này không?",
     "delete-success": "Xóa thành công",
     "delete-failed": "Xóa thất bại",
     "get-list-failed": "Không có dữ liệu",
+    "get-error": "Lấy dữ liệu thất bại",
     "unknown-error": "Đã gặp lỗi không rõ nguyên nhân",
     "network-error": "Không thể kết nối đến máy chủ!",
     "no-record": "Không có dữ liệu nào được tìm thấy!",

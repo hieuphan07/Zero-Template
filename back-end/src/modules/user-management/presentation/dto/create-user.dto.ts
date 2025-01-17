@@ -48,7 +48,7 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   @ValidateIf((object, value) => value !== '')
-  @Matches(/^\+?[1-9][0-9\s-]{8,13}[0-9]$/, {
+  @Matches(/^\+?[0-9]{10,15}$/, {
     message: 'Please provide a valid phone number',
   })
   phoneNumber?: string | null;

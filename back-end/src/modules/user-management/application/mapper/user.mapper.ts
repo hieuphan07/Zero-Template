@@ -10,9 +10,9 @@ export class UserMapper {
   static toDto(user: User): UserResponseDto {
     return {
       id: user.getId(),
+      uuid: user.getUuid(),
       username: user.getUsername(),
       email: user.getEmail(),
-      password: user.getPassword(),
       phoneNumber: user.getPhoneNumber(),
       lastLogin: user.getLastLogin() ? FormatHelper.formatDateTime(user.getLastLogin()) : '',
       createdAt: user.getCreatedAt() ? FormatHelper.formatDateTime(user.getCreatedAt()) : '',

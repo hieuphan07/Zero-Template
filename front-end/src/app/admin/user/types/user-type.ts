@@ -1,21 +1,21 @@
 // Template only, change later using the actual user type
-import { DetailFields, TableHeaders } from "../../../../shared/types/common-type/shared-types";
+import { DetailFields, TableHeaders } from "@/shared/types/common-type/shared-types";
 import { DefaultItemType } from "@/shared/types/common-type/default-item-type";
 
-export interface User extends DefaultItemType {
-  username: string;
-  email: string;
+export type TUser = DefaultItemType & {
+  uuid?: string;
+  username?: string;
+  email?: string;
+  password?: string;
   phoneNumber?: string;
-  lastLogin: Date;
-}
-
-export interface UserCreate {
-  username: string;
-  email: string;
-  password: string;
-  phoneNumber?: string;
+  lastLogin?: Date;
   roles?: string[];
-}
+};
+
+export type TUserStore = {
+  user: Partial<TUser>;
+  setUser: (user: Partial<TUser>) => void;
+};
 
 export const UserTableHeaders: TableHeaders = {
   username: {
@@ -31,13 +31,13 @@ export const UserTableHeaders: TableHeaders = {
     hidden: false,
   },
   phoneNumber: {
-    label: "user-management:fields.phoneNumber",
+    label: "user-management:fields.phone-number",
     sortable: true,
     searchable: true,
     hidden: false,
   },
   lastLogin: {
-    label: "user-management:fields.lastLogin",
+    label: "user-management:fields.last-login",
     sortable: true,
     hidden: false,
   },

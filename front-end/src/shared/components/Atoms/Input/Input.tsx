@@ -91,7 +91,7 @@ const Input = (props: InputProps) => {
           placeholder={props.placeholder}
           required={props.required}
           disabled={props.disabled}
-          className={`${inputStyles} ${props.inputClassName}`}
+          className={`${inputStyles} ${props.inputClassName} ${props.showNumberArrow ? "" : "input-tel"}`}
           onChange={props.delayOnChange ? handleChange : props.onChange}
           onKeyDown={props.onKeyDown}
           onBlur={props.onBlur}

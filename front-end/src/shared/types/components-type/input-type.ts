@@ -15,6 +15,7 @@ export type InputProps = ComponentDefaultProps & {
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
+  showNumberArrow?: boolean;
   delayOnChange?: number;
   onChangeBeforeDelay?: (e: ChangeEvent<HTMLInputElement>) => void;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;

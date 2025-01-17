@@ -53,7 +53,7 @@ export type TransferType = {
   // eslint-disable-next-line
   createAPI: (params: any) => Promise<ApiSuccessResponse<any>>;
   // eslint-disable-next-line
-  updateAPI: any;
+  updateAPI: (id: string, params: any) => Promise<ApiSuccessResponse<any>>;
   // eslint-disable-next-line
   deleteAPI: (id: string) => Promise<any>;
   listPath: string;

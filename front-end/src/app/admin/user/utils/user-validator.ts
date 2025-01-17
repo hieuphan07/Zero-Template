@@ -4,7 +4,7 @@ import commonValidators from "@/shared/utils/functions/validation/common-validat
 const userValidators = {
   username: (value: string): string | null => {
     if (!value) return "user-management:validation.username.required";
-    if (value.length < 2) return "user-management:validation.username.minLength";
+    if (value.length < 2) return "user-management:validation.username.min-length";
     if (!REGEXP.USERNAME.test(value)) {
       return "user-management:validation.username.invalid";
     }

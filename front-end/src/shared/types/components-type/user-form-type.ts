@@ -1,9 +1,11 @@
 import { TUser } from "@/app/admin/user/types/user-type";
-import { ComponentDefaultProps } from "./component-default-type";
 
-export type CreateUserFormProps = ComponentDefaultProps & {
-  user?: TUser;
+export type UserFormProps = {
+  user?: Partial<TUser>;
   errors?: Record<string, string>;
+  hidePassword?: boolean;
+  activeTab?: string;
+  setActiveTab?: (tab: string) => void;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 };

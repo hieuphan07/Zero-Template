@@ -5,23 +5,23 @@
   },
   "create-new-user": "Create New User",
   "tabs": {
-    "userInfo": "User Information",
+    "user-information": "User Information",
     "roles": "Roles"
   },
   "fields": {
     "username": "Username",
     "email": "Email",
     "password": "Password",
-    "phoneNumber": "Phone Number",
-    "lastLogin": "Last Login",
     "createdAt": "Created At",
-    "updatedAt": "Updated At"
+    "updatedAt": "Updated At",
+    "phone-number": "Phone Number",
+    "last-login": "Last Login"
   },
   "placeholders": {
     "username": "JohnDoe",
     "email": "john.doe@gmail.com",
     "password": "********",
-    "phoneNumber": "+6281234567890"
+    "phone-number": "+6281234567890"
   },
   "roles": {
     "admin": "Admin",
@@ -30,7 +30,7 @@
   "validation": {
     "username": {
       "required": "Username is required",
-      "minLength": "Username must be at least 2 characters",
+      "min-length": "Username must be at least 2 characters",
       "invalid": "Username can only contain letters, numbers, underscores and hyphens",
       "exist": "Username already exists"
     },
@@ -44,7 +44,7 @@
       "length": "Password must be between 8 and 32 characters",
       "invalid": "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
     },
-    "phoneNumber": {
+    "phone-number": {
       "required": "Phone number is required",
       "length": "Phone number must be between 10 and 15 characters",
       "invalid": "Please provide a valid phone number",
@@ -54,17 +54,20 @@
   "notification": {
     "error": "Error",
     "success": "Success",
-    "createSuccess": "User created successfully",
-    "createError": "Failed to create user",
-    "updateSuccess": "User updated successfully",
-    "updateError": "Failed to update user",
-    "validationError": "Please fill in all required fields",
-    "deleteSuccess": "User deleted successfully",
-    "deleteError": "Failed to delete user",
-    "getError": "Failed to get user",
-    "getSuccess": "User fetched successfully"
+    "create-success": "User created successfully",
+    "create-error": "Failed to create user",
+    "validation-error": "Please fill in all required fields",
+    "update-success": "User updated successfully",
+    "update-error": "Failed to update user",
+    "delete-success": "User deleted successfully",
+    "delete-error": "Failed to delete user",
+    "get-error": "Failed to get user",
+    "get-success": "User fetched successfully"
   },
   "errors": {
+    "access-token-expired": "Your session has expired. Please log in again.",
+    "refresh-token-expired": "Your session has expired. Please log in again.",
+    "unknown-error": "An unexpected error occurred. Please try again.",
     "accessTokenExpired": "Your session has expired. Please log in again.",
     "refreshTokenExpired": "Your session has expired. Please log in again.",
     "unknownError": "An unexpected error occurred. Please try again.",

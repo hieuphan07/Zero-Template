@@ -8,14 +8,14 @@ import Checkbox from "@/shared/components/Atoms/Checkbox/Checkbox";
 import RadioButton from "@/shared/components/Atoms/Radiobutton/Radiobutton";
 import Input from "@/shared/components/Atoms/Input/Input";
 import List from "@/shared/components/Molecules/List/List";
-import { User } from "@/app/admin/user/types/user-type";
+import { TUser } from "@/app/admin/user/types/user-type";
 import { useNotification } from "@/shared/hooks/useNotification";
 
-// For template only, change later with the actual page
 export default function AdminPage() {
-  const users: User[] = [
+  const users: TUser[] = [
     {
       id: "1",
+      uuid: "1",
       email: "john.doe@example.com",
       lastLogin: new Date("2024-01-10"),
       phoneNumber: "123-456-7890",
@@ -25,6 +25,7 @@ export default function AdminPage() {
     },
     {
       id: "2",
+      uuid: "2",
       email: "jane.smith@example.com",
       createdAt: "2023-02-15",
       updatedAt: "2023-02-15",
@@ -234,7 +235,7 @@ export default function AdminPage() {
 
   return (
     <MainLayout title="Template Form" maxWidthPercentage={80}>
-      <List<User>
+      <List<TUser>
         items={users}
         typeString="User"
         insertForm={<TemplateForm />}

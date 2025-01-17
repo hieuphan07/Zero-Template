@@ -1,7 +1,7 @@
 import { TUser } from "@/app/admin/user/types/user-type";
 import { ComponentDefaultProps } from "./component-default-type";
 
-export type CreateUserFormProps = ComponentDefaultProps & {
+export type UpdateUserFormProps = ComponentDefaultProps & {
   user?: TUser;
   errors?: Record<string, string>;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;

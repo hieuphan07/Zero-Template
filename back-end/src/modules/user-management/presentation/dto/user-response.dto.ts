@@ -8,6 +8,12 @@ export class UserResponseDto {
   id: number;
 
   @ApiProperty({
+    description: 'The uuid of the user',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  uuid: string;
+
+  @ApiProperty({
     description: 'The email address of the user',
     example: 'john.doe@example.com',
   })
@@ -18,12 +24,6 @@ export class UserResponseDto {
     example: 'JohnDoe',
   })
   username: string;
-
-  @ApiProperty({
-    description: 'The password of the user',
-    example: 'password',
-  })
-  password: string;
 
   @ApiProperty({
     description: 'The phone number of the user',

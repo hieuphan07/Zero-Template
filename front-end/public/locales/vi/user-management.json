@@ -5,7 +5,7 @@
   },
   "create-new-user": "Tạo người dùng mới",
   "tabs": {
-    "userInfo": "Thông tin người dùng",
+    "user-information": "Thông tin người dùng",
     "roles": "Vai trò"
   },
   "fields": {
@@ -15,13 +15,15 @@
     "phoneNumber": "Số điện thoại",
     "lastLogin": "Lần đăng nhập cuối",
     "createdAt": "Ngày tạo",
-    "updatedAt": "Ngày cập nhật"
+    "updatedAt": "Ngày cập nhật",
+    "phone-number": "Số điện thoại",
+    "last-login": "Lần đăng nhập cuối"
   },
   "placeholders": {
     "username": "JohnDoe",
     "email": "john.doe@gmail.com",
     "password": "********",
-    "phoneNumber": "+6281234567890"
+    "phone-number": "+6281234567890"
   },
   "roles": {
     "admin": "Quản trị viên",
@@ -30,42 +32,48 @@
   "validation": {
     "username": {
       "required": "Tên đăng nhập là bắt buộc",
-      "minLength": "Tên đăng nhập phải có ít nhất 2 ký tự",
-      "invalid": "Tên đăng nhập chỉ có thể bao gồm chữ cái, số, dấu gạch dưới và dấu gạch ngang"
+      "min-length": "Tên đăng nhập phải có ít nhất 2 ký tự",
+      "invalid": "Tên đăng nhập chỉ có thể bao gồm chữ cái, số, dấu gạch dưới và dấu gạch ngang",
+			"exist": "Tên đăng nhập này đã được sử dụng"
     },
     "email": {
       "required": "Email là bắt buộc",
-      "invalid": "Vui lòng cung cấp địa chỉ email hợp lệ"
+      "invalid": "Vui lòng cung cấp địa chỉ email hợp lệ",
+			"exist": "Email này đã được đăng ký"
     },
     "password": {
       "required": "Mật khẩu là bắt buộc",
       "length": "Mật khẩu phải có độ dài từ 8 đến 32 ký tự",
       "invalid": "Mật khẩu phải có ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt"
     },
-    "phoneNumber": {
+    "phone-number": {
       "required": "Số điện thoại là bắt buộc",
       "length": "Số điện thoại phải có độ dài từ 10 đến 15 ký tự",
-      "invalid": "Vui lòng cung cấp số điện thoại hợp lệ"
+      "invalid": "Vui lòng cung cấp số điện thoại hợp lệ",
+			"exist": "Số điện thoại này đã được sử dụng"
     }
   },
   "notification": {
     "error": "Lỗi",
     "success": "Thành công",
-    "createSuccess": "Người dùng được tạo thành công",
-    "createError": "Không thể tạo người dùng",
-    "updateSuccess": "Người dùng được cập nhật thành công",
-    "updateError": "Không thể cập nhật người dùng",
-    "validationError": "Vui lòng điền đầy đủ các trường bắt buộc",
-    "deleteSuccess": "Người dùng được xóa thành công",
-    "deleteError": "Không thể xóa người dùng",
-    "getError": "Không thể lấy người dùng",
-    "getSuccess": "Người dùng được lấy thành công"
+    "create-success": "Người dùng được tạo thành công",
+    "create-error": "Không thể tạo người dùng",
+    "update-success": "Người dùng được cập nhật thành công",
+    "update-error": "Không thể cập nhật người dùng",
+    "validation-error": "Vui lòng điền đầy đủ các trường bắt buộc",
+    "delete-success": "Người dùng được xóa thành công",
+    "delete-error": "Không thể xóa người dùng",
+    "get-error": "Không thể lấy người dùng",
+    "get-success": "Người dùng được lấy thành công"
   },
   "errors": {
     "accessTokenExpired": "Phiên của bạn đã hết hạn. Vui lòng đăng nhập lại.",
     "refreshTokenExpired": "Phiên của bạn đã hết hạn. Vui lòng đăng nhập lại.",
     "unknownError": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.",
     "get-user-failed": "Không thể lấy dữ liệu người dùng",
+    "access-token-expired": "Phiên của bạn đã hết hạn. Vui lòng đăng nhập lại.",
+    "refresh-token-expired": "Phiên của bạn đã hết hạn. Vui lòng đăng nhập lại.",
+    "unknown-error": "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.",
     "validation": {
       "username": {
         "exists": "Tên đăng nhập này đã được sử dụng",

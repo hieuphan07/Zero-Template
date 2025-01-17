@@ -41,16 +41,26 @@
     "select-fields-to-filter": "Select Fields to Filter",
     "apply-filter-success": "Apply filter successfully"
   },
+  "notification": {
+    "error": "Error",
+    "success": "Success"
+  },
   "message": {
     "login-failed": "Login failed",
     "login-success": "Login success",
     "logout-success": "Logout successfully",
     "register-success": "Register success",
     "welcome": "Welcome to Zero Template System!",
+    "create-success": "Created successfully",
+    "create-error": "Failed to create",
+    "validation-error": "Please fill in all required fields",
+    "update-success": "Updated successfully",
+    "update-error": "Failed to update",
     "delete-confirmation": "Are you sure you want to delete this data?",
     "delete-success": "Delete successfully",
     "delete-failed": "Delete failed",
     "get-list-failed": "No Data",
+    "get-error": "Get error",
     "unknown-error": "An unknown error has occured",
     "network-error": "Cannot connect to the server!",
     "no-record": "No record was found!",

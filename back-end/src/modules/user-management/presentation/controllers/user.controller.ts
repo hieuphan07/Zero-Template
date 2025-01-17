@@ -85,8 +85,8 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  // @ApiBearerAuth('access-token')
-  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth('access-token')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({
     status: HttpStatus.CREATED,

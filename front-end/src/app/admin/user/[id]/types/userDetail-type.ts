@@ -1,6 +1,6 @@
 // Template only, change later using the actual user type
-import { User } from "../../types/user-type";
+import { TUser } from "../../types/user-type";
 
-export interface UserDetail extends User {
+export interface UserDetail extends TUser {
   password: string;
 }

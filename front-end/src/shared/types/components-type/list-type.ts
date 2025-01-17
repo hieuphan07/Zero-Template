@@ -22,7 +22,8 @@ export type ListProps<T> = ComponentDefaultProps & {
   insertValidation?: (createData: any) => boolean;
   insertResetForm?: () => void;
   // Update
-  updateForm?: (id: string, listRefetch: () => void) => ReactNode;
+  // eslint-disable-next-line
+  updateForm?: (id: string, listRefetch: () => void, updateItemData: any) => ReactNode;
   updateFormTitle?: string;
   updateFormClassName?: string;
   // eslint-disable-next-line
@@ -33,4 +34,6 @@ export type ListProps<T> = ComponentDefaultProps & {
   deleteFormClassName?: string;
   // eslint-disable-next-line
   deleteValidation?: (deleteData: any) => boolean;
+  // Error
+  resetErrors?: () => void;
 };
